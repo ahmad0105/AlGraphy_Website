@@ -16,31 +16,29 @@
     <div class="scroll-progress-bar"></div>
 
     <!-- ========== 2. LOADER: Shown until page fully loads ========== -->
-    <div id="loader"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #050505; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <img src="Assets/image/Logo_algraphy-White.png" alt="AlGraphy Logo"
-            style="width: 120px; margin-bottom: 25px; animation: pulse 1.5s infinite;">
-        <div
-            style="color: white; font-family: 'Montserrat', sans-serif; font-size: 24px; letter-spacing: 8px; font-weight: 800; animation: pulse 1.5s infinite;">
-            ALGRAPHY <span style="color: var(--primary);">Studio</span></div>
+    <div id="loader" class="loader">
+        <img src="Assets/image/Logo_algraphy-White.png" alt="AlGraphy Logo">
+        <div class="loader-text">
+            ALGRAPHY <span style="color: var(--primary);">Studio</span>
+        </div>
     </div>
 
     <!-- ========== 3. MENU OVERLAY: Full-screen navigation ========== -->
     <div class="menu-overlay">
         <div class="menu-links">
-            <a href="#">Home</a>
-            <a href="#">Services</a>
-            <a href="#">Portfolio</a>
-            <a href="#">Contact</a>
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#contact">Contact</a>
         </div>
     </div>
 
     <!-- ========== 4. NAVIGATION BAR ========== -->
     <nav class="nav-bar">
-        <div class="logo-container">
+        <a href="#home" class="logo-container" style="text-decoration: none; color: inherit;">
             <img src="Assets/image/Logo_algraphy-White.png" alt="AlGraphy Logo" class="nav-logo">
             <div class="logo">AlGraphy Studio</div>
-        </div>
+        </a>
         <div class="menu-icon">
             <span class="line"></span>
             <span class="line"></span>
@@ -48,7 +46,7 @@
     </nav>
 
     <!-- ========== 5. HERO SECTION ========== -->
-    <header class="hero-section">
+    <header id="home" class="hero-section">
         <video class="hero-bg-video" autoplay loop muted playsinline>
             <source src="Assets/video/heroVideo.mp4" type="video/mp4">
         </video>
@@ -92,12 +90,19 @@
     </header>
 
     <!-- ========== 6. SERVICES SECTION ========== -->
-    <section class="services-section">
+    <section id="services" class="services-section">
         <div class="container">
-            
-            <div class="services-grid">
 
-                <!-- Card 1: Strategy -->
+            <!-- Tabs -->
+            <div class="services-tabs">
+                <button class="tab-btn active" data-tab="business">Business</button>
+                <button class="tab-btn" data-tab="events">Events</button>
+                <button class="tab-btn" data-tab="marketing">Marketing</button>
+            </div>
+
+            <!-- Business Grid (Default Active) -->
+            <div class="services-grid active" id="tab-business">
+                <!-- Card 1 -->
                 <div class="service-card">
                     <div class="card-image-bg" style="background-image: url('Assets/GIF/strategy.gif');"></div>
                     <div class="card-icon">
@@ -107,13 +112,26 @@
                         </svg>
                     </div>
                     <div class="card-content">
-                        <h3>STRATEGY</h3>
-                        <p class="description">We build design systems that scale strategies.</p>
+                        <h3>BUSINESS PLAN</h3>
+                        <div class="card-meta">
+                            <span>From $5,000</span>
+                            <span class="dot">•</span>
+                            <span>2-4 Weeks</span>
+                        </div>
+                        <p class="description">Strategic planning for business growth.</p>
+                        <ul class="card-includes">
+                            <li>Market Analysis</li>
+                            <li>Financial Projections</li>
+                            <li>Competitor Research</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Excel</span><span>Tableau</span><span>Notion</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
                     </div>
                 </div>
-
-                <!-- Card 2: Design (Featured) -->
-                <div class="service-card featured">
+                <!-- Card 2 -->
+                <div class="service-card">
                     <div class="card-image-bg" style="background-image: url('Assets/GIF/design.gif');"></div>
                     <div class="card-icon">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -125,12 +143,25 @@
                         </svg>
                     </div>
                     <div class="card-content">
-                        <h3>DESIGN</h3>
-                        <p class="description">We build visual languages that speak louder than words.</p>
+                        <h3>CONSULTING</h3>
+                        <div class="card-meta">
+                            <span>From $2,500</span>
+                            <span class="dot">•</span>
+                            <span>Ongoing</span>
+                        </div>
+                        <p class="description">Expert advice for your business.</p>
+                        <ul class="card-includes">
+                            <li>Weekly Meetings</li>
+                            <li>Strategy Sessions</li>
+                            <li>Growth Tracking</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Zoom</span><span>Miro</span><span>Slack</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
                     </div>
                 </div>
-
-                <!-- Card 3: Development -->
+                <!-- Card 3 -->
                 <div class="service-card">
                     <div class="card-image-bg" style="background-image: url('Assets/GIF/development.gif');"></div>
                     <div class="card-icon">
@@ -141,21 +172,311 @@
                         </svg>
                     </div>
                     <div class="card-content">
-                        <h3>DEVELOPMENT</h3>
-                        <p class="description">Robust frontend solutions with modern tech stacks.</p>
+                        <h3>ANALYSIS</h3>
+                        <div class="card-meta">
+                            <span>From $3,000</span>
+                            <span class="dot">•</span>
+                            <span>3 Weeks</span>
+                        </div>
+                        <p class="description">In-depth market and data analysis.</p>
+                        <ul class="card-includes">
+                            <li>Data Mining</li>
+                            <li>Trend Forecasting</li>
+                            <li>Custom Dashboard</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Python</span><span>PowerBI</span><span>SQL</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
                     </div>
                 </div>
+                <!-- Card 4 -->
+                <div class="service-card">
+                    <div class="card-image-bg" style="background-image: url('Assets/GIF/strategy.gif');"></div>
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3>MANAGEMENT</h3>
+                        <div class="card-meta">
+                            <span>From $4,500</span>
+                            <span class="dot">•</span>
+                            <span>Monthly</span>
+                        </div>
+                        <p class="description">Effective project management.</p>
+                        <ul class="card-includes">
+                            <li>Resource Allocation</li>
+                            <li>Risk Management</li>
+                            <li>Agile Workflows</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Jira</span><span>Asana</span><span>Trello</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Events Grid -->
+            <div class="services-grid hidden" id="tab-events">
+                <!-- Card 1 -->
+                <div class="service-card">
+                    <div class="card-image-bg" style="background-image: url('Assets/GIF/design.gif');"></div>
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.9 1.3 1.5 1.5 2.5" />
+                            <path d="M9 18h6" />
+                            <path d="M10 22h4" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3>CORPORATE EVENTS</h3>
+                        <div class="card-meta">
+                            <span>From $10k</span>
+                            <span class="dot">•</span>
+                            <span>2 Months</span>
+                        </div>
+                        <p class="description">Memorable corporate gatherings.</p>
+                        <ul class="card-includes">
+                            <li>Venue Sourcing</li>
+                            <li>Catering Setup</li>
+                            <li>AV Production</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Cvent</span><span>Eventbrite</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="service-card">
+                    <div class="card-image-bg" style="background-image: url('Assets/GIF/development.gif');"></div>
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3>CONFERENCES</h3>
+                        <div class="card-meta">
+                            <span>From $25k</span>
+                            <span class="dot">•</span>
+                            <span>4-6 Months</span>
+                        </div>
+                        <p class="description">Large-scale professional conferences.</p>
+                        <ul class="card-includes">
+                            <li>Speaker Coordination</li>
+                            <li>Ticketing System</li>
+                            <li>Live Streaming</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Zoom Events</span><span>Hopin</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="service-card">
+                    <div class="card-image-bg" style="background-image: url('Assets/GIF/strategy.gif');"></div>
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                            <polyline points="9 22 9 12 15 12 15 22" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3>EXHIBITIONS</h3>
+                        <div class="card-meta">
+                            <span>From $15k</span>
+                            <span class="dot">•</span>
+                            <span>3 Months</span>
+                        </div>
+                        <p class="description">Engaging exhibition setups.</p>
+                        <ul class="card-includes">
+                            <li>Booth Design</li>
+                            <li>Logistics Setup</li>
+                            <li>Lead Retrieval</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>CAD</span><span>SketchUp</span><span>HubSpot</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="service-card">
+                    <div class="card-image-bg" style="background-image: url('Assets/GIF/design.gif');"></div>
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 8v4l3 3" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3>WORKSHOPS</h3>
+                        <div class="card-meta">
+                            <span>From $3,500</span>
+                            <span class="dot">•</span>
+                            <span>2 Weeks</span>
+                        </div>
+                        <p class="description">Interactive learning sessions.</p>
+                        <ul class="card-includes">
+                            <li>Curriculum Design</li>
+                            <li>Materials Creation</li>
+                            <li>Trainer Provision</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Keynote</span><span>Slido</span><span>Canva</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marketing Grid -->
+            <div class="services-grid hidden" id="tab-marketing">
+                <!-- Card 1 -->
+                <div class="service-card">
+                    <div class="card-image-bg" style="background-image: url('Assets/GIF/development.gif');"></div>
+                    <div class="card-icon">
+                        <svg width="48" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3>DIGITAL CAMPAIGNS</h3>
+                        <div class="card-meta">
+                            <span>From $2,000/mo</span>
+                            <span class="dot">•</span>
+                            <span>Ongoing</span>
+                        </div>
+                        <p class="description">Targeted online marketing.</p>
+                        <ul class="card-includes">
+                            <li>Ad Copywriting</li>
+                            <li>A/B Testing</li>
+                            <li>Conversion Tracking</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Google Ads</span><span>Meta Ads</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="service-card">
+                    <div class="card-image-bg" style="background-image: url('Assets/GIF/strategy.gif');"></div>
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3>SOCIAL MEDIA</h3>
+                        <div class="card-meta">
+                            <span>From $1,500/mo</span>
+                            <span class="dot">•</span>
+                            <span>Ongoing</span>
+                        </div>
+                        <p class="description">Engaging social media presence.</p>
+                        <ul class="card-includes">
+                            <li>Content Calendar</li>
+                            <li>Community Mgmt</li>
+                            <li>Monthly Reports</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Hootsuite</span><span>Buffer</span><span>Figma</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="service-card">
+                    <div class="card-image-bg" style="background-image: url('Assets/GIF/design.gif');"></div>
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3>SEO OPTIMIZATION</h3>
+                        <div class="card-meta">
+                            <span>From $2,500</span>
+                            <span class="dot">•</span>
+                            <span>3-6 Months</span>
+                        </div>
+                        <p class="description">Rank higher on search engines.</p>
+                        <ul class="card-includes">
+                            <li>Keyword Research</li>
+                            <li>On-page SEO</li>
+                            <li>Backlink Building</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Ahrefs</span><span>SEMrush</span><span>GA4</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="service-card">
+                    <div class="card-image-bg" style="background-image: url('Assets/GIF/development.gif');"></div>
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 8l4 4-4 4M8 12h8" />
+                        </svg>
+                    </div>
+                    <div class="card-content">
+                        <h3>BRANDING</h3>
+                        <div class="card-meta">
+                            <span>From $8,000</span>
+                            <span class="dot">•</span>
+                            <span>1 Month</span>
+                        </div>
+                        <p class="description">Building strong brand identities.</p>
+                        <ul class="card-includes">
+                            <li>Logo Design</li>
+                            <li>Brand Guidelines</li>
+                            <li>Stationery Kit</li>
+                        </ul>
+                        <div class="card-tech">
+                            <span>Illustrator</span><span>Photoshop</span>
+                        </div>
+                        <button class="card-contact-btn">LET'S TALK</button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
+
+
     <!-- ========== 7. PORTFOLIO SECTION ========== -->
-    <section class="portfolio-section">
+    <section id="portfolio" class="portfolio-section">
         <div class="container">
             <h2 class="section-header">PORTFOLIO</h2>
 
-            <!-- Project 1: Chronos App (Image Left / Text Right) -->
+            <!-- Project 1: Chronos App -->
             <div class="project-item">
                 <svg class="project-rect-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                     <rect class="project-rect" x="-300" y="-25" width="calc(100% + 375px)" height="calc(100% + 50px)"
@@ -164,32 +485,38 @@
                 <div class="project-image" style="background-image: url('Assets/image/chronosApp.png');">
                 </div>
                 <div class="project-text">
+                    <div class="project-tags">
+                        <span class="project-tag">Development & Design</span>
+                    </div>
                     <h3>Featured Project: <br> Chronos App</h3>
                     <p>A time management tool for the modern era. Designed for focus and clarity.</p>
                 </div>
                 <div class="magnetic-project-right">
-                    <button class="magnetic-project-btn">VIEW <br> PROJECT</button>
+                    <button class="magnetic-project-btn" data-project-id="1">VIEW <br> PROJECT</button>
                 </div>
             </div>
 
-            <!-- Project 2: Aura Brand (Text Left / Image Right)-->
+            <!-- Project 2: Aura Brand -->
             <div class="project-item">
                 <svg class="project-rect-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                     <rect class="project-rect" x="-80" y="-25" width="calc(100% + 375px)" height="calc(100% + 50px)"
                         rx="50" ry="50" stroke="var(--primary)" stroke-width="2" />
                 </svg>
                 <div class="project-text">
+                    <div class="project-tags">
+                        <span class="project-tag">Branding</span>
+                    </div>
                     <h3>Aura Brand Identity: <br> Redefining Luxury</h3>
                     <p>We redefined luxury for the digital age through minimalistic design.</p>
                 </div>
                 <div class="project-image" style="background-image: url('Assets/image/Aura.png');">
                 </div>
                 <div class="magnetic-project-left">
-                    <button class="magnetic-project-btn">VIEW <br> PROJECT</button>
+                    <button class="magnetic-project-btn" data-project-id="2">VIEW <br> PROJECT</button>
                 </div>
             </div>
 
-            <!-- Project 3: NexGen Platform (Image Left / Text Right) -->
+            <!-- Project 3: NexGen Platform -->
             <div class="project-item">
                 <svg class="project-rect-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                     <rect class="project-rect" x="-300" y="-25" width="calc(100% + 375px)" height="calc(100% + 50px)"
@@ -198,35 +525,42 @@
                 <div class="project-image" style="background-image: url('Assets/image/NexGen.png');">
                 </div>
                 <div class="project-text">
+                    <div class="project-tags">
+                        <span class="project-tag">UI/UX Design</span>
+                    </div>
                     <h3>NexGen Platform UI</h3>
                     <p>Complex data visualization dashboard made simple and intuitive.</p>
                 </div>
                 <div class="magnetic-project-right">
-                    <button class="magnetic-project-btn">VIEW <br> PROJECT</button>
+                    <button class="magnetic-project-btn" data-project-id="3">VIEW <br> PROJECT</button>
                 </div>
             </div>
 
-            <!-- Project 4: Moneta Flow (Text Left / Image Right) -->
+            <!-- Project 4: Moneta Flow -->
             <div class="project-item">
                 <svg class="project-rect-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                     <rect class="project-rect" x="-80" y="-25" width="calc(100% + 375px)" height="calc(100% + 50px)"
                         rx="50" ry="50" stroke="var(--primary)" stroke-width="2" />
                 </svg>
                 <div class="project-text">
+                    <div class="project-tags">
+                        <span class="project-tag">Web Development</span>
+                    </div>
                     <h3>MONETA FLOW</h3>
                     <p>A smart platform for managing cash flows and analyzing financial data clearly and accurately.</p>
                 </div>
                 <div class="project-image" style="background-image: url('Assets/image/monetaFlow.png');">
                 </div>
                 <div class="magnetic-project-left">
-                    <button class="magnetic-project-btn">VIEW <br> PROJECT</button>
+                    <button class="magnetic-project-btn" data-project-id="4">VIEW <br> PROJECT</button>
                 </div>
             </div>
         </div>
     </section>
 
+
     <!-- ========== 8. FOOTER SECTION ========== -->
-    <footer class="footer-section">
+    <footer id="contact" class="footer-section">
         <!-- Background video -->
         <video class="footer-bg-video" autoplay loop muted playsinline>
             <source src="Assets/video/white-on-black-topographical-map-clean.mp4" type="video/mp4">
@@ -243,6 +577,7 @@
                 <div class="footer-headline">
                     <h2>READY TO START <br> A PROJECT?</h2>
                 </div>
+
                 <div class="magnetic-wrap">
                     <button class="magnetic-btn">LET'S <br> TALK</button>
                 </div>
@@ -251,13 +586,15 @@
             <!-- Footer Bottom: Copyright + Links -->
             <div class="footer-bottom">
                 <div class="logo-container">
-                    <img src="Assets/image/Logo_algraphy-White.png" alt="AlGraphy Logo" class="nav-logo">
-                    <div class="logo">© 2026 AlGraphy Studio</div>
+                    <a href="#home" class="logo-container" style="text-decoration: none; color: inherit;">
+                        <img src="Assets/image/Logo_algraphy-White.png" alt="AlGraphy Logo" class="nav-logo">
+                        <div class="logo">© 2026 AlGraphy Studio</div>
+                    </a>
                 </div>
                 <div class="footer-links-group">
                     <div class="footer-links-column">
                         <h4>CONTACT</h4>
-                        <a href="#">Contact Us</a>
+                        <a href="#" class="footer-contact-trigger">Contact Us</a>
                         <a href="#">Jeddah, KSA</a>
                     </div>
                     <div class="footer-links-column">
@@ -270,11 +607,23 @@
         </div>
     </footer>
 
-    <!-- ========== 9. CONTACT MODAL ========== -->
+    <!-- ========== 9. PROJECT DETAILS MODAL ========== -->
+    <div class="project-modal">
+        <div class="project-overlay"></div>
+        <button class="close-project">×</button>
+        <div class="project-modal-container" data-lenis-prevent="true">
+            <!-- Modal Content Layout -->
+            <div class="project-modal-content" id="project-modal-content">
+                <!-- Data will be injected here via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 10. CONTACT MODAL ========== -->
     <div class="contact-modal">
         <div class="contact-overlay"></div>
+        <button class="close-contact">×</button>
         <div class="contact-container">
-            <button class="close-contact">×</button>
             <h2>Start a Project</h2>
             <form class="contact-form">
                 <div class="form-group">
@@ -304,15 +653,21 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="submit-btn">SEND REQUEST</button>
+                <button type="submit" class="submit-btn" id="contact-submit-btn">SEND REQUEST</button>
             </form>
         </div>
     </div>
+
+    <!-- ========== DYNAMIC GUIDING LINE (Hero to Portfolio) ========== -->
+    <svg id="global-line-svg">
+        <path id="dynamic-path"></path>
+    </svg>
 
     <!-- ========== SCRIPTS ========== -->
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
+
 
 </body>
 

@@ -30,17 +30,8 @@ const lenis = new Lenis({
 });
 
 /**
- * raf() — Recursive animation frame loop.
- * Continuously updates Lenis on every frame.
- */
-function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
-
-/**
- * Sync GSAP ticker with Lenis for consistent timing.
+ * Sync GSAP ticker with Lenis for consistent timing and perfect animation synchronization.
+ * (This replaces the need for a separate requestAnimationFrame loop)
  */
 gsap.ticker.add((time) => {
     lenis.raf(time * 1000);
@@ -129,7 +120,7 @@ window.addEventListener("load", () => {
             duration: 0.8,
             ease: "power2.inOut",
             onComplete: () => {
-                loader.style.display = "none";
+                loader.remove(); // Completely remove from DOM to prevent accidental reappearance
                 initializeSite();
             }
         });
@@ -146,8 +137,8 @@ window.addEventListener("load", () => {
 const cursor = document.querySelector(".custom-cursor");
 const progressBar = document.querySelector(".scroll-progress-bar");
 
-// Only enable custom cursor on devices with a mouse (not touch)
-const isMouseDevice = window.matchMedia("(pointer: fine)").matches;
+// Only enable custom cursor on devices with a mouse (not touch) and screen width > 1024px
+const isMouseDevice = window.matchMedia("(pointer: fine)").matches && window.innerWidth > 1024;
 
 if (cursor && isMouseDevice) {
 
@@ -217,8 +208,8 @@ let isMenuOpen = false;
  * - Closes: fades out overlay, resumes scrolling.
  */
 if (menuIcon && menuOverlay) {
-    menuIcon.addEventListener("click", () => {
-        isMenuOpen = !isMenuOpen;
+    const toggleMenu = (open) => {
+        isMenuOpen = open;
         menuIcon.classList.toggle("menu-active", isMenuOpen);
 
         // Animate overlay visibility
@@ -237,6 +228,23 @@ if (menuIcon && menuOverlay) {
         } else {
             lenis.start();
         }
+    };
+
+    menuIcon.addEventListener("click", () => toggleMenu(!isMenuOpen));
+
+    // Close menu and smooth scroll when a link is clicked
+    menuLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+            const targetId = link.getAttribute("href");
+            if (targetId && targetId.startsWith("#")) {
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    toggleMenu(false); // Close the menu
+                    lenis.scrollTo(targetElement, { offset: 0, duration: 1.5 });
+                }
+            }
+        });
     });
 }
 
@@ -256,9 +264,11 @@ function playInitialAnimations() {
         // Split title text into animated word spans
         const lines = title.innerHTML.split(/<br\s*\/?>/i);
         title.innerHTML = lines.map(line => {
-            return line.trim().split(/\s+/).map(word => {
+            const words = line.trim().split(/\s+/);
+            return words.map((word, i) => {
                 if (!word) return "";
-                return `<span style="display:inline-block; opacity:0; transform:translateY(100px) rotate(3deg); will-change: transform, opacity;">${word}&nbsp;</span>`;
+                const space = (i === words.length - 1) ? "" : "&nbsp;";
+                return `<span style="display:inline-block; opacity:0; transform:translateY(100px) rotate(3deg); will-change: transform, opacity;">${word}</span>${space}`;
             }).join("");
         }).join("<br>");
         gsap.set(".hero-title", { opacity: 1 });
@@ -283,7 +293,7 @@ function playInitialAnimations() {
                 duration: 2,
                 snap: { innerHTML: 1 },
                 ease: "power2.out",
-                onUpdate: function() {
+                onUpdate: function () {
                     stat.innerHTML = Math.ceil(this.targets()[0].innerHTML);
                 }
             });
@@ -349,41 +359,75 @@ if (watchBtn && videoModal && showreelVideo) {
 
 
 /* ===========================================
-   7. SERVICES SECTION — Cards Reveal + Mouse Parallax
+   7. SERVICES SECTION — Tabs & Cards Reveal + Parallax
    =========================================== */
 
-const serviceCards = document.querySelectorAll(".service-card");
+// --- Scroll Reveal ---
+const servicesSection = document.querySelector(".services-section");
+const tabBtns = document.querySelectorAll(".tab-btn");
+const serviceGrids = document.querySelectorAll(".services-grid");
 
-/**
- * Service Cards Scroll Reveal (IntersectionObserver).
- * Center card appears first, then the two side cards follow.
- */
-if (serviceCards.length >= 3) {
-    // Set initial hidden state
-    gsap.set(serviceCards[1], { y: 100, opacity: 0 });
-    gsap.set([serviceCards[0], serviceCards[2]], { y: 150, opacity: 0 });
-
-    const servicesGrid = document.querySelector(".services-grid");
-    if (servicesGrid) {
-        observeElement(servicesGrid, () => {
-            const tl = gsap.timeline();
-            tl.to(serviceCards[1], {
-                y: 0, opacity: 1, duration: 0.8, ease: "power3.out"
-            })
-                .to([serviceCards[0], serviceCards[2]], {
-                    y: 0, opacity: 1, duration: 0.8, ease: "power3.out"
-                }, "-=0.5");
-        }, { threshold: 0.1 });
-    }
+// Trigger entrance animation when scrolling to the services section, and exit when leaving
+if (servicesSection) {
+    observeElementToggle(servicesSection,
+        // onEnter
+        () => {
+            const activeGrid = document.querySelector(".services-grid:not(.hidden)");
+            if (activeGrid) {
+                gsap.fromTo(activeGrid.querySelectorAll(".service-card"),
+                    { y: 50, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out", overwrite: "auto" }
+                );
+            }
+        },
+        // onExit
+        () => {
+            const activeGrid = document.querySelector(".services-grid:not(.hidden)");
+            if (activeGrid) {
+                gsap.to(activeGrid.querySelectorAll(".service-card"),
+                    { y: 50, opacity: 0, duration: 0.5, stagger: 0.1, ease: "power2.in", overwrite: "auto" }
+                );
+            }
+        },
+        { threshold: 0.15 } // Lowered threshold because on mobile the section height is huge
+    );
 }
 
-/**
- * Service Cards Mouse Parallax & Magnetic Effect.
- * - Background image follows mouse in reverse direction (parallax).
- * - Card itself moves toward the mouse (magnetic attraction).
- * - On hover: background image fades in with zoom.
- * - On leave: everything resets smoothly.
- */
+// --- Tabs Logic ---
+
+tabBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        // Remove active class from all buttons
+        tabBtns.forEach(b => b.classList.remove("active"));
+        // Add active class to clicked button
+        btn.classList.add("active");
+
+        const targetTab = btn.getAttribute("data-tab");
+
+        // Hide all grids
+        serviceGrids.forEach(grid => {
+            if (grid.id === `tab-${targetTab}`) {
+                grid.classList.remove("hidden");
+                // Small delay to allow display:block to apply before animating opacity
+                setTimeout(() => {
+                    grid.classList.add("active");
+                    // Re-trigger scroll reveal if needed, or simply let CSS handle opacity
+                    gsap.fromTo(grid.querySelectorAll(".service-card"),
+                        { y: 50, opacity: 0 },
+                        { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power2.out" }
+                    );
+                }, 10);
+            } else {
+                grid.classList.add("hidden");
+                grid.classList.remove("active");
+            }
+        });
+    });
+});
+
+// --- Mouse Parallax & Magnetic Effect for Cards ---
+const serviceCards = document.querySelectorAll(".service-card");
+
 serviceCards.forEach((card) => {
     const cardBg = card.querySelector(".card-image-bg");
 
@@ -469,9 +513,17 @@ function splitTextToSpans(el) {
 
     nodes.forEach(node => {
         if (node.nodeType === 3) { // Text node
-            node.textContent.split('').forEach(char => {
+            // Split the text, but filter out pure layout whitespace (newlines, tabs)
+            const textContent = node.textContent;
+
+            for (let i = 0; i < textContent.length; i++) {
+                const char = textContent[i];
                 if (char === ' ') {
+                    // Preserve normal spaces as raw text nodes so they collapse naturally
                     el.appendChild(document.createTextNode(' '));
+                } else if (char === '\n' || char === '\r' || char === '\t') {
+                    // Skip layout breaks entirely to avoid animating invisible gaps
+                    continue;
                 } else {
                     const span = document.createElement('span');
                     span.textContent = char;
@@ -480,7 +532,7 @@ function splitTextToSpans(el) {
                     el.appendChild(span);
                     spans.push(span);
                 }
-            });
+            }
         } else {
             el.appendChild(node); // Preserve <br> and other elements
         }
@@ -535,19 +587,19 @@ cinematicPortfolioItems.forEach((item, index) => {
                 tl.to(titleSpans, {
                     opacity: 1,
                     duration: 0.05,
-                    stagger: 0.03,
+                    stagger: 0.02,
                     ease: "none"
-                }, "-=0.8");
+                }, "<0.4"); // Start 0.4s into the previous item's animation
             }
 
-            // Step 4: Description letters appear one by one
+            // Step 4: Description letters appear one by one, chained intelligently
             if (descSpans.length > 0) {
                 tl.to(descSpans, {
                     opacity: 1,
                     duration: 0.05,
-                    stagger: 0.02,
+                    stagger: 0.015,
                     ease: "none"
-                }, "-=0.4");
+                }, ">-0.2"); // Starts exactly 0.2s before the Title finishes!
             }
         },
         // ON EXIT — Reverse all
@@ -664,7 +716,189 @@ if (magWrap && magBtn) {
 
 
 /* ===========================================
-   10. CONTACT MODAL — Cinematic Reveal
+   10. PROJECT DETAILS MODAL
+   =========================================== */
+
+// Mock Database for Projects based on Schema
+const projectsDB = [
+    {
+        id: "1",
+        title: "Chronos App",
+        Main_Image: "Assets/image/chronosApp.png",
+        Service_Category: "Development & Design",
+        Start_Date: "2024-01-15",
+        End_Date: "2024-05-20",
+        Description: "A time management tool for the modern era. Chronos App is designed for focus and clarity, helping users track their tasks with seamless intuition.",
+        Key_Features: [
+            "Cross-platform synchronization",
+            "Advanced analytics dashboard",
+            "Minimalist clean UI/UX",
+            "Customizable focus timers"
+        ],
+        Gallery: ["Assets/GIF/design.gif", "Assets/GIF/development.gif", "Assets/GIF/strategy.gif"]
+    },
+    {
+        id: "2",
+        title: "Aura Brand Identity",
+        Main_Image: "Assets/image/Aura.png",
+        Service_Category: "Branding",
+        Start_Date: "2023-08-01",
+        End_Date: "2023-10-15",
+        Description: "We redefined luxury for the digital age through minimalistic design. The Aura brand identity speaks volumes with just a few refined visual elements.",
+        Key_Features: [
+            "Premium logo redesign",
+            "Complete typography overhaul",
+            "Luxurious color palette",
+            "Brand guidelines book"
+        ],
+        Gallery: ["Assets/GIF/strategy.gif", "Assets/image/Aura.png", "Assets/GIF/design.gif"]
+    },
+    {
+        id: "3",
+        title: "NexGen Platform UI",
+        Main_Image: "Assets/image/NexGen.png",
+        Service_Category: "UI/UX Design",
+        Start_Date: "2024-02-10",
+        End_Date: "2024-07-30",
+        Description: "Complex data visualization dashboard made simple and intuitive. NexGen is entirely focused on turning heavy data flows into digestible, actionable insights.",
+        Key_Features: [
+            "Interactive charts and graphs",
+            "Real-time data processing UI",
+            "Customizable widget layout",
+            "Dark mode tailored aesthetics"
+        ],
+        Gallery: ["Assets/GIF/development.gif", "Assets/image/NexGen.png", "Assets/GIF/strategy.gif"]
+    },
+    {
+        id: "4",
+        title: "Moneta Flow",
+        Main_Image: "Assets/image/monetaFlow.png",
+        Service_Category: "Web Development",
+        Start_Date: "2023-11-05",
+        End_Date: "2024-03-12",
+        Description: "A smart platform for managing cash flows and analyzing financial data clearly and accurately. Moneta Flow is built for modern CFOs.",
+        Key_Features: [
+            "Secure API integrations",
+            "Automated reporting exports",
+            "Intuitive ledger interface",
+            "Bank-level encryption standards"
+        ],
+        Gallery: ["Assets/image/monetaFlow.png", "Assets/GIF/design.gif", "Assets/GIF/development.gif"]
+    }
+];
+
+const projectModal = document.querySelector(".project-modal");
+const projectContainer = document.querySelector(".project-modal-container");
+const projectContent = document.getElementById("project-modal-content");
+const closeProjectBtn = document.querySelector(".close-project");
+const projectBtns = document.querySelectorAll(".magnetic-project-btn[data-project-id]");
+
+/**
+ * Open Project Modal and populate data
+ */
+const openProjectModal = (projectId) => {
+    const project = projectsDB.find(p => p.id === projectId);
+    if (!project) return;
+
+    // Inject HTML
+    projectContent.innerHTML = `
+        <img src="${project.Main_Image}" alt="${project.title}" class="modal-hero-image">
+        
+        <div class="modal-details">
+            <div class="modal-header">
+                <h3 class="modal-title">${project.title}</h3>
+                <div class="modal-meta">
+                    <span>${project.Service_Category}</span>
+                    <span>${project.Start_Date} — ${project.End_Date}</span>
+                </div>
+            </div>
+
+            <p class="modal-description">${project.Description}</p>
+
+            <div class="modal-features">
+                <h4>Key Features</h4>
+                <ul>
+                    ${project.Key_Features.map(f => `<li>${f}</li>`).join('')}
+                </ul>
+            </div>
+
+            <div class="modal-gallery">
+                ${project.Gallery.map(img => `<img src="${img}" alt="Gallery Image">`).join('')}
+            </div>
+
+            <div class="modal-cta">
+                <button class="submit-btn trigger-contact">DISCUSS SIMILAR PROJECT</button>
+            </div>
+        </div>
+    `;
+
+    // Bind new contact button
+    const triggerContactBtn = projectContent.querySelector(".trigger-contact");
+    triggerContactBtn.addEventListener("click", () => {
+        closeProjectModalFunc(() => {
+            // Open Contact Modal after Project Modal closes
+            if (window.openContactModal) {
+                window.openContactModal();
+            } else if (magBtn) {
+                magBtn.click(); // Trigger click on existing Let's Talk button
+            }
+        });
+    });
+
+    // Show Modal
+    projectContainer.setAttribute("data-lenis-prevent", "true");
+    projectModal.classList.add("active");
+    lenis.stop();
+
+    // Reset scroll inside modal
+    projectContainer.scrollTop = 0;
+
+    // Animate container in
+    gsap.fromTo(projectContainer,
+        { scaleY: 0, opacity: 0 },
+        { scaleY: 1, opacity: 1, duration: 0.6, ease: "power2.out" }
+    );
+
+    // Fade in content
+    gsap.fromTo(projectContent,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, delay: 0.3 }
+    );
+};
+
+/**
+ * Close Project Modal
+ */
+const closeProjectModalFunc = (callback) => {
+    gsap.to(projectContainer, {
+        scaleY: 0,
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.in",
+        onComplete: () => {
+            projectModal.classList.remove("active");
+            lenis.start();
+            if (callback && typeof callback === 'function') callback();
+        }
+    });
+};
+
+// Event Listeners for Opening
+projectBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-project-id");
+        openProjectModal(id);
+    });
+});
+
+// Event Listeners for Closing
+if (closeProjectBtn) closeProjectBtn.addEventListener("click", () => closeProjectModalFunc());
+const projectOverlay = document.querySelector(".project-overlay");
+if (projectOverlay) projectOverlay.addEventListener("click", () => closeProjectModalFunc());
+
+
+/* ===========================================
+   11. CONTACT MODAL — Cinematic Reveal
    =========================================== */
 
 const contactModal = document.querySelector(".contact-modal");
@@ -673,38 +907,45 @@ const contactContainer = document.querySelector(".contact-container");
 
 /**
  * Contact Modal — Open/Close with cinematic vertical expansion.
- * - Open: scaleY expands from 0 to 1, form fields fade in with stagger.
- * - Close: scaleY collapses back to 0.
  */
+window.openContactModal = () => {
+    if (!contactModal) return;
+    contactModal.classList.add("active");
+    lenis.stop(); // Prevent scrolling while modal is open
+
+    // Allow native scroll inside the container (important for mobile/tablet)
+    if (contactContainer) {
+        contactContainer.setAttribute("data-lenis-prevent", "true");
+        contactContainer.scrollTop = 0;
+    }
+
+    // Container: vertical expansion reveal
+    gsap.fromTo(contactContainer,
+        { scaleY: 0, opacity: 0 },
+        {
+            scaleY: 1,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power2.out"
+        }
+    );
+
+    // Form content: staggered fade-in
+    gsap.fromTo(".contact-form > *, .contact-container h2",
+        { y: 20, opacity: 0 },
+        {
+            y: 0,
+            opacity: 1,
+            duration: 0.4,
+            stagger: 0.1,
+            delay: 0.3
+        }
+    );
+};
+
 if (contactModal && magBtn) {
-    // Open Modal
-    magBtn.addEventListener("click", () => {
-        contactModal.classList.add("active");
-        lenis.stop(); // Prevent scrolling while modal is open
-
-        // Container: vertical expansion reveal
-        gsap.fromTo(contactContainer,
-            { scaleY: 0, opacity: 0 },
-            {
-                scaleY: 1,
-                opacity: 1,
-                duration: 0.6,
-                ease: "power2.out"
-            }
-        );
-
-        // Form content: staggered fade-in
-        gsap.fromTo(".contact-form > *, .contact-container h2",
-            { y: 20, opacity: 0 },
-            {
-                y: 0,
-                opacity: 1,
-                duration: 0.4,
-                stagger: 0.1,
-                delay: 0.3
-            }
-        );
-    });
+    // Open Modal from main Let's Talk button
+    magBtn.addEventListener("click", window.openContactModal);
 
     /**
      * closeModal() — Collapse the contact modal with reverse animation.
@@ -717,6 +958,7 @@ if (contactModal && magBtn) {
             ease: "power2.in",
             onComplete: () => {
                 contactModal.classList.remove("active");
+                if (contactContainer) contactContainer.removeAttribute("data-lenis-prevent");
                 lenis.start(); // Resume scrolling
             }
         });
@@ -731,4 +973,133 @@ if (contactModal && magBtn) {
     if (overlay) {
         overlay.addEventListener("click", closeModal);
     }
+}
+
+// Bind Contact Modal to new Service Card Buttons and Footer Link
+const contactTriggers = document.querySelectorAll(".card-contact-btn, .footer-contact-trigger");
+contactTriggers.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation(); // prevent triggering other card effects if any
+        if (window.openContactModal) {
+            window.openContactModal();
+        }
+    });
+});
+
+// Smooth scroll for all anchor links (including logo)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        // Only if not in menu (already handled there)
+        if (this.closest('.menu-overlay')) return;
+
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId !== '#') {
+            e.preventDefault();
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                lenis.scrollTo(targetElement, { offset: 0, duration: 1.5 });
+            }
+        }
+    });
+});
+
+/* ===========================================
+   DYNAMIC ENERGY LINE (Draw on Scroll)
+   =========================================== */
+
+// variables to save the length and position of the line
+let globalPathLength = 0;
+let lineStartY = 0;
+let lineEndY = 0;
+
+function drawConnectionLine() {
+    const svg = document.getElementById('global-line-svg');
+    const path = document.getElementById('dynamic-path');
+
+    // 1. the start and end elements
+    const startElem = document.querySelector('.hero-section');
+    const projects = document.querySelectorAll('.portfolio-section');
+    const endElem = projects[projects.length - 1];
+
+    if (startElem && endElem && svg && path) {
+        // update the svg height to match the actual page height
+        svg.style.height = document.body.scrollHeight + 'px';
+
+        const startRect = startElem.getBoundingClientRect();
+        const endRect = endElem.getBoundingClientRect();
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+        // the start and end positions
+        const x1 = startRect.left + (startRect.width / 2);
+        const y1 = startRect.bottom + scrollTop;
+        const x2 = endRect.left + (endRect.width / 2);
+        const y2 = endRect.bottom + scrollTop;
+
+        // save the y positions to use them in the scroll calculation
+        lineStartY = y1;
+        lineEndY = y2;
+
+        // calculate the curve path
+        const curveOffset = Math.abs(y2 - y1) / 2;
+        const d = `M ${x1} ${y1} 
+                   C ${x1} ${y1 + curveOffset}, 
+                     ${x2} ${y2 - curveOffset}, 
+                     ${x2} ${y2}`;
+
+        path.setAttribute('d', d);
+
+        // 1. calculate the total length of the line
+        globalPathLength = path.getTotalLength();
+
+        // 2. set the line to be hidden and shown
+        path.style.strokeDasharray = globalPathLength;
+        path.style.strokeDashoffset = globalPathLength; // hide the line completely at the beginning
+
+        // update the line draw based on the current scroll position
+        updateLineDraw();
+    }
+}
+
+// the function responsible for drawing the line with the scroll
+function updateLineDraw() {
+    const path = document.getElementById('dynamic-path');
+    if (!path || globalPathLength === 0) return;
+
+    // scroll position
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+
+    // when the line start to draw
+    const drawStart = lineStartY - (windowHeight / 2.5);
+
+    // when the line end to draw
+    const drawEnd = lineEndY - (windowHeight / 2.5);
+
+    // calculate the progress of the line
+    let progress = (scrollY - drawStart) / (drawEnd - drawStart);
+    progress = Math.max(0, Math.min(1, progress)); // prevent the progress from exceeding 0 or 1
+
+    // apply the progress to the line
+    path.style.strokeDashoffset = globalPathLength - (globalPathLength * progress);
+}
+
+// 1. draw the line when the page load
+window.addEventListener('load', () => {
+    drawConnectionLine();
+    setTimeout(drawConnectionLine, 2500);
+});
+
+// 2. observe the changes in the screen
+const resizeObserver = new ResizeObserver(() => {
+    drawConnectionLine();
+});
+resizeObserver.observe(document.body);
+
+// 3. connect the line draw to the lenis scroll
+if (typeof lenis !== 'undefined') {
+    lenis.on('scroll', updateLineDraw);
+} else {
+    // fallback code in case lenis didn't work
+    window.addEventListener('scroll', updateLineDraw);
 }

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!-- 
+     AlGraphy Studio — Profile & Footer Security Portal
+     
+     TABLE OF CONTENTS:
+     1. ARCHITECTURE SETUP (Base href & UI Standards)
+     2. DYNAMIC SIDEBAR (Navigation Injection)
+     3. PROFILE IDENTIFICATION (Admin Identity Management)
+     4. FOOTER ARCHITECTURE (Database-Link Management)
+     5. JS HANDLERS (Profile.js & Footer Logic)
+-->
+<html lang="en">
+
+<head>
+    <base href="/algraphy/dashboard/">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | AlGraphy Admin</title>
+
+    <!-- External Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="../css/cursor.css">
+</head>
+
+<body>
+
+    <main>
+        <!-- 3. Sidebar Navigation -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 4. Profile Edit Form -->
+        <section class="content" style="grid-template-columns: 1fr;">
+            <div class="manage-container">
+                <div class="workspace-header premium-indicator">
+                    <div class="header-titles">
+                        <h1>Account Identity</h1>
+                        <p>Manage your professional profile, credentials, and studio avatar.</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <form id="profileForm" enctype="multipart/form-data">
+                        <div class="profile-header">
+                            <div class="avatar-edit">
+                                <img loading="lazy" src="../Assets/image/default_avatar.png" alt="Profile"
+                                    id="profileAvatar" class="profile-avatar-large">
+                                <label for="profileImageInput"
+                                    style="cursor:pointer; color: var(--primary); text-decoration: underline; font-size: 0.8rem; display: block; text-align: center; margin-top: 10px;">Change
+                                    Photo</label>
+                                <input type="file" id="profileImageInput" accept="image/*" name="profile_image"
+                                    style="display:none;">
+                            </div>
+                            <div class="profile-info-header">
+                                <h2 id="headerUserName">Loading Profile...</h2>
+                                <p id="headerUserRole">AlGraphy Employee</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-form-grid">
+                            <div class="profile-input-group">
+                                <label>Full Name</label>
+                                <input type="text" id="profileName" name="full_name" required
+                                    placeholder="Your full name">
+                            </div>
+                            <div class="profile-input-group">
+                                <label>Email Address</label>
+                                <input type="email" id="profileEmail" name="email" required
+                                    placeholder="email@algraphy.com">
+                            </div>
+                            <div class="profile-input-group full-width">
+                                <label>New Password (Leave blank to keep current)</label>
+                                <input type="password" id="profilePassword" name="password" placeholder="••••••••">
+                            </div>
+                        </div>
+
+                        <div id="profileMsg" class="auth-msg"></div>
+
+                        <div class="profile-actions">
+                            <button type="submit" class="btn">UPDATE PROFILE</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Integrated Footer Management (List Style) -->
+                <div class="footer-management-section">
+                    <div class="workspace-header" style="margin-bottom: 30px;">
+                        <div class="header-titles">
+                            <h2 style="font-size: 1.5rem; font-weight: 850;">Studio Footer Architecture</h2>
+                            <p style="color: var(--text-secondary);">Customize the pillars and destination links of your site's footer.</p>
+                        </div>
+                        <div class="header-actions">
+                            <button class="add-svc-btn" id="addFooterBtn">
+                                <i class="fa fa-plus"></i> ADD NEW LINK
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="footer-admin-workspace" class="footer-links-container">
+                        <!-- Footer links injected here via profile.js -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Edit Modal -->
+    <div id="footerModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" id="closeFooterModal" style="background:transparent; color:white; border:none; font-size:2rem; position:absolute; top:20px; right:25px; cursor:pointer;">×</button>
+            <h3 id="footerModalTitle" style="margin-bottom: 25px; font-weight:850;">Manage Footer Architecture</h3>
+            <form id="footerForm">
+                <input type="hidden" name="id" id="linkId">
+                
+                <label>Pillar / Category</label>
+                <select name="category" id="linkCategory" style="margin-bottom:20px;">
+                    <option value="CONTACT">CONTACT</option>
+                    <option value="SOCIAL">SOCIAL</option>
+                </select>
+
+                <label>Label / Title</label>
+                <input type="text" name="title" id="linkTitle" required placeholder="e.g. LinkedIn" style="margin-bottom:20px;">
+
+                <label>URL Destination</label>
+                <input type="text" name="url" id="linkUrl" placeholder="Leave empty if not a link" style="margin-bottom:30px;">
+                
+                <button type="submit" class="btn" style="width:100%; padding:18px; font-weight:850; letter-spacing:1px;">SAVE ARCHITECTURE</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts Logic -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ui-classes.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/sidebar-loader.js"></script>
+    <script defer src="../js/cursor-loader.js"></script>
+</body>
+
+</html>

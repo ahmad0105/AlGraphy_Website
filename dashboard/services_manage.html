@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<!-- 
+     AlGraphy Studio — Service Pillars (Services Management)
+     
+     TABLE OF CONTENTS:
+     1. ARCHITECTURE SETUP (Base href & Creative Assets)
+     2. DYNAMIC SIDEBAR (Navigation Injection)
+     3. CATEGORY TABS (Unified Section Management)
+     4. SERVICE CONSOLE (Card & Data Modals)
+     5. JS ORCHESTRATION (Services Logic & API Link)
+-->
+<html lang="en">
+
+<head>
+    <base href="/algraphy/dashboard/">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Services | AlGraphy Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/services_manage.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/cursor.css">
+</head>
+
+<body>
+    
+    <main>
+        <!-- Side Navigation (Sidebar) -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- Main Management Content (Inherits background from dashboard.css) -->
+        <section class="content">
+            <div class="manage-container">
+                <div class="workspace-header premium-indicator">
+                    <div class="header-titles">
+                        <h1>Services Control Center</h1>
+                        <p>Manage studio service offerings, dynamic pricing, and categorical mappings.</p>
+                    </div>
+                    <button class="add-svc-btn" id="addNewSectionBtn">
+                        <i class="fa fa-plus-circle"></i> CREATE NEW SECTION
+                    </button>
+                </div>
+
+                <div id="services-admin-workspace">
+                    <!-- Categories and Services will be injected here by JS -->
+                    <div style="text-align: center; padding: 100px;">
+                        <i class="fa fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary);"></i>
+                        <p style="margin-top: 20px;">Synchronizing with database...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Edit Service Modal -->
+        <div id="editServiceModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="close-modal" id="closeEditModal">&times;</button>
+                <h2 style="margin-bottom: 30px;">Refine Service Details</h2>
+                <form id="editServiceForm" enctype="multipart/form-data">
+                    <input type="hidden" name="id" id="editSvcId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Service Title</label>
+                            <input type="text" name="Service_Name" id="editSvcTitleInput"
+                                placeholder="e.g. Premium Branding">
+                        </div>
+                        <div class="form-group">
+                            <label>Starting Price</label>
+                            <input type="text" name="Base_Price" id="editSvcPriceInput" placeholder="e.g. $2,500">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Engagement Duration</label>
+                        <input type="text" name="Delivery_Time" id="editSvcDurationInput"
+                            placeholder="e.g. 2 - 3 Weeks">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Detailed Description</label>
+                        <textarea name="description" id="editSvcDescInput" rows="3"
+                            placeholder="Explain the value proposition..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What's Included (Comma separated)</label>
+                        <textarea name="Service_Includes" id="editSvcIncludesInput" rows="2"
+                            placeholder="Logo Design, Style Guide, Post Templates..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tech Stack / Tools (Comma separated)</label>
+                        <textarea name="Technology_Stack" id="editSvcTechInput" rows="2"
+                            placeholder="Figma, Illustrator, After Effects..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Media Asset (Upload GIF or Static Preview)</label>
+                        <input type="file" name="service_image" accept="image/*,image/gif">
+                        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">Recommended:
+                            High-quality GIF for a dynamic look.</p>
+                    </div>
+
+                    <button type="submit" class="save-btn">Sync Changes</button>
+                    <div id="svcUpdateStatus" style="margin-top: 15px; text-align: center; font-size: 0.9rem;"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Category Modal -->
+        <div id="editCategoryModal" class="modal-overlay">
+            <div class="modal-content" style="max-width: 500px;">
+                <button class="close-modal" id="closeCatModal">&times;</button>
+                <h2 style="margin-bottom: 25px;">Update Section Title</h2>
+                <form id="editCategoryForm">
+                    <input type="hidden" name="id" id="editCatId">
+                    <div class="form-group">
+                        <label>New Tab Name</label>
+                        <input type="text" name="name" id="editCatNameInput" required
+                            placeholder="e.g. Branding & Design">
+                    </div>
+                    <button type="submit" class="save-btn">Update Tab Button</button>
+                    <div id="catUpdateStatus" style="margin-top: 15px; text-align: center; font-size: 0.9rem;"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Category Modal -->
+        <div id="addCategoryModal" class="modal-overlay">
+            <div class="modal-content" style="max-width: 500px;">
+                <button class="close-modal" id="closeAddCatModal">&times;</button>
+                <h2 style="margin-bottom: 25px;">Create New Section</h2>
+                <form id="addCategoryForm">
+                    <div class="form-group">
+                        <label>Section Name</label>
+                        <input type="text" name="name" required placeholder="e.g. Motion Graphics">
+                    </div>
+                    <button type="submit" class="save-btn">Establish New Pillar</button>
+                    <div id="catAddStatus" style="margin-top: 15px; text-align: center; font-size: 0.9rem;"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Service Modal -->
+        <div id="addServiceModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="close-modal" id="closeAddSvcModal">&times;</button>
+                <h2 style="margin-bottom: 30px;">Introduce New Service</h2>
+                <form id="addServiceForm" enctype="multipart/form-data">
+                    <input type="hidden" name="category_id" id="addSvcCatId">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Service Title</label>
+                            <input type="text" name="Service_Name" required placeholder="e.g. Logo Design">
+                        </div>
+                        <div class="form-group">
+                            <label>Starting Price</label>
+                            <input type="text" name="Base_Price" placeholder="e.g. $500">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Engagement Duration</label>
+                        <input type="text" name="Delivery_Time" placeholder="e.g. 5 Days">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Detailed Description</label>
+                        <textarea name="description" rows="3" placeholder="Describe the service in detail..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>What's Included (Comma separated)</label>
+                        <textarea name="Service_Includes" rows="2" placeholder="Item 1, Item 2..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tech Stack / Tools (Comma separated)</label>
+                        <textarea name="Technology_Stack" rows="2" placeholder="Figma, AI..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Media Asset (Upload GIF or Static Preview)</label>
+                        <input type="file" name="service_image" accept="image/*,image/gif">
+                    </div>
+
+                    <button type="submit" class="save-btn">Deploy Service</button>
+                    <div id="svcAddStatus" style="margin-top: 15px; text-align: center; font-size: 0.9rem;"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ui-classes.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="js/services_manage.js"></script>
+    <script src="js/sidebar-loader.js"></script>
+    <script defer src="../js/cursor-loader.js"></script>
+</body>
+
+</html>

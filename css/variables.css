@@ -1,0 +1,43 @@
+/**
+ * AlGraphy Studio — Global Styling Tokens
+ * 
+ * Centralized variables to allow rapid theme changes across the entire platform.
+ * Import this file into other CSS files using: @import "variables.css";
+ */
+
+:root {
+    /* 1. Brand Identity */
+    --primary: #dc2726;
+    --primary-dark: #b31e1e;
+    --primary-glow: rgba(220, 39, 38, 0.4);
+    --accent: #834444;
+
+    /* 2. Color Palette - Foundations */
+    --bg-deep: #050505;
+    --bg-card: #141414;
+    --bg-sidebar: #0f0f0f;
+    --bg-modal: #212020;
+
+    /* 3. Text & Typography */
+    --text-primary: #ffffff;
+    --text-secondary: #b4b4b4;
+    --text-muted: #888888;
+    --text-error: #ff4d4d;
+    --text-success: #4caf50;
+
+    /* 4. Borders & Lines */
+    --border-subtle: rgba(255, 255, 255, 0.05);
+    --border-light: rgba(255, 255, 255, 0.1);
+    --border-strong: rgba(255, 255, 255, 0.2);
+
+    /* 5. Spacing & Sizing */
+    --container-width: 1300px;
+    --sidebar-width: 100px;
+    --radius-sm: 8px;
+    --radius-md: 15px;
+    --radius-lg: 25px;
+
+    /* 6. Interaction States */
+    --transition-fast: 0.2s ease;
+    --transition-smooth: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}

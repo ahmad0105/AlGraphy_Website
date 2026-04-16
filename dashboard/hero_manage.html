@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--
+    AlGraphy Studio — Hero Section Management (Premium Card Design)
+    
+    TABLE OF CONTENTS:
+    1. Header & Meta Resources
+    2. External Resources (CSS/JS)
+    3. Sidebar Navigation
+    4. Hero Management Form
+    5. JavaScript Bootloading
+-->
+
+<head>
+    <base href="/algraphy/dashboard/">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Hero Section | AlGraphy Studio</title>
+
+    <!-- 1. Meta Tags & Header Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+
+    <!-- 2. External Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/hero_manage.css">
+    <link rel="stylesheet" href="../css/cursor.css">
+</head>
+
+<body>
+
+
+    <main>
+        <!-- 3. Sidebar Navigation -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- 4. Hero Management Section (Unified Modern Layout) -->
+        <section class="content" style="display: block; overflow-y: auto;">
+            <div class="manage-container">
+                <div class="header-flex"
+                    style="border-left: 4px solid var(--primary); padding-left: 20px; margin-bottom: 40px;">
+                    <div>
+                        <h1 style="font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 5px;">Hero
+                            Section Control</h1>
+                        <p style="color: var(--text-muted); font-size: 1rem; max-width: 600px;">Orchestrate the visual
+                            identity of AlGraphy Studio by managing cinematic videos and strategic messaging.</p>
+                    </div>
+                </div>
+
+                <form id="heroMgmtForm">
+                    <div class="hero-mgmt-grid"
+                        style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px;">
+                        <!-- 1. Background Video -->
+                        <div class="mgmt-card card-bg-video"
+                            style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px;">
+                            <div class="card-header"
+                                style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                                <i class="fa fa-video" style="color: var(--primary); font-size: 1.2rem;"></i>
+                                <h3 style="font-size: 1.1rem; margin: 0;">Atmospheric Background</h3>
+                            </div>
+                            <div class="video-preview-box"
+                                style="position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 16/9; background: #000;">
+                                <video id="heroBgPreview" autoplay loop muted playsinline
+                                    style="width: 100%; height: 100%; object-fit: cover;">
+                                    <source src="/algraphy/Assets/video/heroVideo.mp4" type="video/mp4">
+                                </video>
+                                <div class="upload-overlay" onclick="document.getElementById('bgVideoInput').click()"
+                                    style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; cursor: pointer;">
+                                    <i class="fa fa-cloud-upload-alt" style="font-size: 2rem; color: #fff;"></i>
+                                    <input type="file" id="bgVideoInput" accept="video/*" style="display:none;">
+                                </div>
+                            </div>
+                            <p class="hint" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 15px;">
+                                Focus: Cinematic loop video (MP4/WebM).</p>
+                        </div>
+
+                        <!-- 2. Showreel Video -->
+                        <div class="mgmt-card card-showreel"
+                            style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px;">
+                            <div class="card-header"
+                                style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                                <i class="fa fa-play-circle" style="color: var(--primary); font-size: 1.2rem;"></i>
+                                <h3 style="font-size: 1.1rem; margin: 0;">Project Showreel</h3>
+                            </div>
+                            <div class="video-preview-box"
+                                style="position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 16/9; background: #000;">
+                                <video id="showreelPreview" autoplay loop muted playsinline
+                                    style="width: 100%; height: 100%; object-fit: cover;">
+                                    <source src="/algraphy/Assets/video/heroVideo.mp4" type="video/mp4">
+                                </video>
+                                <div class="upload-overlay" onclick="document.getElementById('showreelInput').click()"
+                                    style="position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; cursor: pointer;">
+                                    <i class="fa fa-cloud-upload-alt" style="font-size: 2rem; color: #fff;"></i>
+                                    <input type="file" id="showreelInput" accept="video/*" style="display:none;">
+                                </div>
+                            </div>
+                            <p class="hint" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 15px;">
+                                Triggered by the homepage showreel button.</p>
+                        </div>
+
+                        <!-- 3. Subtitle Card -->
+                        <div class="mgmt-card"
+                            style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px;">
+                            <div class="card-header"
+                                style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                                <i class="fa fa-font" style="color: var(--primary); font-size: 1.2rem;"></i>
+                                <h3 style="font-size: 1.1rem; margin: 0;">Hero Subtitle</h3>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    style="display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">Strategic
+                                    Tagline (AllCaps)</label>
+                                <input type="text" id="heroSubtitle"
+                                    style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 10px; padding: 15px; color: #fff; outline: none; transition: 0.3s; font-weight: 500;"
+                                    value="STRATEGIC DESIGN STUDIO">
+                            </div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 20px;">Appears above the
+                                main headline in a professional monospace-like weight.</p>
+                        </div>
+
+                        <!-- 4. Main Title Card -->
+                        <div class="mgmt-card"
+                            style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px;">
+                            <div class="card-header"
+                                style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                                <i class="fa fa-heading" style="color: var(--primary); font-size: 1.2rem;"></i>
+                                <h3 style="font-size: 1.1rem; margin: 0;">Main Headline</h3>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    style="display: block; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">Primary
+                                    Value Proposition</label>
+                                <textarea id="heroTitle" rows="2"
+                                    style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 10px; padding: 15px; color: #fff; outline: none; font-size: 1.1rem; font-weight: 700; transition: 0.3s; resize: none;">WE CRAFT : DIGITAL EXPERIENCES</textarea>
+                            </div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 15px;">Use ":" to force
+                                a line break in the animation sequence.</p>
+                        </div>
+                    </div>
+
+                    <div id="heroMsg" class="auth-msg" style="margin-top: 20px; text-align: center;"></div>
+
+                    <div class="mgmt-actions" style="margin-top: 30px; display: flex; justify-content: center;">
+                        <button type="submit" class="btn btn-save-mgmt"
+                            style="background: var(--primary); color: #fff; border: none; border-radius: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s;">
+                            <i class="fa fa-sync-alt"></i> PUSH TO LANDING PAGE
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- 5. JavaScript Bootloading -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script defer src="../js/config.js"></script>
+    <script defer src="../js/utils.js"></script>
+    <script defer src="../js/ui-classes.js"></script>
+    <script defer src="../js/api-service.js"></script>
+    <script defer src="js/hero_manage.js"></script>
+    <script src="js/sidebar-loader.js"></script>
+    <script defer src="../js/cursor-loader.js"></script>
+</body>
+
+</html>

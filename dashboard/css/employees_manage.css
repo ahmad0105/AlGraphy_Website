@@ -1,0 +1,247 @@
+:root {
+    --primary: #dc2726;
+    --primary-dark: #b31e1e;
+    --primary-glow: rgba(220, 39, 38, 0.4);
+    --bg-dark: #0a0a0a;
+    --bg-card: #141414;
+    --text-main: #ffffff;
+    --text-dim: #b4b4b4;
+    --border-dim: rgba(255, 255, 255, 0.1);
+}
+
+/**
+ * AlGraphy Studio — Employees Management Styles
+ */
+
+.content {
+    display: block;
+    padding: 40px;
+    overflow-y: auto;
+    background: transparent;
+}
+
+.workspace-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.workspace-header h1 {
+    font-size: 2rem;
+    font-weight: 850;
+    color: #fff;
+    margin: 0;
+}
+
+/* Employees Grid */
+.admin-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.emp-admin-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-dim);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: border-color 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                background 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    min-height: 380px; /* Fixed stable height */
+    opacity: 1;        /* Default visible — JS animates from 0 */
+    will-change: opacity, transform;
+}
+
+.emp-admin-card:hover {
+    border-color: var(--primary);
+    background: rgba(220, 39, 38, 0.05);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.emp-preview-tile {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, var(--border-dim) 0%, rgba(20, 20, 20, 0.8) 100%);
+    border-bottom: 1px solid var(--border-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7rem;
+    color: var(--primary);
+    transition: 0.4s;
+    background-size: cover;
+    background-position: center;
+}
+
+.emp-preview-tile i {
+    opacity: 0.8;
+}
+
+.emp-admin-card:hover .emp-preview-tile i {
+    opacity: 1;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.emp-role-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.emp-info {
+    padding: 24px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.emp-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.emp-details {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.emp-details i {
+    color: var(--primary);
+}
+
+.card-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.edit-btn,
+.delete-btn {
+    flex-grow: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.edit-btn {
+    background: var(--border-dim);
+    border: 1px solid var(--border-dim);
+    color: #fff;
+}
+
+.edit-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.delete-btn {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+.delete-btn:hover {
+    background: #ff4d4d;
+    color: #fff;
+    border-color: #ff4d4d;
+}
+
+/* Responsive Scaling */
+@media (max-width: 1600px) {
+    .admin-grid-layout {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .admin-grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 20px 15px;
+    }
+
+    .admin-grid-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .emp-preview-tile {
+        height: 250px;
+        /* Taller for mobile impact */
+    }
+
+    .emp-role-tag {
+        font-size: 0.6rem;
+        /* Smaller for mobile as requested */
+        padding: 4px 10px;
+        top: 10px;
+        right: 10px;
+    }
+
+    .emp-info {
+        padding: 30px 20px;
+    }
+
+    .emp-info h3 {
+        font-size: 1.5rem;
+    }
+
+    .workspace-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding-bottom: 30px;
+    }
+
+    .header-actions-wrapper {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .add-svc-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}

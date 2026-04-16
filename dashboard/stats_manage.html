@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/algraphy/dashboard/">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Analytics | AlGraphy Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/stats_manage.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/cursor.css">
+</head>
+
+<body>
+    
+    <main>
+        <!-- Side Navigation (Sidebar) -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- Main Management Content -->
+        <section class="content">
+            <div class="manage-container">
+                <div class="workspace-header premium-indicator">
+                    <div class="header-titles">
+                        <h1>Master Financial Analytics</h1>
+                        <p>Real-time metrics tracking roster, client updates, and project profitability.</p>
+                    </div>
+                </div>
+
+                <div class="stats-controls">
+                    <div class="search-box">
+                        <i class="fa fa-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Search projects or employees...">
+                    </div>
+
+                    <button class="add-svc-btn" id="openAssignModalBtn" style="margin-left: auto;">
+                        <i class="fa fa-tasks"></i> ASSIGN THE PROJECT
+                    </button>
+
+                    <div class="filter-box">
+                        <i class="fa fa-filter"></i>
+                        <select id="columnFilter">
+                            <option value="all">Check All Categories</option>
+                            <option value="Roster">The Roster (By Employee)</option>
+                            <option value="ClientUpdate">Client Update (By Client)</option>
+                            <option value="Profitability">Profitability (By Project)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Stats Table Area -->
+                <div class="stats-table-wrapper" id="stats-admin-workspace">
+                    <div style="text-align: center; padding: 100px;">
+                        <i class="fa fa-spinner fa-spin" style="font-size: 3rem; color: var(--primary);"></i>
+                        <p style="margin-top: 20px;">Fetching Master Queries...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Assign Modal -->
+        <div id="assignProjectModal" class="modal-overlay">
+            <div class="modal-content" style="max-width: 600px;">
+                <button class="close-modal" id="closeAssignModal">&times;</button>
+                <div class="workspace-header premium-indicator">
+                    <div class="header-titles">
+                        <h1>Assign Team Resources</h1>
+                        <p>Link employees to projects and record their deployment hours.</p>
+                    </div>
+                </div>
+
+                <form id="assignResourcesForm">
+                    <div class="form-group">
+                        <label>Select Target Project</label>
+                        <select name="project_id" id="assignProjDropdown" required style="width: 100%; border: 1px solid var(--border-color);">
+                            <option value="">Choose Project...</option>
+                        </select>
+                    </div>
+
+                    <div id="assignmentRows">
+                        <label style="display: block; margin-bottom: 15px; color: var(--text-white); font-weight: 700;">Resource Allocation</label>
+                        <!-- Dynamic Rows Injected by JS -->
+                        <div class="assignment-row" style="display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px;">
+                            <select name="employees[]" class="emp-select" required>
+                                <option value="">Select Employee...</option>
+                            </select>
+                            <input type="number" step="0.5" name="hours[]" placeholder="Hrs" required>
+                            <button type="button" class="remove-row" style="background:transparent; color:red; border:none; cursor:pointer;"><i class="fa fa-times-circle"></i></button>
+                        </div>
+                    </div>
+
+                    <button type="button" id="addResourceRowBtn" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px dashed var(--border-color); width: 100%; padding: 10px; border-radius: 8px; cursor: pointer; margin-bottom: 20px;">
+                        <i class="fa fa-plus"></i> ADD ANOTHER RESOURCE
+                    </button>
+
+                    <button type="submit" class="save-btn" id="saveAssignmentsBtn">CONFIRM ASSIGNMENT & SYNC HOURS</button>
+                    <div id="assignStatusMsg" style="margin-top:15px; text-align:center;"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ui-classes.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/sidebar-loader.js"></script>
+    <script defer src="../js/cursor-loader.js"></script>
+</body>
+
+</html>

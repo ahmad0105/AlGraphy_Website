@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/algraphy/dashboard/">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Inquiries | AlGraphy Admin</title>
+
+    <!-- External Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/inquiry_manage.css">
+    <link rel="stylesheet" href="../css/cursor.css">
+</head>
+
+<body>
+    
+
+    <main>
+        <!-- Mini-Sidebar -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- Pure Management Workspace -->
+        <section class="content">
+            <div class="workspace-header premium-indicator">
+                <div class="header-titles">
+                    <h1>Potential Client Inquiries</h1>
+                    <p>Track and manage incoming leads from the contact form</p>
+                </div>
+
+                <div class="header-actions-wrapper">
+                    <div class="settings-card-inline">
+                        <div class="inline-input-group">
+                            <i class="fa fa-search" style="margin-left: 15px; color: var(--text-muted);"></i>
+                            <input type="text" id="leadSearchInput" placeholder="Filter by name or status...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="leads-admin-workspace" class="admin-grid-layout">
+                <!-- Leads injected by JS -->
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ui-classes.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="js/inquiry_manage.js"></script>
+    <script src="js/sidebar-loader.js"></script>
+    <script defer src="../js/cursor-loader.js"></script>
+</body>
+
+</html>

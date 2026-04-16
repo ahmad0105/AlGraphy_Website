@@ -1,0 +1,293 @@
+:root {
+    --primary: #dc2726;
+    --primary-dark: #b31e1e;
+    --primary-glow: rgba(220, 39, 38, 0.4);
+    --bg-dark: #0a0a0a;
+    --bg-card: #141414;
+    --text-main: #ffffff;
+    --text-dim: #b4b4b4;
+    --border-dim: rgba(255, 255, 255, 0.1);
+}
+
+/**
+ * AlGraphy Studio — Hero Management Styles
+ * 
+ * Specifically for the hero_manage.html dashboard page.
+ */
+
+.hero-mgmt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin: 20px auto 0 auto;
+    max-width: 900px;
+}
+
+.mgmt-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border-dim);
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    height: 100%;
+}
+
+.mgmt-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    background: var(--border-dim);
+}
+
+/* Fixed Grid Distribution Spans */
+.card-bg-video {
+    grid-column: span 1;
+}
+
+.card-subtitle {
+    grid-column: span 1;
+}
+
+.card-main-title {
+    grid-column: span 1;
+}
+
+.card-showreel {
+    grid-column: span 1;
+}
+
+@media (max-width: 992px) {
+    .hero-mgmt-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-bg-video,
+    .card-subtitle,
+    .card-main-title,
+    .card-showreel {
+        grid-column: span 1;
+    }
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.card-header i {
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+.card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+/* Video Preview Area */
+.video-preview-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-dim);
+}
+
+.video-preview-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.video-preview-box:hover .upload-overlay {
+    opacity: 1;
+}
+
+.upload-overlay label {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    transition: 0.2s;
+}
+
+.upload-overlay label:hover {
+    transform: scale(1.1);
+    background: var(--primary-dark);
+}
+
+/* Input Styles */
+.mgmt-input-group {
+    margin-top: 10px;
+}
+
+.mgmt-input-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mgmt-input-group input,
+.mgmt-input-group textarea {
+    width: 100%;
+    background: var(--border-dim);
+    border: 1px solid var(--border-dim);
+    border-radius: 10px;
+    padding: 12px 15px;
+    color: #fff;
+    font-family: inherit;
+    outline: none;
+    transition: 0.3s;
+}
+
+.mgmt-input-group input:focus,
+.mgmt-input-group textarea:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 12px;
+    font-style: italic;
+}
+
+.mgmt-info {
+    background: rgba(220, 39, 38, 0.1);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border-left: 3px solid var(--primary);
+}
+
+.mgmt-info p {
+    font-size: 0.85rem;
+    margin: 0;
+    color: #ccc;
+}
+
+/* Actions */
+.mgmt-actions {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-save-mgmt {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 20px rgba(220, 39, 38, 0.2);
+}
+
+.btn-save-mgmt:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(220, 39, 38, 0.4);
+    background: var(--primary-dark);
+}
+
+.btn-save-mgmt i {
+    transition: 0.6s ease;
+}
+
+.btn-save-mgmt:hover i {
+    transform: rotate(360deg);
+}
+
+.auth-msg {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.auth-msg.success {
+    color: #4CAF50;
+    font-weight: 500;
+}
+
+.auth-msg.error {
+    color: #ff5252;
+}
+
+.wide-field {
+    grid-column: span 1;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .header-flex h1 {
+        font-size: 1.6rem !important;
+        line-height: 1.2;
+    }
+
+    .header-flex p {
+        font-size: 0.9rem !important;
+    }
+
+    .hero-mgmt-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+    }
+
+    .mgmt-card {
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .btn-save-mgmt {
+        width: 100%;
+        padding: 15px 2px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .wide-field {
+        grid-column: span 2;
+    }
+}

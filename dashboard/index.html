@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!-- 
+     AlGraphy Studio — Master Dashboard (Admin Home)
+     
+     TABLE OF CONTENTS:
+     1. ARCHITECTURE SETUP (Base href & Libs)
+     2. DYNAMIC SIDEBAR (Navigation Injection)
+     3. MASTER ANALYTICS (Overview Stats & Highlights)
+     4. RECENT ACTIVITY (Project & Lead Snapshots)
+     5. JS HANDLERS (Dashboard.js & Sidebar Loader)
+-->
+<html lang="en">
+
+<head>
+    <base href="/algraphy/dashboard/">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AlGraphy Studio</title>
+
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="../css/cursor.css">
+</head>
+
+<body>
+
+    <main>
+        <div id="sidebar-placeholder"></div>
+
+        <!-- Dashboard Home Grid -->
+        <section class="content dashboard-grid">
+
+            <div class="manage-container">
+                <div class="workspace-header premium-indicator">
+                    <div class="header-titles">
+                        <h1 class="displayUserName">Dashboard Overview</h1>
+                        <p>Welcome back! Studio pulse and milestones are synchronized.</p>
+                    </div>
+                </div>
+
+                <!-- Recent Projects Mosaic -->
+                <div class="activities">
+                    <div class="activity-container">
+                        <!-- Injected by dashboard.js (Mosaic pattern) -->
+                    </div>
+                </div>
+
+                <!-- Middle Section: Service Categories Schedule -->
+                <div class="left-bottom">
+                    <div class="weekly-schedule">
+                        <h1 style="font-size: 1.4rem; margin-bottom: 20px;">Studio Offerings</h1>
+                        <div id="serviceCategoriesList">
+                            <!-- Injected by JS -->
+                            <div style="text-align:center; padding: 20px; color:var(--text-muted);">
+                                <i class="fa fa-spinner fa-spin"></i> Loading categories...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Small Stats Card inside Left Column -->
+                    <div class="friends-activity">
+                        <h1>Recent Inquiries</h1>
+                        <div id="leadsActivityList">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content: Talent & Inquiries -->
+            <div class="right-content">
+                <div class="user-info">
+                    <div class="icon-container">
+                        <i class="fa fa-cog" onclick="window.location.href='profile'"></i>
+                    </div>
+                    <h4 class="displayUserName">Admin</h4>
+                    <img id="profileAvatar" src="../Assets/image/default_avatar.png" alt="Profile">
+                </div>
+
+                <div class="active-calories">
+                    <h1 style="font-size: 1.1rem;">Project Completion Radar</h1>
+                    <div class="active-calories-container">
+                        <div class="box">
+                            <div class="circle" style="--i:0%;">
+                                <h2 id="projectProgressPercent">0<small>%</small></h2>
+                            </div>
+                        </div>
+                        <div class="calories-content">
+                            <p>Today: <span id="statToday">0</span></p>
+                            <p>This Week: <span id="statWeek">0</span></p>
+                            <p>This Month: <span id="statMonth">0</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="best-talent-card" style="margin-top: 40px;">
+                    <h1 style="font-size: 1.2rem; margin-bottom: 20px;">Recent Talent</h1>
+                    <div class="talent-list" id="recentEmployeesList">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ui-classes.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/sidebar-loader.js"></script>
+    <script defer src="../js/cursor-loader.js"></script>
+</body>
+
+</html>

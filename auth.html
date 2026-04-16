@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- 
+     AlGraphy Studio — Authentication Portal
+     
+     TABLE OF CONTENTS:
+     1. EXTERNAL RESOURCES (Fonts & Icons)
+     2. GUEST NAVIGATION (Logo & Return Link)
+     3. IDENTITY CARDS (Login & Signup Forms)
+     4. FEEDBACK SYSTEMS (Error & Success Messages)
+     5. JS ORCHESTRATION (Auth Logic & GSAP)
+-->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication | AlGraphy Studio</title>
+
+    <!-- Performance & External Assets Pre-connection -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- 1. Header & Design Tokens -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/libs/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/cursor.css">
+</head>
+
+<body>
+    <!-- Premium Mouse Dot Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Navigation: Return to Landing Page -->
+    <a href="/algraphy/" class="back-to-home">
+        <i class="fa fa-arrow-left"></i>
+        Back to Home
+    </a>
+
+    <!-- 2. Visual Identity & Background FX (Animated Neon Rings) -->
+    <div class="ring">
+        <i style="--clr:#dc2726;"></i>
+        <i style="--clr:#dc2726;"></i>
+        <i style="--clr:#dc2726;"></i>
+
+        <div class="login">
+            <!-- Studio Branding -->
+            <img loading="lazy" src="Assets/image/Red_logo_algraphy.svg" alt="AlGraphy Logo" class="auth-logo"
+                width="140" height="auto">
+
+            <!-- Functional Tabs -->
+            <div class="auth-toggle">
+                <button class="auth-toggle-btn active" id="showLoginBtn">LOGIN</button>
+                <button class="auth-toggle-btn" id="showSignupBtn">SIGN UP</button>
+            </div>
+
+            <!-- 3. Login Section: Credentials Entry -->
+            <div class="auth-section active" id="loginSection">
+                <form class="auth-form" id="loginForm">
+                    <div class="inputBx">
+                        <input type="email" id="loginEmail" placeholder="Email Address" required>
+                    </div>
+                    <div class="inputBx">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                    </div>
+                    <div class="inputBx">
+                        <input type="submit" value="Sign in" class="submit-btn">
+                    </div>
+                    <!-- Feedback Terminal for Validation Errors -->
+                    <div id="loginMsg" class="auth-msg"></div>
+                    <div class="auth-switch">
+                        Don't have an account? <a href="#" id="switchToSignup">Sign up here</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 4. Signup Section: New Account Creation -->
+            <div class="auth-section" id="signupSection">
+                <form class="auth-form" id="signupForm">
+                    <div class="inputBx">
+                        <input type="text" id="signupName" placeholder="Full Name" required>
+                    </div>
+                    <div class="inputBx">
+                        <input type="email" id="signupEmail" placeholder="Email Address" required>
+                    </div>
+                    <div class="inputBx">
+                        <input type="password" id="signupPassword" placeholder="Password" required>
+                    </div>
+                    <div class="inputBx">
+                        <input type="submit" value="Register Now" class="submit-btn">
+                    </div>
+                    <div id="signupMsg" class="auth-msg"></div>
+                    <div class="auth-switch">
+                        Already part of AlGraphy? <a href="#" id="switchToLogin">Login here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Integrated Logic Bootstrapping -->
+    <!-- Libraries -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Custom Application Logic -->
+    <script defer src="js/config.js"></script>
+    <script defer src="js/utils.js"></script>
+    <script defer src="js/ui-classes.js"></script>
+    <script defer src="js/api-service.js"></script>
+    <script defer src="js/auth.js"></script>
+    <script defer src="js/cursor-loader.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,276 @@
+:root {
+    --primary: #dc2726;
+    --primary-dark: #b31e1e;
+    --primary-glow: rgba(220, 39, 38, 0.4);
+    --bg-dark: #0a0a0a;
+    --bg-card: #141414;
+    --text-main: #ffffff;
+    --text-dim: #b4b4b4;
+    --border-dim: rgba(255, 255, 255, 0.1);
+}
+
+/**
+ * AlGraphy Studio — Authentication & Management Stylesheet
+ * 
+ * TABLE OF CONTENTS:
+ * 1. Global Wrapper & Base Setup
+ * 2. Visual FX (Neon Rotating Rings)
+ * 3. Auth Form Architecture (Login/Signup)
+ * 4. Feedback & Messaging (Terminal States)
+ * 5. Layout Logic & Animations
+ * 6. Responsive Adaptive Layers
+ */
+
+:root {
+    /* Brand Core */
+    --primary: #dc2726;
+    --primary-dark: #b31e1e;
+    --primary-glow: rgba(220, 39, 38, 0.4);
+    
+    /* Background & Surfaces */
+    --bg-deep: #080808;
+    --bg-card: #141414;
+    
+    /* Text & Typography */
+    --text-white: var(--text-main);
+    --text-muted: rgba(255, 255, 255, 0.4);
+    
+    /* Borders & Interaction */
+    --border-color: var(--border-dim);
+}
+
+/* 1. Global Wrapper & Base Setup */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--bg-deep);
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    font-family: "Quicksand", sans-serif;
+    cursor: none; /* Mouse handled by UI class */
+}
+
+/* Home Navigation Escape */
+.back-to-home {
+    position: absolute;
+    top: 70px;
+    left: 40px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 11000;
+    transition: color 0.3s;
+}
+
+.back-to-home:hover {
+    color: var(--primary);
+}
+
+/* 2. Visual FX (Neon Rotating Rings) */
+.ring {
+    position: relative;
+    width: 700px;
+    height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.ring i {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--primary);
+    transition: 0.5s;
+}
+
+/* Procedural organic shapes via border-radius */
+.ring i:nth-child(1) {
+    border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+    animation: animate 6s linear infinite;
+}
+
+.ring i:nth-child(2) {
+    border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+    animation: animate 4s linear infinite;
+}
+
+.ring i:nth-child(3) {
+    border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+    animation: animate2 10s linear infinite;
+}
+
+.ring:hover i {
+    border: 6px solid var(--primary);
+    filter: drop-shadow(0 0 20px var(--primary));
+}
+
+@keyframes animate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes animate2 {
+    0% { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* 3. Auth Form Architecture (Login/Signup) */
+.login {
+    position: absolute;
+    width: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.auth-logo {
+    width: 140px;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 0 5px rgba(220, 39, 38, 0.5));
+}
+
+.auth-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.auth-toggle-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding-bottom: 8px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+    letter-spacing: 1px;
+}
+
+.auth-toggle-btn.active {
+    color: #fff;
+    border-color: var(--primary);
+}
+
+.auth-section {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    animation: authFadeIn 0.5s ease;
+}
+
+.auth-section.active { display: flex; }
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inputBx {
+    position: relative;
+    width: 100%;
+}
+
+.inputBx input {
+    position: relative;
+    width: 100%;
+    padding: 12px 25px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid var(--border-dim);
+    border-radius: 40px;
+    font-size: 1rem;
+    color: #fff;
+    outline: none;
+    transition: 0.3s;
+}
+
+.inputBx input:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px 25px;
+    background: var(--primary);
+    border: none;
+    border-radius: 40px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background: #b31d1d;
+    filter: drop-shadow(0 0 10px var(--primary));
+}
+
+.auth-switch {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.auth-switch a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+/* 4. Feedback & Messaging */
+.auth-msg {
+    font-size: 0.85rem;
+    text-align: center;
+    min-height: 20px;
+    margin-top: 5px;
+}
+
+.auth-msg.error { color: #ff4d4d; }
+.auth-msg.success { color: #4CAF50; }
+
+/* 5. Layout Logic & Animations */
+@keyframes authFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 6. Responsive Adaptive Layers */
+@media (max-width: 1024px) {
+    .ring { width: 550px; height: 550px; }
+    .login { width: 320px; }
+}
+
+@media (max-width: 768px) {
+    .ring { width: 450px; height: 450px; }
+    .login { width: 280px; }
+    .back-to-home { top: 30px; left: 20px; font-size: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+    body { overflow-y: auto; padding-top: 20px; }
+    .ring { width: 440px; height: 440px; }
+    .login { width: 175px; }
+    .auth-logo { width: 80px; margin-bottom: 20px; }
+    .auth-toggle-btn { font-size: 0.8rem; }
+}
+
+/* Ensuring custom cursor clarity */

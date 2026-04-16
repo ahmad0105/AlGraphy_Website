@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!-- 
+     AlGraphy Studio — Portfolio Console (Projects Management)
+     
+     TABLE OF CONTENTS:
+     1. ARCHITECTURE SETUP (Base href & UI Constants)
+     2. DYNAMIC SIDEBAR (Navigation Injection)
+     3. PROJECT REPOSITORY (Grid & Search Logic)
+     4. DATA MODALS (Content, Gallery, Settings)
+     5. JS ORCHESTRATION (ProjectsManager & Sync Logic)
+-->
+<html lang="en">
+
+<head>
+    <base href="/algraphy/dashboard/">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Projects | AlGraphy Admin</title>
+
+    <!-- External Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/projects_manage.css">
+    <link rel="stylesheet" href="../css/cursor.css">
+</head>
+
+<body>
+    
+
+    <main>
+        <!-- Mini-Sidebar -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- Pure Management Workspace -->
+        <section class="content">
+            <div class="workspace-header premium-indicator">
+                <div class="header-titles">
+                    <h1>Projects</h1>
+                    <p>Manage your studio portfolio items</p>
+                </div>
+
+                <div class="header-actions-wrapper">
+                    <form id="projectHeaderForm" style="display: flex; align-items: center; gap: 15px; height: 100%;">
+                        <!-- 1. Input Part -->
+                        <div class="settings-card-inline">
+                            <div class="inline-input-group">
+                                <input type="text" name="title" id="projHeaderTitle" required
+                                    placeholder="Section Title">
+                            </div>
+                        </div>
+
+                        <!-- 2. Sync Button (The Centerpiece) -->
+                        <button type="submit" class="sync-btn-inline" title="Sync Title">
+                            <i class="fa fa-sync-alt"></i> SYNC
+                        </button>
+                    </form>
+
+                    <!-- 3. Add Project (The Right Side) -->
+                    <button type="button" class="add-svc-btn" id="addNewProjectBtn">
+                        <i class="fa fa-plus-circle"></i> ADD PROJECT
+                    </button>
+                </div>
+            </div>
+
+            <div id="projects-admin-workspace" class="admin-grid-layout">
+                <!-- Projects injected by JS -->
+            </div>
+        </section>
+
+        <!-- Project Modal -->
+        <div id="editProjectModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="close-modal" id="closeProjModal">&times;</button>
+                <h3 style="margin-bottom:20px;">Edit Project</h3>
+                <form id="editProjectForm" enctype="multipart/form-data">
+                    <input type="hidden" name="id" id="editProjId">
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Project Title</label>
+                            <input type="text" name="Project_name" id="editProjTitleInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Service Category</label>
+                            <input type="text" name="Service_Category" id="editProjTagsInput" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="Description" id="editProjDescInput" rows="3"></textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Budget ($)</label>
+                            <input type="number" step="0.01" name="Budget" id="editProjBudgetInput">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="Status" id="editProjStatusInput">
+                                <option value="Planning">Planning</option>
+                                <option value="Active">Active</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Associated Client</label>
+                            <select name="client_id" id="editProjClientInput">
+                                <option value="">Select Client...</option>
+                                <!-- Loaded by JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" name="Start_Date" id="editProjStartInput">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="date" name="End_Date" id="editProjEndInput">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Key Features (Comma separated)</label>
+                        <textarea name="Key_Features" id="editProjFeaturesInput" rows="2"
+                            placeholder="Feature 1, Feature 2..."></textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Main Project Image (Thumbnail)</label>
+                            <input type="file" name="project_image" accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label>Cinematic Gallery (Max 4 images)</label>
+                            <input type="file" name="project_gallery[]" accept="image/*" multiple>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 5px;">Select up to 4 images to showcase in the modal.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="save-btn">SAVE PROJECT ARCHITECTURE</button>
+                    <div id="projUpdateStatus" style="margin-top: 15px; text-align: center; color: var(--primary);">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ui-classes.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="js/projects_manage.js"></script>
+    <script src="js/sidebar-loader.js"></script>
+    <script defer src="../js/cursor-loader.js"></script>
+</body>
+
+</html>

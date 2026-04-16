@@ -1,0 +1,38 @@
+/* 
+ * AlGraphy Studio — Global Premium Cursor System
+ */
+
+.custom-cursor {
+    width: 12px;
+    height: 12px;
+    background-color: #dc2726; /* Brand Red */
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 999999; /* Max Priority */
+    opacity: 0; /* Hidden until JS initializes */
+    transition: opacity 0.3s ease, background-color 0.3s ease, width 0.3s ease, height 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 10px rgba(220, 39, 38, 0.4);
+    /* GSAP will handle the transform */
+    will-change: transform;
+}
+
+/* Page class added via JS only on mouse devices */
+body.custom-cursor-active,
+body.custom-cursor-active a, 
+body.custom-cursor-active button, 
+body.custom-cursor-active .nav-item,
+body.custom-cursor-active [onclick] {
+    cursor: none !important;
+}
+
+/* Hover State - Elegant Expansion */
+.custom-cursor.active {
+    width: 35px;
+    height: 35px;
+    background-color: rgba(220, 39, 38, 0.15);
+    border: 1.5px solid #dc2726;
+    box-shadow: 0 0 20px rgba(220, 39, 38, 0.6);
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/algraphy/dashboard/">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Clients | AlGraphy Admin</title>
+
+    <!-- External Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+
+    <!-- Local Stylesheets -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/clients_manage.css">
+    <link rel="stylesheet" href="../css/cursor.css">
+</head>
+
+<body>
+    
+
+    <main>
+        <!-- Mini-Sidebar -->
+        <div id="sidebar-placeholder"></div>
+
+        <!-- Pure Management Workspace -->
+        <section class="content">
+            <div class="workspace-header premium-indicator">
+                <div class="header-titles">
+                    <h1>Clients</h1>
+                    <p>Manage your studio's client base</p>
+                </div>
+
+                <div class="header-actions-wrapper">
+                    <button class="add-svc-btn" id="addNewClientBtn">
+                        <i class="fa fa-plus-circle"></i> ADD CLIENT
+                    </button>
+                </div>
+            </div>
+
+            <div id="clients-admin-workspace" class="admin-grid-layout">
+                <!-- Clients injected by JS -->
+            </div>
+        </section>
+
+        <!-- Client Modal (Edit) -->
+        <div id="editClientModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="close-modal" id="closeClientModal">&times;</button>
+                <h3 style="margin-bottom:20px;">Edit Client Details</h3>
+                <form id="editClientForm">
+                    <input type="hidden" name="id" id="editClientId">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" name="company_name" id="editClientNameInput" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="email" name="contact_email" id="editClientEmailInput">
+                    </div>
+                    <button type="submit" class="save-btn">SAVE CHANGES</button>
+                    <div id="clientUpdateStatus" style="margin-top: 15px; text-align: center; color: var(--primary);">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Client Modal -->
+        <div id="addClientModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="close-modal" id="closeAddClientModal">&times;</button>
+                <h3 style="margin-bottom:20px;">Register New Client</h3>
+                <form id="addClientForm">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" name="company_name" id="addClientNameInput" required
+                            placeholder="Project Partner Ltd.">
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="email" name="contact_email" id="addClientEmailInput" required
+                            placeholder="contact@company.com">
+                    </div>
+                    <button type="submit" class="save-btn">ADD TO DATABASE</button>
+                    <div id="addClientStatus" style="margin-top: 15px; text-align: center; color: var(--primary);">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/ui-classes.js"></script>
+    <script src="../js/api-service.js"></script>
+    <script src="js/clients_manage.js"></script>
+    <script src="js/sidebar-loader.js"></script>
+    <script defer src="../js/cursor-loader.js"></script>
+</body>
+
+</html>

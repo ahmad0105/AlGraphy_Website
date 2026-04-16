@@ -1,0 +1,178 @@
+:root {
+    --primary: #dc2726;
+    --primary-dark: #b31e1e;
+    --primary-glow: rgba(220, 39, 38, 0.4);
+    --bg-dark: #0a0a0a;
+    --bg-card: #141414;
+    --text-main: #ffffff;
+    --text-dim: #b4b4b4;
+    --border-dim: rgba(255, 255, 255, 0.1);
+}
+
+/* 
+ * AlGraphy Studio — Integrated Profile & Footer Styles
+ */
+
+.footer-management-section {
+    max-width: 800px; /* Matching profile-card width */
+    margin: 60px auto 0;
+}
+
+.footer-links-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.footer-category-title {
+    color: var(--primary);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    font-weight: 850;
+    margin: 30px 0 15px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-category-title::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.05);
+}
+
+.footer-link-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 20px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    cursor: default;
+    opacity: 1 !important; /* Ensure full visibility */
+}
+
+.footer-link-card:hover {
+    border-color: var(--primary);
+    background: rgba(220, 39, 38, 0.05); /* Subtle highlight only */
+    /* Transform removed as per user request */
+}
+
+.link-details h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.link-details p {
+    margin: 5px 0 0;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+.trigger-tag {
+    background: var(--primary);
+    color: white;
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.link-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.action-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: rgba(255,255,255,0.02);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.action-btn.edit:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.add-svc-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-weight: 850;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px var(--primary-glow);
+}
+
+.add-svc-btn:hover {
+    transform: translateY(-3px);
+    background: var(--primary-dark);
+    box-shadow: 0 8px 25px var(--primary-glow);
+}
+
+.add-svc-btn i {
+    font-size: 0.9rem;
+}
+
+/* 
+ * Simplified Form Layout
+ * Labels and inputs no longer need .form-group wrappers
+ */
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    color: white;
+    font-family: inherit;
+    transition: 0.3s;
+    margin-bottom: 25px; /* Spacing handled directly on inputs */
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    outline: none;
+    background: var(--border-dim);
+    box-shadow: 0 0 15px var(--primary-glow);
+}

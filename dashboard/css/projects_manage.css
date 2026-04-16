@@ -1,0 +1,284 @@
+:root {
+    --primary: #dc2726;
+    --primary-dark: #b31e1e;
+    --primary-glow: rgba(220, 39, 38, 0.4);
+    --bg-dark: #0a0a0a;
+    --bg-card: #141414;
+    --text-main: #ffffff;
+    --text-dim: #b4b4b4;
+    --border-dim: rgba(255, 255, 255, 0.1);
+}
+
+/**
+ * AlGraphy Studio — Projects Management (Clean Streamlined Version)
+ * Only project-specific overrides and grid logic.
+ */
+
+/* Content Area Fixes */
+.content {
+    display: block;
+    padding: 40px;
+    overflow-y: auto;
+    background: transparent;
+}
+
+.workspace-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.workspace-header h1 {
+    font-size: 2rem;
+    font-weight: 850;
+    color: #fff;
+    margin: 0;
+}
+
+
+.header-actions-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Inline UI Styles Centralized in Dashboard.css */
+
+/* Projects Grid */
+.admin-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.proj-admin-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-dim);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+}
+
+.proj-admin-card:hover {
+    border-color: var(--primary);
+    background: rgba(220, 39, 38, 0.05);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.proj-preview {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--border-dim);
+    filter: grayscale(20%);
+    transition: 0.4s;
+}
+
+.proj-admin-card:hover .proj-preview {
+    filter: grayscale(0%);
+}
+
+.proj-info {
+    padding: 24px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.proj-tags {
+    font-size: 0.75rem;
+    color: var(--primary);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+}
+
+.proj-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.proj-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 25px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* Linter Fix */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.edit-btn {
+    flex-grow: 1;
+    background: var(--border-dim);
+    border: 1px solid var(--border-dim);
+    color: #fff;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.edit-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.delete-btn {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 77, 77, 0.2);
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-btn:hover {
+    background: #ff4d4d;
+    color: #fff;
+    border-color: #ff4d4d;
+}
+
+/* Status Tags & Indicators */
+.proj-status-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--border-dim);
+    border: 1px solid var(--border-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.proj-status-tag::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    /* Small square */
+}
+
+.status-planning {
+    color: #ffcc00;
+    border-color: rgba(255, 204, 0, 0.3);
+}
+
+.status-planning::before {
+    background: #ffcc00;
+    box-shadow: 0 0 8px #ffcc00;
+}
+
+.status-active {
+    color: #00ffcc;
+    border-color: rgba(0, 255, 204, 0.3);
+}
+
+.status-active::before {
+    background: #00ffcc;
+    box-shadow: 0 0 8px #00ffcc;
+}
+
+.status-completed {
+    color: #00ccff;
+    border-color: rgba(0, 204, 255, 0.3);
+}
+
+.status-completed::before {
+    background: #00ccff;
+    box-shadow: 0 0 8px #00ccff;
+}
+
+/* Responsive Scaling */
+@media (max-width: 1600px) {
+    .admin-grid-layout {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .admin-grid-layout {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        padding: 20px 15px;
+    }
+
+    .admin-grid-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .proj-preview {
+        height: 250px;
+    }
+
+    .proj-info {
+        padding: 30px 20px;
+    }
+
+    .proj-info h3 {
+        font-size: 1.5rem;
+    }
+
+    .workspace-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding-bottom: 30px;
+    }
+
+    .header-actions-wrapper {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .add-svc-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .inline-input-group {
+        width: 100%;
+    }
+
+    .inline-input-group input {
+        width: 100%;
+    }
+}

@@ -1,0 +1,21 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /algraphy/
+
+    # 1. Force Trailing Slash for actual directories
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^(.*[^/])$ $1/ [L,R=301]
+
+    # 2. Add slash to the 'dashboard' root folder precisely
+    RewriteRule ^dashboard$ dashboard/ [L,R=301]
+
+    # 3. Handle dashboard sub-pages WITHOUT trailing slash (to keep relative paths working)
+    # This maps 'dashboard/profile' to 'dashboard/profile.html' internally
+    RewriteRule ^dashboard/([a-zA-Z0-9_-]+)$ dashboard/$1.html [L]
+
+    # 4. Global clean URLs for the root directory (hero_manage.html -> hero_manage)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([a-zA-Z0-9_-]+)$ $1.html [L]
+
+</IfModule>

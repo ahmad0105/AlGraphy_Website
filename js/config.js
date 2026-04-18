@@ -8,7 +8,9 @@
 const CONFIG = {
     // 1. API Routing
     API: {
-        BASE_URL: `${window.location.protocol}//${window.location.hostname}/algraphy/algraphybackend/public`,
+        BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? `${window.location.protocol}//${window.location.hostname}/algraphy/algraphybackend/public`
+            : `${window.location.protocol}//${window.location.hostname}/api`,
         ENDPOINTS: {
             LOGIN: '/login',
             LOGOUT: '/logout',

@@ -31,7 +31,8 @@ class Database
         private string $host,
         private string $dbname,
         private string $user,
-        private string $password
+        private string $password,
+        private int $port = 3306
     ) {}
 
     /**
@@ -48,13 +49,20 @@ class Database
         }
 
         try {
-            $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset=utf8mb4";
+            $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->dbname};charset=utf8mb4";
             
-            $this->pdo = new PDO($dsn, $this->user, $this->password, [
+            $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,        // Enable exceptions for errors
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,   // Fetch as associative array
                 PDO::ATTR_EMULATE_PREPARES => false,                // Use real prepared statements
-            ]);
+            ];
+
+            // Enable SSL for Cloud Databases (like Aiven)
+            if ($this->port !== 3306) {
+                $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+            }
+
+            $this->pdo = new PDO($dsn, $this->user, $this->password, $options);
             
             return $this->pdo;
         } catch (PDOException $e) {

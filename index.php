@@ -23,7 +23,8 @@ try {
         $config['db_host'],
         $config['db_name'],
         $config['db_user'],
-        $config['db_pass']
+        $config['db_pass'],
+        (int)$config['db_port']
     );
     $pdo = $db->connect();
 

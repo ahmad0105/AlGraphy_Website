@@ -1,9 +1,6 @@
 {
   "functions": {
-    "algraphybackend/public/index.php": {
-      "runtime": "vercel-php@0.6.0"
-    },
-    "index.php": {
+    "**/*.php": {
       "runtime": "vercel-php@0.6.0"
     }
   },

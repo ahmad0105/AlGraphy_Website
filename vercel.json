@@ -7,6 +7,7 @@
   "routes": [
     { "src": "/dashboard/(.*)", "dest": "/dashboard/index.html" },
     { "src": "/api/(.*)", "dest": "/api/core.php" },
+    { "src": "/(css|js|Assets|dashboard/css|dashboard/js)/(.*)", "dest": "/$1/$2" },
     { "src": "/(.*)", "dest": "/api/main.php" }
   ]
 }

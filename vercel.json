@@ -6,17 +6,10 @@
   },
   "cleanUrls": true,
   "routes": [
-    { "src": "/auth", "dest": "/auth.html" },
+    { "handle": "filesystem" },
     { "src": "/api/(.*)", "dest": "/api/core.php" },
-    { 
-      "src": "/(css|js|Assets|dashboard/css|dashboard/js|dashboard/components)/(.*)", 
-      "dest": "/$1/$2",
-      "headers": { "cache-control": "public, max-age=31536000, immutable" }
-    },
-    { "src": "/dashboard/(.*).html", "dest": "/dashboard/$1.html" },
-    { "src": "/dashboard", "dest": "/dashboard/index.html" },
-    { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
-    { "src": "/((?!dashboard|auth|css|js|Assets|api).*)", "dest": "/api/main.php" }
+    { "src": "/auth", "dest": "/auth.html" },
+    { "src": "/(.*)", "dest": "/api/main.php" }
   ],
   "crons": [
     {

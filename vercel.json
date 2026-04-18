@@ -6,9 +6,12 @@
   },
   "cleanUrls": true,
   "routes": [
-    { "handle": "filesystem" },
     { "src": "/api/(.*)", "dest": "/api/core.php" },
-    { "src": "/auth", "dest": "/auth.html" },
+    { "handle": "filesystem" },
+    { 
+      "src": "/(css|js|Assets|dashboard/css|dashboard/js|dashboard/components)/(.*)", 
+      "headers": { "cache-control": "public, max-age=31536000, immutable" }
+    },
     { "src": "/(.*)", "dest": "/api/main.php" }
   ],
   "crons": [

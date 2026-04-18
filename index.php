@@ -64,10 +64,15 @@ try {
     error_log("Landing Page DB Error: " . $e->getMessage());
 }
 
-// Helper to fix URLs (remove localhost/algraphy prefix if exists)
+// Helper to fix URLs (remove localhost/algraphy prefix and ensure leading slash)
 function fixUrl($url) {
     if (!$url) return '';
-    return str_replace(['http://localhost/algraphy/', 'https://localhost/algraphy/'], '', $url);
+    $url = str_replace(['http://localhost/algraphy/', 'https://localhost/algraphy/'], '', $url);
+    // Ensure absolute path from root
+    if (strpos($url, 'http') !== 0 && strpos($url, '/') !== 0) {
+        $url = '/' . $url;
+    }
+    return $url;
 }
 
 // Fallbacks if database is empty
@@ -236,7 +241,7 @@ function formatHeroTitle($text)
                         <!-- Card: <?php echo $svc['Service_Name']; ?> -->
                         <div class="service-card">
                             <div class="card-image-bg"
-                                style="background-image: url('<?php echo $svc['image_url'] ?: 'Assets/GIF/strategy.gif'; ?>');">
+                                style="background-image: url('<?php echo fixUrl($svc['image_url'] ?: 'Assets/GIF/strategy.gif'); ?>');">
                             </div>
                             <div class="card-icon">
                                 <?php if ($svc['icon_svg']): ?>

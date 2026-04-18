@@ -1,0 +1,14 @@
+# Exclude heavy local data from Vercel deployment
+.git/
+node_modules/
+algraphybackend/vendor/
+
+# Exclude all uploads (this is local XAMPP data, not needed for live code)
+algraphybackend/public/uploads/
+
+# Exclude unnecessary library assets
+css/libs/fontawesome/svgs/
+css/libs/fontawesome/less/
+css/libs/fontawesome/scss/
+
+# Keep Assets/video/ as it contains the 95MB Hero video (essential for frontend)

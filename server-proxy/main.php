@@ -1,6 +1,6 @@
 <?php
 /**
- * Vercel Proxy for Main Site
+ * Vercel Proxy for Landing Page
+ * Points to the root index.php.
  */
-chdir(__DIR__ . '/../');
-require 'index.php';
+require __DIR__ . '/../index.php';

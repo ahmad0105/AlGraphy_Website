@@ -1,11 +1,12 @@
 {
   "functions": {
-    "**/*.php": {
+    "api/*.php": {
       "runtime": "vercel-php@0.6.0"
     }
   },
   "routes": [
     { "src": "/dashboard/(.*)", "dest": "/dashboard/index.html" },
-    { "src": "/api/(.*)", "dest": "/algraphybackend/public/index.php" }
+    { "src": "/api/(.*)", "dest": "/api/core.php" },
+    { "src": "/(.*)", "dest": "/api/main.php" }
   ]
 }

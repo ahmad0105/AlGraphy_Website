@@ -1,6 +1,6 @@
 {
   "functions": {
-    "server-proxy/*.php": {
+    "api/*.php": {
       "runtime": "vercel-php@0.7.2",
       "includeFiles": "algraphybackend/**"
     }
@@ -8,7 +8,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "routes": [
-    { "src": "/api/(.*)", "dest": "/server-proxy/core.php" },
+    { "src": "/api/(.*)", "dest": "/api/core.php" },
     { 
       "src": "/(Assets|css|js|dashboard/css|dashboard/js|dashboard/components)/(.*)", 
       "dest": "/$1/$2",
@@ -17,7 +17,7 @@
     { "handle": "filesystem" },
     { "src": "/auth", "dest": "/auth.html" },
     { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
-    { "src": "/(.*)", "dest": "/server-proxy/main.php" }
+    { "src": "/(.*)", "dest": "/api/main.php" }
   ],
   "crons": [
     {

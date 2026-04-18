@@ -6,13 +6,13 @@
   },
   "cleanUrls": true,
   "routes": [
+    { "src": "/auth", "dest": "/auth.html" },
     { "src": "/api/(.*)", "dest": "/api/core.php" },
     { 
       "src": "/(css|js|Assets|dashboard/css|dashboard/js|dashboard/components)/(.*)", 
       "dest": "/$1/$2",
       "headers": { "cache-control": "public, max-age=31536000, immutable" }
     },
-    { "src": "/auth", "dest": "/auth.html" },
     { "src": "/dashboard/(.*).html", "dest": "/dashboard/$1.html" },
     { "src": "/dashboard", "dest": "/dashboard/index.html" },
     { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },

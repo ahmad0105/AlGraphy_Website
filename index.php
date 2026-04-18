@@ -64,11 +64,17 @@ try {
     error_log("Landing Page DB Error: " . $e->getMessage());
 }
 
+// Helper to fix URLs (remove localhost/algraphy prefix if exists)
+function fixUrl($url) {
+    if (!$url) return '';
+    return str_replace(['http://localhost/algraphy/', 'https://localhost/algraphy/'], '', $url);
+}
+
 // Fallbacks if database is empty
 $heroSubtitle = $hero['subtitle'] ?? 'STRATEGIC DESIGN STUDIO';
 $heroTitle = $hero['title'] ?? 'WE CRAFT DIGITAL : EXPERIENCES.';
-$bgVideo = $hero['bg_video_url'] ?? 'Assets/video/heroVideo.mp4';
-$srVideo = $hero['showreel_video_url'] ?? 'Assets/video/heroVideo.mp4';
+$bgVideo = fixUrl($hero['bg_video_url'] ?? 'Assets/video/heroVideo.mp4');
+$srVideo = fixUrl($hero['showreel_video_url'] ?? 'Assets/video/heroVideo.mp4');
 
 // Helper to format title (convert : to <br>)
 function formatHeroTitle($text)
@@ -132,9 +138,9 @@ function formatHeroTitle($text)
             <a href="auth#signup" class="nav-auth-btn signup-btn auth-guest-only" id="guestSignupBtn">Sign Up</a>
 
             <!-- Authorized: Dashboard & Profile -->
-            <a href="dashboard" class="nav-auth-btn auth-user-only" id="userDashboardBtn">Dashboard</a>
+            <a href="dashboard" class="nav-auth-btn auth-user-only hidden" id="userDashboardBtn">Dashboard</a>
 
-            <div id="userHeaderProfile" class="header-profile auth-user-only"
+            <div id="userHeaderProfile" class="header-profile auth-user-only hidden"
                 onclick="window.location.href='dashboard/profile'">
                 <span id="userHeaderName">...</span>
                 <img id="userHeaderAvatar" src="Assets/image/default_avatar.png" alt="User Profile">

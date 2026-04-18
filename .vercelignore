@@ -1,14 +1,19 @@
-# Exclude heavy local data from Vercel deployment
+# Exclude heavy local data and unneeded assets
 .git/
 node_modules/
 algraphybackend/vendor/
-
-# Exclude all uploads (this is local XAMPP data, not needed for live code)
 algraphybackend/public/uploads/
 
-# Exclude unnecessary library assets
+# Critical: Remove heavy FontAwesome source/metadata files
+# (The website only needs the 'css/' and 'webfonts/' folders to work)
 css/libs/fontawesome/svgs/
+css/libs/fontawesome/svgs-full/
+css/libs/fontawesome/metadata/
+css/libs/fontawesome/js/
+css/libs/fontawesome/sprites/
+css/libs/fontawesome/sprites-full/
 css/libs/fontawesome/less/
 css/libs/fontawesome/scss/
 
-# Keep Assets/video/ as it contains the 95MB Hero video (essential for frontend)
+# Videos are 137MB - we keep them as they are essential for the UI
+# But we must ensure the rest of the project is lean.

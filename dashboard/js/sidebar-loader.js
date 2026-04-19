@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const placeholder = document.getElementById('sidebar-placeholder');
     if (!placeholder) return;
 
-    // 1. Fetch the sidebar component (Relative to the HTML file in /dashboard/)
-    fetch('components/sidebar.html')
+    // 1. Fetch the sidebar component (Absolute path from root)
+    fetch('/dashboard/components/sidebar.html')
         .then(response => response.text())
         .then(html => {
             placeholder.innerHTML = html;
@@ -56,10 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (typeof APIService !== 'undefined') {
                         await APIService.logout();
                     }
-                    window.location.href = "../auth";
+                    window.location.href = "/auth";
                 } catch (err) {
                     console.error("Logout error:", err);
-                    window.location.href = "../auth";
+                    window.location.href = "/auth";
                 }
             });
         }

@@ -10,9 +10,9 @@
   "trailingSlash": false,
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/core.php" },
-    { "src": "/auth", "dest": "/auth.html" },
-    { "src": "/(Assets|css|js|dashboard)/(.*)", "dest": "/$1/$2" },
     { "handle": "filesystem" },
+    { "src": "/auth", "dest": "/auth.html" },
+    { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
     { "src": "/(.*)", "dest": "/api/main.php" }
   ],
   "crons": [

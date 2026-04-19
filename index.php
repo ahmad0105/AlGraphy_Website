@@ -14,8 +14,8 @@
  * 9. CLIENT-SIDE ARCHITECTURE (API, GSAP, Lenis)
  */
 
-require_once 'algraphybackend/src/Database.php';
-$config = require 'algraphybackend/src/config.php';
+require_once __DIR__ . '/algraphybackend/src/Database.php';
+$config = require __DIR__ . '/algraphybackend/src/config.php';
 
 try {
     // Correctly pass 4 separate arguments from the config array

@@ -1,49 +1,24 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "api/*.php",
-      "use": "vercel-php@0.7.2",
-      "config": { "includeFiles": "algraphybackend/**" }
-    },
-    {
-      "src": "js/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "css/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "Assets/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "dashboard/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    }
+    { "src": "api/*.php", "use": "@vercel/php" },
+    { "src": "algraphybackend/public/*.php", "use": "@vercel/php" },
+    { "src": "index.php", "use": "@vercel/php" },
+    { "src": "dashboard/**", "use": "@vercel/static" },
+    { "src": "css/**", "use": "@vercel/static" },
+    { "src": "js/**", "use": "@vercel/static" },
+    { "src": "Assets/**", "use": "@vercel/static" },
+    { "src": "*.html", "use": "@vercel/static" }
   ],
   "cleanUrls": true,
   "trailingSlash": false,
-  "redirects": [
-    { "source": "/dashboard", "destination": "/dashboard/", "permanent": true }
-  ],
   "routes": [
-    { "handle": "filesystem" },
     { "src": "/api/debug/?", "dest": "/api/debug.php" },
     { "src": "/api/(.*)", "dest": "/api/core.php" },
     { "src": "/auth", "dest": "/auth.html" },
-    { "src": "/(css|js|Assets|dashboard)/(.*)", "dest": "/$1/$2" },
+    { "src": "/dashboard", "dest": "/dashboard/index.html" },
+    { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
+    { "src": "/(css|js|Assets)/(.*)", "dest": "/$1/$2" },
     { "src": "/(.*)", "dest": "/api/main.php" }
-  ],
-  "crons": [
-    {
-      "path": "/api/site/hero",
-      "schedule": "*/10 * * * *"
-    }
   ]
 }

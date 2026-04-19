@@ -6,8 +6,13 @@
 
 header('Content-Type: application/json');
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $debug = [
     "status" => "diagnostic_active",
+    "session_data" => $_SESSION,
     "server_info" => [
         "request_uri" => $_SERVER['REQUEST_URI'],
         "script_name" => $_SERVER['SCRIPT_NAME'],

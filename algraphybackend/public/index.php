@@ -16,12 +16,24 @@ declare(strict_types=1);
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-// Set session timeout and storage parameters (1 hour)
-ini_set('session.gc_maxlifetime', '3600');
-session_set_cookie_params(3600);
-
 if (getenv('VERCEL') === '1') {
     session_save_path('/tmp');
+    session_set_cookie_params([
+        'lifetime' => 3600,
+        'path' => '/',
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+} else {
+    // Localhost: Set path to /algraphy/ to cover all subfolders
+    session_set_cookie_params([
+        'lifetime' => 3600,
+        'path' => '/algraphy/',
+        'secure' => false,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
 }
 
 session_start(); // Resume session for administrative authentication

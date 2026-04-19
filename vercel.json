@@ -28,7 +28,7 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
+  "trailingSlash": true,
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/core.php" },
     { "handle": "filesystem" },

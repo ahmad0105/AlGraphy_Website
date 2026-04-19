@@ -33,11 +33,11 @@
     { "source": "/dashboard", "destination": "/dashboard/", "permanent": true }
   ],
   "routes": [
+    { "handle": "filesystem" },
     { "src": "/api/debug/?", "dest": "/api/debug.php" },
     { "src": "/api/(.*)", "dest": "/api/core.php" },
-    { "handle": "filesystem" },
     { "src": "/auth", "dest": "/auth.html" },
-    { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
+    { "src": "/(css|js|Assets|dashboard)/(.*)", "dest": "/$1/$2" },
     { "src": "/(.*)", "dest": "/api/main.php" }
   ],
   "crons": [

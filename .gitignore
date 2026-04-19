@@ -18,8 +18,8 @@ yarn-error.log*
 logs
 *.log
 
-# XAMPP / Local Specific
-/algraphybackend/public/uploads/*
+# XAMPP / Local Specific (Allowing existing uploads for Vercel)
+# /algraphybackend/public/uploads/*  <-- This was blocking your videos
 !/algraphybackend/public/uploads/.gitkeep
 
 # OS Files

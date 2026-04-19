@@ -13,8 +13,8 @@
  */
 
 declare(strict_types=1);
-error_reporting(0);
-ini_set('display_errors', '0');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
 // Set writable session path for Vercel environments
 if (getenv('VERCEL') === '1') {

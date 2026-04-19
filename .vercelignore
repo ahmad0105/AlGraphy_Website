@@ -1,7 +1,6 @@
 # Exclude heavy local data and unneeded assets
 .git/
 node_modules/
-algraphybackend/vendor/
 algraphybackend/public/uploads/
 
 # Critical: Remove heavy FontAwesome source/metadata files

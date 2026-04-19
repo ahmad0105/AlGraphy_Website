@@ -26,16 +26,20 @@ ob_start(); // Buffer output to prevent header issues
 
 // 1. Initialization & Autoloading
 $autoloadPath = __DIR__ . '/../vendor/autoload.php';
-if (!file_exists($autoloadPath)) {
-    header("Content-Type: application/json", true, 500);
-    echo json_encode([
-        "status" => "error", 
-        "message" => "Critical: Autoloader not found at " . realpath(__DIR__ . '/../') . "/vendor/autoload.php. Please run composer install or ensure vendor folder is uploaded.",
-        "path_checked" => $autoloadPath
-    ]);
-    exit;
+if (file_exists($autoloadPath)) {
+    require_once $autoloadPath;
+} else {
+    // EMERGENCY FALLBACK: Manual loading if vendor is missing on Vercel
+    spl_autoload_register(function ($class) {
+        $prefix = 'AlGraphy\\';
+        $base_dir = __DIR__ . '/../src/';
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) return;
+        $relative_class = substr($class, $len);
+        $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+        if (file_exists($file)) require $file;
+    });
 }
-require_once $autoloadPath;
 
 use AlGraphy\Database;
 use AlGraphy\Controllers\AuthController;

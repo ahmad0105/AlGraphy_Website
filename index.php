@@ -68,26 +68,20 @@ try {
 function fixUrl($url) {
     if (!$url) return '';
     
-    // 1. Force HTTPS globally when on Vercel
-    if (getenv('VERCEL') === '1') {
-        $url = str_replace('http://', 'https://', $url);
-    }
+    // 1. Force HTTPS globally
+    $url = str_replace('http://', 'https://', $url);
     
-    // 2. Remove legacy subdirectory if present anywhere (Aggressive)
+    // 2. Remove legacy subdirectories
     $url = str_replace(['/algraphy/algraphybackend/', 'http://localhost/algraphy/', 'https://localhost/algraphy/'], ['/algraphybackend/', '', ''], $url);
-    
-    // 3. Fix the specific Vercel host issue if it leaked into the DB
-    if (getenv('VERCEL') === '1') {
-        $url = str_replace('.app/algraphy/', '.app/', $url);
-    }
 
-    // 4. Auto-resolve specific GIFs to their correct folder
+    // 3. Fix specific GIF paths (Ensure they point to Assets/GIF/)
     $specificGifs = ['strategy.gif', 'design.gif', 'development.gif'];
-    if (in_array(basename($url), $specificGifs) && strpos($url, 'Assets/GIF/') === false) {
-        $url = 'Assets/GIF/' . basename($url);
+    $baseName = basename($url);
+    if (in_array($baseName, $specificGifs)) {
+        $url = 'Assets/GIF/' . $baseName;
     }
     
-    // 5. Handle Localhost vs Production pathing for relative links
+    // 4. Final path normalization
     if (strpos($url, 'http') !== 0) {
         $isLocal = $_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === '127.0.0.1';
         $prefix = $isLocal ? '/algraphy/' : '/';

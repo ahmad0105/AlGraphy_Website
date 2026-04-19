@@ -10,6 +10,8 @@
      5. JS HANDLERS (Dashboard.js & Sidebar Loader)
 -->
 <html lang="en">
+<head>
+<script>(function(){if(window.location.hostname==="localhost"||window.location.hostname==="127.0.0.1"){const observer=new MutationObserver(mutations=>{mutations.forEach(m=>m.addedNodes.forEach(n=>{if(n.tagName==="LINK"&&n.href.includes("/dashboard/"))n.href=n.href.replace("/dashboard/","/algraphy/dashboard/");else if(n.tagName==="LINK"&&n.href.includes("/css/"))n.href=n.href.replace("/css/","/algraphy/css/");else if(n.tagName==="SCRIPT"&&n.src.includes("/js/"))n.src=n.src.replace("/js/","/algraphy/js/");else if(n.tagName==="IMG"&&n.src.includes("/Assets/"))n.src=n.src.replace("/Assets/","/algraphy/Assets/");}));});observer.observe(document.documentElement,{childList:true,subtree:true});}})();</script>
 
 
 
@@ -19,13 +21,13 @@
 
     <!-- Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/css/libs/fontawesome/css/all.min.css">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <link rel="stylesheet" href="../css/cursor.css">
-</head>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/dashboard/css/dashboard.css">
+    <link rel="stylesheet" href="/css/cursor.css">
+
 
 <body>
 
@@ -79,7 +81,7 @@
                         <i class="fa fa-cog" onclick="window.location.href='profile'"></i>
                     </div>
                     <h4 class="displayUserName">Admin</h4>
-                    <img id="profileAvatar" src="../Assets/image/default_avatar.png" alt="Profile">
+                    <img id="profileAvatar" src="/Assets/image/default_avatar.png" alt="Profile">
                 </div>
 
                 <div class="active-calories">
@@ -111,13 +113,14 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="../js/config.js"></script>
-    <script src="../js/utils.js"></script>
-    <script src="../js/ui-classes.js"></script>
-    <script src="../js/api-service.js"></script>
-    <script src="js/dashboard.js"></script>
-    <script src="js/sidebar-loader.js"></script>
-    <script defer src="../js/cursor-loader.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/ui-classes.js"></script>
+    <script src="/js/api-service.js"></script>
+    <script src="/dashboard/js/dashboard.js"></script>
+    <script src="/dashboard/js/sidebar-loader.js"></script>
+    <script defer src="/js/cursor-loader.js"></script>
+</head>
 </body>
 
 </html>

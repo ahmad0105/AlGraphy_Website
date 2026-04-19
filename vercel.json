@@ -31,8 +31,11 @@
     { "src": "/api/debug/?", "dest": "/api/debug.php" },
     { "src": "/api/(.*)", "dest": "/algraphybackend/public/index.php" },
     { "src": "/auth", "dest": "/auth.html" },
+    { "src": "/dashboard/", "dest": "/dashboard/index.html" },
     { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
-    { "src": "/(css|js|Assets)/(.*)", "dest": "/$1/$2" },
+    { "src": "/Assets/(.*)", "dest": "/Assets/$1" },
+    { "src": "/css/(.*)", "dest": "/css/$1" },
+    { "src": "/js/(.*)", "dest": "/js/$1" },
     { "src": "/(.*)", "dest": "/index.php" }
   ],
   "crons": [

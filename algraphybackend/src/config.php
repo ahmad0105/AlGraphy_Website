@@ -19,7 +19,7 @@ return [
     'app_url' => (function() {
         if (getenv('VERCEL') === '1') {
             $host = $_SERVER['HTTP_HOST'] ?? 'al-graphy-website-two.vercel.app';
-            return "https://" . $host;
+            return "https://" . $host; // Always use HTTPS on Vercel
         }
         return 'http://localhost/algraphy';
     })(),

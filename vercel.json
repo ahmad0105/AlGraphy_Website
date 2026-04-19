@@ -28,7 +28,7 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
+  "trailingSlash": true,
   "redirects": [
     { "source": "/dashboard", "destination": "/dashboard/", "permanent": true }
   ],

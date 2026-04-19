@@ -16,7 +16,10 @@ declare(strict_types=1);
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-// Set writable session path for Vercel environments
+// Set session timeout and storage parameters (1 hour)
+ini_set('session.gc_maxlifetime', '3600');
+session_set_cookie_params(3600);
+
 if (getenv('VERCEL') === '1') {
     session_save_path('/tmp');
 }

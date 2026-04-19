@@ -159,7 +159,7 @@ class DashboardHandler {
                 const latestFive = data.employees.slice(0, 5);
                 
                 latestFive.forEach(emp => {
-                    const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public', '');
+                    const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
                     let avatarPath = emp.profile_pic ? `${baseUrl}/algraphybackend/public/${emp.profile_pic}` : '../Assets/image/default_avatar.png';
                     
                     // Fallback for paths starting with Assets

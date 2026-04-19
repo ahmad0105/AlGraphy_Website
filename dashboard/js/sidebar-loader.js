@@ -56,10 +56,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (typeof APIService !== 'undefined') {
                         await APIService.logout();
                     }
-                    window.location.href = "/auth";
+                    window.location.href = "../auth";
                 } catch (err) {
                     console.error("Logout error:", err);
-                    window.location.href = "/auth";
+                    window.location.href = "../auth";
                 }
             });
         }

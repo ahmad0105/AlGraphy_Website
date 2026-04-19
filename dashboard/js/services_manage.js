@@ -65,7 +65,7 @@ function renderServicesAdmin(categories, container) {
             if (imgPath && typeof imgPath === 'string') {
                 if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) imgPath = '../'+ imgPath;
                 if (imgPath.startsWith('uploads')) {
-                    const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public', '');
+                    const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
                     imgPath = `${baseUrl}/algraphybackend/public/${imgPath}`;
                 }
             }

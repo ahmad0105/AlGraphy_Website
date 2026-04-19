@@ -64,9 +64,15 @@ try {
     error_log("Landing Page DB Error: " . $e->getMessage());
 }
 
-// Helper to fix URLs (remove localhost/algraphy prefix and ensure leading slash)
+// Helper to fix URLs (handle environment prefixes and specific asset folders)
 function fixUrl($url) {
     if (!$url) return '';
+    
+    // Auto-resolve specific GIFs to their correct folder
+    $specificGifs = ['strategy.gif', 'design.gif', 'development.gif'];
+    if (in_array(basename($url), $specificGifs) && strpos($url, 'Assets/GIF/') === false) {
+        $url = 'Assets/GIF/' . basename($url);
+    }
     
     // Clean up local development prefixes
     $url = str_replace(['http://localhost/algraphy/', 'https://localhost/algraphy/'], '', $url);
@@ -76,9 +82,15 @@ function fixUrl($url) {
         $url = str_replace('http://', 'https://', $url);
     }
     
-    // Ensure absolute path from root for local assets
-    if (strpos($url, 'http') !== 0 && strpos($url, '/') !== 0) {
-        $url = '/' . $url;
+    // Handle Localhost vs Production pathing
+    if (strpos($url, 'http') !== 0) {
+        $isLocal = $_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === '127.0.0.1';
+        $prefix = $isLocal ? '/algraphy/' : '/';
+        
+        // Ensure the URL doesn't already start with the prefix
+        if (strpos($url, $prefix) !== 0) {
+            $url = $prefix . ltrim($url, '/');
+        }
     }
     
     return $url;

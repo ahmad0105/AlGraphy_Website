@@ -15,5 +15,12 @@ return [
     'db_user' => getenv('DB_USER') ?: 'root',
     'db_pass' => getenv('DB_PASS') !== false ? getenv('DB_PASS') : '',
     'db_port' => getenv('DB_PORT') ?: 3306,
-    'app_url' => getenv('APP_URL') ?: 'http://localhost/algraphy'
+    // Dynamic App URL Detection
+    'app_url' => (function() {
+        if (getenv('VERCEL') === '1') {
+            $host = $_SERVER['HTTP_HOST'] ?? 'al-graphy-website-two.vercel.app';
+            return "https://" . $host;
+        }
+        return 'http://localhost/algraphy';
+    })(),
 ];

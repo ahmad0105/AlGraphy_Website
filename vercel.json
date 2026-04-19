@@ -33,7 +33,8 @@
     { "src": "/auth", "dest": "/auth.html" },
     { "src": "/dashboard/", "dest": "/dashboard/index.html" },
     { "src": "/dashboard/(.*)", "dest": "/dashboard/$1" },
-    { "src": "/(css|js|Assets)/(.*)", "dest": "/$1/$2" },
+    { "src": "/Assets/(.*)", "dest": "/Assets/$1" },
+    { "src": "/(css|js)/(.*)", "dest": "/$1/$2" },
     { "src": "/(.*)", "dest": "/api/main.php" }
   ],
   "crons": [

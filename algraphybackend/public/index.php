@@ -25,7 +25,17 @@ session_start(); // Resume session for administrative authentication
 ob_start(); // Buffer output to prevent header issues
 
 // 1. Initialization & Autoloading
-require_once __DIR__ . '/../vendor/autoload.php';
+$autoloadPath = __DIR__ . '/../vendor/autoload.php';
+if (!file_exists($autoloadPath)) {
+    header("Content-Type: application/json", true, 500);
+    echo json_encode([
+        "status" => "error", 
+        "message" => "Critical: Autoloader not found at " . realpath(__DIR__ . '/../') . "/vendor/autoload.php. Please run composer install or ensure vendor folder is uploaded.",
+        "path_checked" => $autoloadPath
+    ]);
+    exit;
+}
+require_once $autoloadPath;
 
 use AlGraphy\Database;
 use AlGraphy\Controllers\AuthController;

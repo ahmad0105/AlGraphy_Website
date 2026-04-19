@@ -1,7 +1,9 @@
 {
   "functions": {
-    "api/core.php": { "runtime": "vercel-php@0.7.2", "includeFiles": "algraphybackend/**" },
-    "api/main.php": { "runtime": "vercel-php@0.7.2", "includeFiles": "algraphybackend/**" }
+    "api/*.php": {
+      "runtime": "vercel-php@0.7.2",
+      "includeFiles": "algraphybackend/**"
+    }
   },
   "cleanUrls": true,
   "trailingSlash": false,

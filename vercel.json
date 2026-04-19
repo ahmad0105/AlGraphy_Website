@@ -1,9 +1,30 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "api/*.php",
       "use": "vercel-php@0.7.2",
       "config": { "includeFiles": "algraphybackend/**" }
+    },
+    {
+      "src": "js/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "css/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "Assets/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "dashboard/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
     }
   ],
   "cleanUrls": true,

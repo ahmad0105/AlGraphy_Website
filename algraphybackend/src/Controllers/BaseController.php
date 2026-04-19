@@ -40,17 +40,19 @@ abstract class BaseController
     {
         if (empty($url)) return '';
         
-        // Remove local dev prefixes
-        $url = str_replace(['http://localhost/algraphy/', 'https://localhost/algraphy/'], '', $url);
-        
-        // Force HTTPS
-        if (strpos($url, 'http') === 0) {
+        // ONLY apply aggressive cleaning if we are on Vercel
+        if (getenv('VERCEL') === '1') {
+            // 1. Force HTTPS globally
             $url = str_replace('http://', 'https://', $url);
-        }
-        
-        // Ensure leading slash for local paths
-        if (strpos($url, 'http') !== 0 && strpos($url, '/') !== 0) {
-            $url = '/' . $url;
+            
+            // 2. Remove legacy subdirectory for production
+            $url = str_replace('/algraphy/algraphybackend/', '/algraphybackend/', $url);
+            $url = str_replace('.app/algraphy/', '.app/', $url);
+            
+            // 3. Ensure clean root for relative paths
+            if (strpos($url, 'http') !== 0) {
+                $url = '/' . ltrim($url, '/');
+            }
         }
         
         return $url;

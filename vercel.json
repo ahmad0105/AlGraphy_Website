@@ -33,6 +33,7 @@
     { "source": "/dashboard", "destination": "/dashboard/", "permanent": true }
   ],
   "routes": [
+    { "src": "/api/debug", "dest": "/api/debug.php" },
     { "src": "/api/(.*)", "dest": "/api/core.php" },
     { "handle": "filesystem" },
     { "src": "/auth", "dest": "/auth.html" },

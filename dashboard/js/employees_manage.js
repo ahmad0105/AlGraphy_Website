@@ -66,7 +66,7 @@ class EmployeeManager extends BaseManager {
         const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public', '');
         const picPath = emp.profile_pic 
             ? `${baseUrl}/algraphybackend/public/${emp.profile_pic}` 
-            : '../Assets/image/default_avatar.png';
+            : '/Assets/image/default_avatar.png';
 
         const hourlyRateStr = emp.hourly_rate ? `$${parseFloat(emp.hourly_rate).toFixed(2)}/hr` : 'N/A';
 

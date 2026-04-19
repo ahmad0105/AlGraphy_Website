@@ -160,10 +160,10 @@ class DashboardHandler {
                 
                 latestFive.forEach(emp => {
                     const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public', '');
-                    let avatarPath = emp.profile_pic ? `${baseUrl}/algraphybackend/public/${emp.profile_pic}` : '../Assets/image/default_avatar.png';
+                    let avatarPath = emp.profile_pic ? `${baseUrl}/algraphybackend/public/${emp.profile_pic}` : '/Assets/image/default_avatar.png';
                     
                     // Fallback for paths starting with Assets
-                    if (avatarPath.startsWith('Assets') || avatarPath.startsWith('algraphybackend')) avatarPath = '../' + avatarPath;
+                    if (avatarPath.startsWith('Assets') || avatarPath.startsWith('algraphybackend')) avatarPath = '/'+ avatarPath;
                     
                     const itemHtml = `
                         <div class="best-item">
@@ -196,9 +196,9 @@ class DashboardHandler {
                 activityContainer.innerHTML = '';
                 
                 res.projects.forEach((proj, index) => {
-                    let imgPath = proj.Main_Image || '../Assets/image/Aura.png';
+                    let imgPath = proj.Main_Image || '/Assets/image/Aura.png';
                     // Ensure relative paths from DB point to root
-                    if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) imgPath = '../' + imgPath;
+                    if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) imgPath = '/'+ imgPath;
                     
                     const containerClass = `img-${['one','two','three','four','five','six'][index] || 'one'}`;
 

@@ -67,11 +67,20 @@ try {
 // Helper to fix URLs (remove localhost/algraphy prefix and ensure leading slash)
 function fixUrl($url) {
     if (!$url) return '';
+    
+    // Clean up local development prefixes
     $url = str_replace(['http://localhost/algraphy/', 'https://localhost/algraphy/'], '', $url);
-    // Ensure absolute path from root
+    
+    // Force HTTPS for external/absolute links when on Vercel
+    if (strpos($url, 'http') === 0 && getenv('VERCEL') === '1') {
+        $url = str_replace('http://', 'https://', $url);
+    }
+    
+    // Ensure absolute path from root for local assets
     if (strpos($url, 'http') !== 0 && strpos($url, '/') !== 0) {
         $url = '/' . $url;
     }
+    
     return $url;
 }
 

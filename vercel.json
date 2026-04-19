@@ -28,7 +28,10 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/dashboard", "destination": "/dashboard/", "permanent": true }
+  ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/core.php" },
     { "handle": "filesystem" },

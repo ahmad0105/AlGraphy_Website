@@ -69,7 +69,7 @@ class ProfileHandler {
                 let imgPath = data.user.profile_image;
                 // Fix path if it starts with Assets or algraphybackend but doesn't have parent jump
                 if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) {
-                    imgPath = '/'+ imgPath;
+                    imgPath = '../'+ imgPath;
                 }
                 this.avatarImg.src = imgPath;
             }
@@ -147,7 +147,7 @@ class ProfileHandler {
             if (data.profile_image) {
                 let imgPath = data.profile_image;
                 if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) {
-                    imgPath = '/'+ imgPath;
+                    imgPath = '../'+ imgPath;
                 }
                 this.avatarImg.src = imgPath;
             }

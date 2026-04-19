@@ -61,9 +61,9 @@ function renderServicesAdmin(categories, container) {
             const card = document.createElement('div');
             card.className = 'svc-admin-card'; // Matches Projects Design
             
-            let imgPath = svc.image_url ? svc.image_url : '/Assets/GIF/strategy.gif';
+            let imgPath = svc.image_url ? svc.image_url : '../Assets/GIF/strategy.gif';
             if (imgPath && typeof imgPath === 'string') {
-                if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) imgPath = '/'+ imgPath;
+                if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) imgPath = '../'+ imgPath;
                 if (imgPath.startsWith('uploads')) {
                     const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public', '');
                     imgPath = `${baseUrl}/algraphybackend/public/${imgPath}`;

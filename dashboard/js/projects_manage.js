@@ -57,7 +57,7 @@ function renderProjectsAdmin(projects, container) {
         const card = document.createElement('div');
         card.className = 'proj-admin-card';
 
-        let imgPath = proj.Main_Image || '/Assets/image/Aura.png';
+        let imgPath = proj.Main_Image || '../Assets/image/Aura.png';
         if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) imgPath = '/algraphy/' + imgPath;
         if (imgPath.startsWith('uploads')) imgPath = baseUrl + '/algraphybackend/public/' + imgPath; if (imgPath.startsWith('uploads')) imgPath = baseUrl + '/algraphybackend/public/' + imgPath;
 

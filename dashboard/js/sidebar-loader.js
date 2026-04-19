@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const placeholder = document.getElementById('sidebar-placeholder');
     if (!placeholder) return;
 
-    // 1. Fetch the sidebar component (Absolute path from root)
-    fetch('/dashboard/components/sidebar.html')
+    // 1. Fetch the sidebar component (Relative path)
+    fetch('components/sidebar.html')
         .then(response => response.text())
         .then(html => {
             placeholder.innerHTML = html;

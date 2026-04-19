@@ -11,7 +11,7 @@
 -->
 <html lang="en">
 
-<head><script>(function(){const isLocal=window.location.hostname==="localhost"||window.location.hostname==="127.0.0.1";const base=isLocal?"/algraphy/dashboard/":"/dashboard/";const el=document.createElement("base");el.href=base;document.head.insertBefore(el,document.head.firstChild);})();</script>
+<head><script>(function(){const isLocal=window.location.hostname==="localhost"||window.location.hostname==="127.0.0.1";const base=isLocal?"/algraphy/":"/";const el=document.createElement("base");el.href=base;document.head.insertBefore(el,document.head.firstChild);})();</script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,13 +21,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/libs/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/libs/fontawesome/css/all.min.css">
 
     <!-- Local Stylesheets -->
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
-    <link rel="stylesheet" href="../css/profile.css">
-    <link rel="stylesheet" href="../css/cursor.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/cursor.css">
 </head>
 
 <body>
@@ -50,7 +50,7 @@
                     <form id="profileForm" enctype="multipart/form-data">
                         <div class="profile-header">
                             <div class="avatar-edit">
-                                <img loading="lazy" src="../Assets/image/default_avatar.png" alt="Profile"
+                                <img loading="lazy" src="Assets/image/default_avatar.png" alt="Profile"
                                     id="profileAvatar" class="profile-avatar-large">
                                 <label for="profileImageInput"
                                     style="cursor:pointer; color: var(--primary); text-decoration: underline; font-size: 0.8rem; display: block; text-align: center; margin-top: 10px;">Change
@@ -138,13 +138,13 @@
 
     <!-- Scripts Logic -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="../js/config.js"></script>
-    <script src="../js/utils.js"></script>
-    <script src="../js/ui-classes.js"></script>
-    <script src="../js/api-service.js"></script>
-    <script src="js/profile.js"></script>
-    <script src="js/sidebar-loader.js"></script>
-    <script defer src="../js/cursor-loader.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/ui-classes.js"></script>
+    <script src="js/api-service.js"></script>
+    <script src="dashboard/js/profile.js"></script>
+    <script src="dashboard/js/sidebar-loader.js"></script>
+    <script defer src="js/cursor-loader.js"></script>
 </body>
 
 </html>

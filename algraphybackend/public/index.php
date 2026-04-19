@@ -15,6 +15,12 @@
 declare(strict_types=1);
 error_reporting(0);
 ini_set('display_errors', '0');
+
+// Set writable session path for Vercel environments
+if (getenv('VERCEL') === '1') {
+    session_save_path('/tmp');
+}
+
 session_start(); // Resume session for administrative authentication
 ob_start(); // Buffer output to prevent header issues
 

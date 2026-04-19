@@ -58,8 +58,7 @@ class Database
             ];
 
             // Enable SSL for Cloud Databases (like Aiven)
-            if ($this->port != 3306) {
-                $options[PDO::MYSQL_ATTR_SSL_CA] = true; // Use system CA certs
+            if ($this->port !== 3306) {
                 $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
             }
 

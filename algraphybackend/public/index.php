@@ -16,74 +16,13 @@ declare(strict_types=1);
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-if (getenv('VERCEL') === '1') {
-    // Database-backed sessions for Vercel persistence
-    session_set_save_handler(
-        function ($savePath, $sessionName) use ($db) { return true; }, // open
-        function () { return true; }, // close
-        function ($id) use ($db) { // read
-            $pdo = $db->connect();
-            $stmt = $pdo->prepare("SELECT data FROM sessions WHERE id = ?");
-            $stmt->execute([$id]);
-            return $stmt->fetchColumn() ?: '';
-        },
-        function ($id, $data) use ($db) { // write
-            $pdo = $db->connect();
-            $stmt = $pdo->prepare("REPLACE INTO sessions (id, data, timestamp) VALUES (?, ?, ?)");
-            return $stmt->execute([$id, $data, time()]);
-        },
-        function ($id) use ($db) { // destroy
-            $pdo = $db->connect();
-            $stmt = $pdo->prepare("DELETE FROM sessions WHERE id = ?");
-            return $stmt->execute([$id]);
-        },
-        function ($maxLifetime) use ($db) { // gc
-            $pdo = $db->connect();
-            $stmt = $pdo->prepare("DELETE FROM sessions WHERE timestamp < ?");
-            return $stmt->execute([time() - $maxLifetime]);
-        }
-    );
-    
-    session_set_cookie_params([
-        'lifetime' => 86400,
-        'path' => '/',
-        'secure' => true,
-        'httponly' => true,
-        'samesite' => 'None'
-    ]);
-} else {
-    // Localhost
-    session_set_cookie_params([
-        'lifetime' => 3600,
-        'path' => '/algraphy/',
-        'secure' => false,
-        'httponly' => true,
-        'samesite' => 'Lax'
-    ]);
-}
-
-session_start(); // Resume session for administrative authentication
-ob_start(); // Buffer output to prevent header issues
-
 // 1. Initialization & Autoloading
 $rootPath = realpath(__DIR__ . '/../..');
 $backendPath = realpath(__DIR__ . '/..');
-
-$autoloadPaths = [
-    $rootPath . '/vendor/autoload.php',
-    $backendPath . '/vendor/autoload.php'
-];
-
+$autoloadPaths = [$rootPath . '/vendor/autoload.php', $backendPath . '/vendor/autoload.php'];
 $autoloadFound = false;
-foreach ($autoloadPaths as $path) {
-    if ($path && file_exists($path)) {
-        require_once $path;
-        $autoloadFound = true;
-        break;
-    }
-}
+foreach ($autoloadPaths as $path) { if ($path && file_exists($path)) { require_once $path; $autoloadFound = true; break; } }
 
-// Ensure AlGraphy classes are always findable even without vendor
 spl_autoload_register(function ($class) {
     $prefix = 'AlGraphy\\';
     $base_dir = __DIR__ . '/../src/';
@@ -94,35 +33,62 @@ spl_autoload_register(function ($class) {
     if (file_exists($file)) require $file;
 });
 
+// 2. Database & Shared Service Initialization
 $config = require __DIR__ . '/../src/config.php';
-use AlGraphy\Database;
-use AlGraphy\Controllers\AuthController;
-use AlGraphy\Controllers\ApiController;
-use AlGraphy\Controllers\ClientAuthController;
-
-// 2. CORS & Security Headers
-header("Content-Type: application/json");
-// Dynamically allow the current origin for cross-origin requests with credentials
-header("Access-Control-Allow-Origin: " . ($_SERVER['HTTP_ORIGIN'] ?? 'http://localhost')); 
-header("Access-Control-Allow-Credentials: true"); 
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-
-// Handle preflight OPTIONS requests
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
-
-// 3. Database & Shared Service Initialization
-$config = require __DIR__ . '/../src/config.php';
-$db = new Database(
+$db = new AlGraphy\Database(
     $config['db_host'],
     $config['db_name'],
     $config['db_user'],
     $config['db_pass'],
     (int)$config['db_port']
 );
+
+// 3. Persistent Sessions (Database-backed for Vercel)
+if (getenv('VERCEL') === '1') {
+    session_set_save_handler(
+        function ($savePath, $sessionName) use ($db) { return true; },
+        function () { return true; },
+        function ($id) use ($db) {
+            $pdo = $db->connect();
+            $stmt = $pdo->prepare("SELECT data FROM sessions WHERE id = ?");
+            $stmt->execute([$id]);
+            return $stmt->fetchColumn() ?: '';
+        },
+        function ($id, $data) use ($db) {
+            $pdo = $db->connect();
+            $stmt = $pdo->prepare("REPLACE INTO sessions (id, data, timestamp) VALUES (?, ?, ?)");
+            return $stmt->execute([$id, $data, time()]);
+        },
+        function ($id) use ($db) {
+            $pdo = $db->connect();
+            $stmt = $pdo->prepare("DELETE FROM sessions WHERE id = ?");
+            return $stmt->execute([$id]);
+        },
+        function ($maxLifetime) use ($db) {
+            $pdo = $db->connect();
+            $stmt = $pdo->prepare("DELETE FROM sessions WHERE timestamp < ?");
+            return $stmt->execute([time() - $maxLifetime]);
+        }
+    );
+    session_set_cookie_params(['lifetime' => 86400, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'None']);
+} else {
+    session_set_cookie_params(['lifetime' => 3600, 'path' => '/algraphy/', 'secure' => false, 'httponly' => true, 'samesite' => 'Lax']);
+}
+
+session_start();
+ob_start();
+
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: " . ($_SERVER['HTTP_ORIGIN'] ?? 'http://localhost')); 
+header("Access-Control-Allow-Credentials: true"); 
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit; }
+
+use AlGraphy\Controllers\AuthController;
+use AlGraphy\Controllers\ApiController;
+use AlGraphy\Controllers\ClientAuthController;
 
 // Resolve the request URI
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

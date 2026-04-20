@@ -1,32 +1,52 @@
 <?php
-require_once __DIR__ . '/../algraphybackend/vendor/autoload.php';
-$config = require __DIR__ . '/../algraphybackend/src/config.php';
+// Intelligent Autoload Discovery for Vercel
+$possiblePaths = [
+    __DIR__ . '/../algraphybackend/vendor/autoload.php',
+    __DIR__ . '/algraphybackend/vendor/autoload.php',
+    $_SERVER['DOCUMENT_ROOT'] . '/algraphybackend/vendor/autoload.php',
+    '/var/task/user/algraphybackend/vendor/autoload.php'
+];
 
-use Cloudinary\Configuration\Configuration;
-use Cloudinary\Api\Admin\AdminApi;
+$autoloadFound = false;
+foreach ($possiblePaths as $path) {
+    if (file_exists($path)) {
+        require_once $path;
+        $autoloadFound = $path;
+        break;
+    }
+}
 
 header('Content-Type: application/json');
 
 $results = [
     'status' => 'analyzing',
     'timestamp' => date('Y-m-d H:i:s'),
-    'configuration' => [
-        'cloud_name' => $config['cloudinary']['cloud_name'],
-        'api_key_last_4' => substr($config['cloudinary']['api_key'], -4),
-        'has_secret' => !empty($config['cloudinary']['api_secret'])
-    ],
-    'checks' => []
+    'path_found' => $autoloadFound,
+    'current_dir' => __DIR__,
+    'doc_root' => $_SERVER['DOCUMENT_ROOT'] ?? 'unknown',
+    'dir_listing' => []
 ];
 
+// List root files to see what Vercel actually uploaded
 try {
-    // 1. Check if SDK is loaded
-    if (class_exists('Cloudinary\Configuration\Configuration')) {
-        $results['checks']['sdk_loaded'] = "OK ✅";
-    } else {
-        throw new Exception("Cloudinary SDK not found. Check vendor folder.");
+    $rootPath = realpath(__DIR__ . '/..');
+    if ($rootPath) {
+        $results['dir_listing'] = scandir($rootPath);
     }
+} catch (Exception $e) {
+    $results['dir_listing_error'] = $e->getMessage();
+}
 
-    // 2. Test Configuration
+if (!$autoloadFound) {
+    echo json_encode(['error' => 'Autoload not found', 'checked_paths' => $possiblePaths, 'debug' => $results]);
+    exit;
+}
+
+$config = require __DIR__ . '/../algraphybackend/src/config.php';
+use Cloudinary\Configuration\Configuration;
+use Cloudinary\Api\Admin\AdminApi;
+
+try {
     Configuration::instance([
         'cloud' => [
             'cloud_name' => $config['cloudinary']['cloud_name'],
@@ -35,18 +55,14 @@ try {
         ],
         'url' => ['secure' => true]
     ]);
-    $results['checks']['config_init'] = "OK ✅";
-
-    // 3. Simple Ping to Cloudinary API
+    
     $adminApi = new AdminApi();
     $ping = $adminApi->ping();
-    $results['checks']['api_connection'] = "OK ✅ (Connected to Cloudinary)";
-    
     $results['status'] = 'success';
-
-} catch (\Exception $e) {
+    $results['cloudinary_connection'] = 'OK ✅';
+} catch (Exception $e) {
     $results['status'] = 'error';
-    $results['error_message'] = $e->getMessage();
+    $results['error'] = $e->getMessage();
 }
 
 echo json_encode($results, JSON_PRETTY_PRINT);

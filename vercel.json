@@ -1,7 +1,7 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "trailingSlash": false,
+  "trailingSlash": true,
   "builds": [
     { "src": "api/*.php", "use": "vercel-php", "config": { "includeFiles": "algraphybackend/**" } },
     { "src": "algraphybackend/public/*.php", "use": "vercel-php", "config": { "includeFiles": "algraphybackend/**" } },
@@ -15,19 +15,15 @@
   "redirects": [
     { "source": "/dashboard", "destination": "/studio-panel/", "permanent": true },
     { "source": "/dashboard/(.*)", "destination": "/studio-panel/$1", "permanent": true },
-    { "source": "/profile", "destination": "/studio-panel/profile", "permanent": true }
+    { "source": "/profile", "destination": "/studio-panel/profile/", "permanent": true }
   ],
   "rewrites": [
     { "source": "/api/debug", "destination": "/api/debug.php" },
     { "source": "/api/diagnose", "destination": "/api/diagnose.php" },
     { "source": "/api/(.*)", "destination": "/algraphybackend/public/index.php" },
-    { "source": "/auth", "destination": "/auth.html" },
-    { "source": "/studio-panel/js/(.*)", "destination": "/studio-panel/js/$1" },
-    { "source": "/studio-panel/css/(.*)", "destination": "/studio-panel/css/$1" }
+    { "source": "/auth", "destination": "/auth.html" }
   ],
   "routes": [
-    { "src": "/studio-panel/js/(.*)", "dest": "/studio-panel/js/$1" },
-    { "src": "/studio-panel/css/(.*)", "dest": "/studio-panel/css/$1" },
     { "handle": "filesystem" },
     { "src": "/api/debug", "dest": "/api/debug.php" },
     { "src": "/api/diagnose", "dest": "/api/diagnose.php" },

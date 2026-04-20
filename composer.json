@@ -1,0 +1,12 @@
+{
+    "name": "algraphy/portal",
+    "description": "AlGraphy Studio Backend API",
+    "autoload": {
+        "psr-4": {
+            "AlGraphy\\": "src/"
+        }
+    },
+    "require": {
+        "cloudinary/cloudinary_php": "^3.1"
+    }
+}

@@ -1,10 +1,8 @@
 <?php
 // Intelligent Autoload Discovery for Vercel
 $possiblePaths = [
-    __DIR__ . '/../algraphybackend/vendor/autoload.php',
-    __DIR__ . '/algraphybackend/vendor/autoload.php',
-    $_SERVER['DOCUMENT_ROOT'] . '/algraphybackend/vendor/autoload.php',
-    '/var/task/user/algraphybackend/vendor/autoload.php'
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../algraphybackend/vendor/autoload.php'
 ];
 
 $autoloadFound = false;

@@ -4,9 +4,9 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "builds": [
-    { "src": "api/*.php", "use": "vercel-php", "config": { "includeFiles": ["algraphybackend/src/**", "algraphybackend/vendor/**"] } },
-    { "src": "algraphybackend/public/*.php", "use": "vercel-php", "config": { "includeFiles": ["algraphybackend/src/**", "algraphybackend/vendor/**"] } },
-    { "src": "index.php", "use": "vercel-php", "config": { "includeFiles": ["algraphybackend/src/**", "algraphybackend/vendor/**"] } },
+    { "src": "api/*.php", "use": "vercel-php", "config": { "includeFiles": ["algraphybackend/src/**", "vendor/**"] } },
+    { "src": "algraphybackend/public/*.php", "use": "vercel-php", "config": { "includeFiles": ["algraphybackend/src/**", "vendor/**"] } },
+    { "src": "index.php", "use": "vercel-php", "config": { "includeFiles": ["algraphybackend/src/**", "vendor/**"] } },
     { "src": "studio-panel/**", "use": "@vercel/static" },
     { "src": "css/**", "use": "@vercel/static" },
     { "src": "js/**", "use": "@vercel/static" },

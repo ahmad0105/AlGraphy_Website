@@ -1,8 +1,8 @@
 <?php
 // Full Cycle Test: Upload + DB logic check
 $possiblePaths = [
-    __DIR__ . '/../algraphybackend/vendor/autoload.php',
-    '/var/task/user/algraphybackend/vendor/autoload.php'
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../algraphybackend/vendor/autoload.php'
 ];
 foreach ($possiblePaths as $path) { if (file_exists($path)) { require_once $path; break; } }
 

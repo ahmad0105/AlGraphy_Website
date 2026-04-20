@@ -162,7 +162,7 @@ if (strpos($uri, '/test-db') !== false) {
             // Clean logic for production
             // Clean Cloudinary-friendly logic
             $pic = $user['profile_pic'];
-            $defaultAvatar = "https://res.cloudinary.com/virgvitp/image/upload/v1776149993/default_avatar.png";
+            $defaultAvatar = "https://res.cloudinary.com/virgvitp/image/upload/v1776688393/izxyozx3bjl3tmeoh4np.jpg";
 
             if ($pic && (strpos($pic, 'http') !== false || strpos($pic, 'res.cloudinary.com') !== false)) {
                 // It's a cloud URL, just ensure it's HTTPS

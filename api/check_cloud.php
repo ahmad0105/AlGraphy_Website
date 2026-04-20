@@ -63,6 +63,8 @@ try {
 } catch (Exception $e) {
     $results['status'] = 'error';
     $results['error'] = $e->getMessage();
+    $results['cloudinary_connection'] = 'Failed ❌';
+    
 }
 
 echo json_encode($results, JSON_PRETTY_PRINT);

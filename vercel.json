@@ -19,6 +19,8 @@
     { "source": "/profile", "destination": "/studio-panel/profile", "permanent": true }
   ],
   "rewrites": [
+    { "source": "/api/check_cloud", "destination": "/api/check_cloud.php" },
+    { "source": "/api/test_full_cycle", "destination": "/api/test_full_cycle.php" },
     { "source": "/api/debug", "destination": "/api/debug.php" },
     { "source": "/api/diagnose", "destination": "/api/diagnose.php" },
     { "source": "/api/(.*)", "destination": "/algraphybackend/public/index.php" },

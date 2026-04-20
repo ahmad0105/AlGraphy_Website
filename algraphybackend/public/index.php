@@ -40,33 +40,35 @@ session_start(); // Resume session for administrative authentication
 ob_start(); // Buffer output to prevent header issues
 
 // 1. Initialization & Autoloading
+$rootPath = realpath(__DIR__ . '/../..');
+$backendPath = realpath(__DIR__ . '/..');
+
 $autoloadPaths = [
-    __DIR__ . '/../../vendor/autoload.php',
-    __DIR__ . '/../vendor/autoload.php'
+    $rootPath . '/vendor/autoload.php',
+    $backendPath . '/vendor/autoload.php'
 ];
 
 $autoloadFound = false;
 foreach ($autoloadPaths as $path) {
-    if (file_exists($path)) {
+    if ($path && file_exists($path)) {
         require_once $path;
         $autoloadFound = true;
         break;
     }
 }
 
-if (!$autoloadFound) {
-    // EMERGENCY FALLBACK: Manual loading if vendor is missing on Vercel
-    spl_autoload_register(function ($class) {
-        $prefix = 'AlGraphy\\';
-        $base_dir = __DIR__ . '/../src/';
-        $len = strlen($prefix);
-        if (strncmp($prefix, $class, $len) !== 0) return;
-        $relative_class = substr($class, $len);
-        $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-        if (file_exists($file)) require $file;
-    });
-}
+// Ensure AlGraphy classes are always findable even without vendor
+spl_autoload_register(function ($class) {
+    $prefix = 'AlGraphy\\';
+    $base_dir = __DIR__ . '/../src/';
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) return;
+    $relative_class = substr($class, $len);
+    $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
+    if (file_exists($file)) require $file;
+});
 
+$config = require __DIR__ . '/../src/config.php';
 use AlGraphy\Database;
 use AlGraphy\Controllers\AuthController;
 use AlGraphy\Controllers\ApiController;

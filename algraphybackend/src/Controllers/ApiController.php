@@ -93,11 +93,16 @@ class ApiController extends BaseController
 
             $fileName = uniqid('profile_', true) . '.' . $extension;
             $uploadDir = __DIR__ . '/../../public/uploads/';
-            
             if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
 
-            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $uploadDir . $fileName)) {
-                $profilePicPath = 'uploads/' . $fileName;
+            $localPath = $uploadDir . $fileName;
+            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $localPath)) {
+                // NEW: Upload to Cloudinary
+                $cloudUrl = $this->uploadToCloudinary($localPath, 'profiles');
+                if ($cloudUrl) {
+                    $profilePicPath = $cloudUrl;
+                    unlink($localPath);
+                }
             }
         }
 
@@ -161,9 +166,18 @@ class ApiController extends BaseController
                 if (in_array($mimeType, $allowed)) {
                     $ext = pathinfo($_FILES[$fileKey]['name'], PATHINFO_EXTENSION);
                     $name = uniqid($fileKey . '_', true) . '.' . $ext;
-                    if (move_uploaded_file($_FILES[$fileKey]['tmp_name'], $uploadDir . $name)) {
-                        $updates[] = "$dbColumn = ?";
-                        $params[] = 'algraphybackend/public/uploads/videos/' . $name;
+                    $localPath = $uploadDir . $name;
+                    
+                    if (move_uploaded_file($_FILES[$fileKey]['tmp_name'], $localPath)) {
+                        // NEW: Upload to Cloudinary
+                        $cloudUrl = $this->uploadToCloudinary($localPath, 'hero_videos');
+                        
+                        if ($cloudUrl) {
+                            $updates[] = "$dbColumn = ?";
+                            $params[] = $cloudUrl;
+                            // Clean up local temp file
+                            unlink($localPath);
+                        }
                     }
                 }
             }
@@ -338,11 +352,15 @@ class ApiController extends BaseController
             if (in_array($mimeType, $allowed)) {
                 $ext = pathinfo($_FILES['service_image']['name'], PATHINFO_EXTENSION);
                 $name = uniqid('svc_new_', true) . '.' . $ext;
-                $uploadDir = __DIR__ . '/../../public/uploads/services/';
-                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+                $localPath = $uploadDir . $name;
 
-                if (move_uploaded_file($_FILES['service_image']['tmp_name'], $uploadDir . $name)) {
-                    $imageUrl = 'algraphybackend/public/uploads/services/' . $name;
+                if (move_uploaded_file($_FILES['service_image']['tmp_name'], $localPath)) {
+                    // NEW: Upload to Cloudinary
+                    $cloudUrl = $this->uploadToCloudinary($localPath, 'services');
+                    if ($cloudUrl) {
+                        $imageUrl = $cloudUrl;
+                        unlink($localPath);
+                    }
                 }
             }
         }
@@ -419,13 +437,16 @@ class ApiController extends BaseController
             if (in_array($mimeType, $allowed)) {
                 $ext = pathinfo($_FILES['service_image']['name'], PATHINFO_EXTENSION);
                 $name = uniqid('svc_', true) . '.' . $ext;
-                $uploadDir = __DIR__ . '/../../public/uploads/services/';
+                $localPath = $uploadDir . $name;
                 
-                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-
-                if (move_uploaded_file($_FILES['service_image']['tmp_name'], $uploadDir . $name)) {
-                    $updates[] = "image_url = ?";
-                    $params[] = 'algraphybackend/public/uploads/services/' . $name;
+                if (move_uploaded_file($_FILES['service_image']['tmp_name'], $localPath)) {
+                    // NEW: Upload to Cloudinary
+                    $cloudUrl = $this->uploadToCloudinary($localPath, 'services');
+                    if ($cloudUrl) {
+                        $updates[] = "image_url = ?";
+                        $params[] = $cloudUrl;
+                        unlink($localPath);
+                    }
                 }
             }
         }
@@ -549,9 +570,15 @@ class ApiController extends BaseController
             
             $ext = pathinfo($_FILES['project_image']['name'], PATHINFO_EXTENSION);
             $name = uniqid('proj_', true) . '.' . $ext;
+            $localPath = $uploadDir . $name;
             
-            if (move_uploaded_file($_FILES['project_image']['tmp_name'], $uploadDir . $name)) {
-                $mainImage = 'algraphybackend/public/uploads/projects/' . $name;
+            if (move_uploaded_file($_FILES['project_image']['tmp_name'], $localPath)) {
+                // NEW: Upload to Cloudinary
+                $cloudUrl = $this->uploadToCloudinary($localPath, 'projects');
+                if ($cloudUrl) {
+                    $mainImage = $cloudUrl;
+                    unlink($localPath);
+                }
             }
         }
 
@@ -613,10 +640,16 @@ class ApiController extends BaseController
             
             $ext = pathinfo($_FILES['project_image']['name'], PATHINFO_EXTENSION);
             $name = uniqid('proj_', true) . '.' . $ext;
+            $localPath = $uploadDir . $name;
             
-            if (move_uploaded_file($_FILES['project_image']['tmp_name'], $uploadDir . $name)) {
-                $updates[] = "`Main_Image` = ?";
-                $params[] = 'algraphybackend/public/uploads/projects/' . $name;
+            if (move_uploaded_file($_FILES['project_image']['tmp_name'], $localPath)) {
+                // NEW: Upload to Cloudinary
+                $cloudUrl = $this->uploadToCloudinary($localPath, 'projects');
+                if ($cloudUrl) {
+                    $updates[] = "`Main_Image` = ?";
+                    $params[] = $cloudUrl;
+                    unlink($localPath);
+                }
             }
         }
 
@@ -1096,11 +1129,16 @@ class ApiController extends BaseController
             if ($files['error'][$i] === UPLOAD_ERR_OK) {
                 $ext = pathinfo($files['name'][$i], PATHINFO_EXTENSION);
                 $name = uniqid('gal_' . $projectId . '_', true) . '.' . $ext;
+                $localPath = $uploadDir . $name;
                 
-                if (move_uploaded_file($files['tmp_name'][$i], $uploadDir . $name)) {
-                    $url = 'algraphybackend/public/uploads/projects/gallery/' . $name;
-                    $pdo->prepare("INSERT INTO project_gallery (project_id, Image_URL) VALUES (?, ?)")
-                        ->execute([$projectId, $url]);
+                if (move_uploaded_file($files['tmp_name'][$i], $localPath)) {
+                    // NEW: Upload to Cloudinary
+                    $cloudUrl = $this->uploadToCloudinary($localPath, 'project_gallery');
+                    if ($cloudUrl) {
+                        $pdo->prepare("INSERT INTO project_gallery (project_id, Image_URL) VALUES (?, ?)")
+                            ->execute([$projectId, $cloudUrl]);
+                        unlink($localPath);
+                    }
                 }
             }
         }

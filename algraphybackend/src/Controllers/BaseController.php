@@ -1,6 +1,7 @@
 <?php
 
 namespace AlGraphy\Controllers;
+use Cloudinary\Cloudinary;
 
 /**
  * AlGraphy Studio — Base Controller
@@ -10,6 +11,38 @@ namespace AlGraphy\Controllers;
  */
 abstract class BaseController 
 {
+    /**
+     * Helper: Upload file to Cloudinary
+     */
+    protected function uploadToCloudinary(string $filePath, string $folder = 'algraphy'): ?string 
+    {
+        try {
+            $config = require __DIR__ . '/../config.php';
+            $cloudinary = new Cloudinary([
+                'cloud' => [
+                    'cloud_name' => $config['cloudinary']['cloud_name'],
+                    'api_key'    => $config['cloudinary']['api_key'],
+                    'api_secret' => $config['cloudinary']['api_secret'],
+                ],
+            ]);
+
+            // Determine resource type (image or video)
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->file($filePath);
+            $resourceType = strpos($mimeType, 'video') !== false ? 'video' : 'auto';
+
+            $result = $cloudinary->uploadApi()->upload($filePath, [
+                'folder' => $folder,
+                'resource_type' => $resourceType
+            ]);
+
+            return $result['secure_url'];
+        } catch (\Exception $e) {
+            error_log("Cloudinary Upload Error: " . $e->getMessage());
+            return null;
+        }
+    }
+
     /**
      * Standardized JSON response handler.
      * Centralizing this allows for global changes to response formats.

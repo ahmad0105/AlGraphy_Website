@@ -197,15 +197,18 @@ class ClientAuthController extends BaseController
                 $this->sendJson(["status" => "error", "message" => "Invalid image type."], 400);
             }
 
-            $fileName = uniqid('client_', true) . '.png'; // Defaulting to png or map accordingly
+            $fileName = uniqid('client_', true) . '.png'; 
             $uploadDir = __DIR__ . '/../../public/uploads/';
+            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
             
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-            
-            if (move_uploaded_file($tmpPath, $uploadDir . $fileName)) {
-                $profilePicPath = 'uploads/' . $fileName;
+            $localPath = $uploadDir . $fileName;
+            if (move_uploaded_file($tmpPath, $localPath)) {
+                // NEW: Upload to Cloudinary
+                $cloudUrl = $this->uploadToCloudinary($localPath, 'client_profiles');
+                if ($cloudUrl) {
+                    $profilePicPath = $cloudUrl;
+                    unlink($localPath);
+                }
             } else {
                 $this->sendJson(["status" => "error", "message" => "Failed to save image."], 500);
             }

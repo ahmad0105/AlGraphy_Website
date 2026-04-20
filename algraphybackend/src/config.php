@@ -23,4 +23,11 @@ return [
         }
         return 'http://localhost/algraphy';
     })(),
+
+    // Cloudinary Persistent Media Storage
+    'cloudinary' => [
+        'cloud_name' => getenv('CLOUDINARY_NAME') ?: 'Root',
+        'api_key'    => getenv('CLOUDINARY_KEY')  ?: '352728882363193',
+        'api_secret' => getenv('CLOUDINARY_SECRET') ?: '-atbTwpia8eS4cH-VPjGZV8bGu4',
+    ]
 ];

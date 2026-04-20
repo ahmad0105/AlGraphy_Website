@@ -130,14 +130,35 @@ class HeroHandler {
         formData.append('subtitle', this.subtitleInput.value);
         formData.append('title', this.titleInput.value);
         
-        if (this.bgVideoInput.files[0]) {
-            formData.append('hero_bg_video', this.bgVideoInput.files[0]);
-        }
-        if (this.srVideoInput.files[0]) {
-            formData.append('showreel_video', this.srVideoInput.files[0]);
-        }
-
         try {
+            // Helper for Direct Cloudinary Upload
+            const uploadToCloudinary = async (file) => {
+                const cloudName = 'Root'; // From your config
+                const unsignedPreset = 'ml_default';
+                const url = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
+                
+                const cData = new FormData();
+                cData.append('file', file);
+                cData.append('upload_preset', unsignedPreset);
+                
+                const res = await fetch(url, { method: 'POST', body: cData });
+                const json = await res.json();
+                if (json.secure_url) return json.secure_url;
+                throw new Error(json.error?.message || "Cloudinary Upload Failed");
+            };
+
+            if (this.bgVideoInput.files[0]) {
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> UPLOADING BG VIDEO...';
+                const bgUrl = await uploadToCloudinary(this.bgVideoInput.files[0]);
+                formData.append('hero_bg_video_url_direct', bgUrl);
+            }
+            
+            if (this.srVideoInput.files[0]) {
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> UPLOADING SHOWREEL...';
+                const srUrl = await uploadToCloudinary(this.srVideoInput.files[0]);
+                formData.append('showreel_video_url_direct', srUrl);
+            }
+
             const response = await APIService.updateHero(formData);
             
             submitBtn.innerHTML = originalHtml;

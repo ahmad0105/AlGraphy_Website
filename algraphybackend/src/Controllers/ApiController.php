@@ -158,6 +158,15 @@ class ApiController extends BaseController
         $videoFields = ['hero_bg_video' => 'bg_video_url', 'showreel_video' => 'showreel_video_url'];
 
         foreach ($videoFields as $fileKey => $dbColumn) {
+            // Priority 1: Direct URL from frontend (Cloudinary Direct Upload)
+            $directUrlKey = $fileKey . '_url_direct';
+            if (!empty($_POST[$directUrlKey])) {
+                $updates[] = "$dbColumn = ?";
+                $params[] = $_POST[$directUrlKey];
+                continue;
+            }
+
+            // Priority 2: Traditional File Upload (Local/Small files)
             if (isset($_FILES[$fileKey]) && $_FILES[$fileKey]['error'] === UPLOAD_ERR_OK) {
                 $finfo = new \finfo(FILEINFO_MIME_TYPE);
                 $mimeType = $finfo->file($_FILES[$fileKey]['tmp_name']);

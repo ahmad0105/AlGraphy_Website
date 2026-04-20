@@ -381,7 +381,12 @@ function formatHeroTitle($text)
     <footer id="contact" class="footer-section">
         <!-- Background video -->
         <video class="footer-bg-video" autoplay loop muted playsinline>
-            <source src="Assets/video/white-on-black-topographical-map-clean.mp4" type="video/mp4">
+            <?php 
+                $footerVideo = (getenv('VERCEL') === '1') 
+                    ? "https://res.cloudinary.com/virgvitp/video/upload/q_auto/f_auto/v1776697425/golgbvuoaxenfzpggu3k.mp4" 
+                    : "Assets/video/white-on-black-topographical-map-clean.mp4";
+            ?>
+            <source src="<?php echo $footerVideo; ?>" type="video/mp4">
         </video>
 
         <div class="container">

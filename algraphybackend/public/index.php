@@ -43,31 +43,52 @@ $db = new AlGraphy\Database(
     (int)$config['db_port']
 );
 
+if (getenv('VERCEL') === '1') {
+    ini_set('display_errors', '0'); // Disable HTML errors on production to prevent JSON corruption
+} else {
+    ini_set('display_errors', '1');
+}
+
 // 3. Persistent Sessions (Database-backed for Vercel)
 if (getenv('VERCEL') === '1') {
     session_set_save_handler(
         function ($savePath, $sessionName) use ($db) { return true; },
         function () { return true; },
         function ($id) use ($db) {
-            $pdo = $db->connect();
-            $stmt = $pdo->prepare("SELECT data FROM sessions WHERE id = ?");
-            $stmt->execute([$id]);
-            return $stmt->fetchColumn() ?: '';
+            try {
+                $pdo = $db->connect();
+                $stmt = $pdo->prepare("SELECT data FROM sessions WHERE id = ?");
+                $stmt->execute([$id]);
+                return $stmt->fetchColumn() ?: '';
+            } catch (Exception $e) { return ''; }
         },
         function ($id, $data) use ($db) {
-            $pdo = $db->connect();
-            $stmt = $pdo->prepare("REPLACE INTO sessions (id, data, timestamp) VALUES (?, ?, ?)");
-            return $stmt->execute([$id, $data, time()]);
+            try {
+                $pdo = $db->connect();
+                $stmt = $pdo->prepare("REPLACE INTO sessions (id, data, timestamp) VALUES (?, ?, ?)");
+                return $stmt->execute([$id, $data, time()]);
+            } catch (Exception $e) {
+                // Auto-fix: try to create table once if missing
+                try {
+                    $pdo = $db->connect();
+                    $pdo->exec("CREATE TABLE IF NOT EXISTS sessions (id VARCHAR(255) NOT NULL PRIMARY KEY, data TEXT NOT NULL, timestamp INT(11) NOT NULL) ENGINE=InnoDB;");
+                } catch (Exception $ex) {}
+                return false;
+            }
         },
         function ($id) use ($db) {
-            $pdo = $db->connect();
-            $stmt = $pdo->prepare("DELETE FROM sessions WHERE id = ?");
-            return $stmt->execute([$id]);
+            try {
+                $pdo = $db->connect();
+                $stmt = $pdo->prepare("DELETE FROM sessions WHERE id = ?");
+                return $stmt->execute([$id]);
+            } catch (Exception $e) { return false; }
         },
         function ($maxLifetime) use ($db) {
-            $pdo = $db->connect();
-            $stmt = $pdo->prepare("DELETE FROM sessions WHERE timestamp < ?");
-            return $stmt->execute([time() - $maxLifetime]);
+            try {
+                $pdo = $db->connect();
+                $stmt = $pdo->prepare("DELETE FROM sessions WHERE timestamp < ?");
+                return $stmt->execute([time() - $maxLifetime]);
+            } catch (Exception $e) { return false; }
         }
     );
     session_set_cookie_params(['lifetime' => 86400, 'path' => '/', 'secure' => true, 'httponly' => true, 'samesite' => 'None']);

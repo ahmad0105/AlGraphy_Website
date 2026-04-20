@@ -58,12 +58,23 @@ function renderProjectsAdmin(projects, container) {
         card.className = 'proj-admin-card';
 
         let imgPath = proj.Main_Image || '../Assets/image/Aura.png';
-        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        const isVercel = window.location.hostname.includes('vercel.app');
 
-        // Use backend fixed path if it starts with /, otherwise adjust for local/production relative assets
-        if (!imgPath.startsWith('/') && !imgPath.startsWith('http')) {
-            if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend') || imgPath.startsWith('uploads')) {
-                imgPath = (isLocal ? '/algraphy/' : '/') + imgPath;
+        // Clean Cloudinary-friendly logic
+        if (imgPath && typeof imgPath === 'string') {
+            let cleanPath = imgPath.startsWith('/') ? imgPath.substring(1) : imgPath;
+
+            if (cleanPath.includes('http')) {
+                imgPath = cleanPath; 
+            } else if (cleanPath.startsWith('Assets') || cleanPath.startsWith('algraphybackend')) {
+                imgPath = '../' + cleanPath;
+            } else if (cleanPath.startsWith('uploads')) {
+                if (isVercel) {
+                    imgPath = '../Assets/image/Aura.png';
+                } else {
+                    const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
+                    imgPath = `${baseUrl}/algraphybackend/public/${cleanPath}`;
+                }
             }
         }
 

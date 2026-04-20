@@ -63,10 +63,23 @@ function renderServicesAdmin(categories, container) {
             
             let imgPath = svc.image_url ? svc.image_url : '../Assets/GIF/strategy.gif';
             if (imgPath && typeof imgPath === 'string') {
-                if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) imgPath = '../'+ imgPath;
-                if (imgPath.startsWith('uploads')) {
-                    const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
-                    imgPath = `${baseUrl}/algraphybackend/public/${imgPath}`;
+                const isVercel = window.location.hostname.includes('vercel.app');
+                
+                // Clean leading slash for uniform checking
+                let cleanPath = imgPath.startsWith('/') ? imgPath.substring(1) : imgPath;
+
+                if (cleanPath.includes('http')) {
+                    // Cloudinary URL - use as is
+                    imgPath = cleanPath; 
+                } else if (cleanPath.startsWith('Assets') || cleanPath.startsWith('algraphybackend')) {
+                    imgPath = '../' + cleanPath;
+                } else if (cleanPath.startsWith('uploads')) {
+                    if (isVercel) {
+                        imgPath = '../Assets/GIF/strategy.gif';
+                    } else {
+                        const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
+                        imgPath = `${baseUrl}/algraphybackend/public/${cleanPath}`;
+                    }
                 }
             }
 

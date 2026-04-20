@@ -27,14 +27,25 @@ $results = [
     'dir_listing' => []
 ];
 
-// List root files to see what Vercel actually uploaded
+// List root files and internal backend files
 try {
     $rootPath = realpath(__DIR__ . '/..');
-    if ($rootPath) {
-        $results['dir_listing'] = scandir($rootPath);
+    $results['root_listing'] = scandir($rootPath);
+    
+    $backendPath = $rootPath . '/algraphybackend';
+    if (is_dir($backendPath)) {
+        $results['backend_listing'] = scandir($backendPath);
+        // Check for vendor specifically
+        $vendorPath = $backendPath . '/vendor';
+        $results['vendor_exists'] = is_dir($vendorPath);
+        if ($results['vendor_exists']) {
+            $results['vendor_listing_preview'] = array_slice(scandir($vendorPath), 0, 10);
+        }
+    } else {
+        $results['backend_status'] = "Folder NOT found at $backendPath";
     }
 } catch (Exception $e) {
-    $results['dir_listing_error'] = $e->getMessage();
+    $results['scan_error'] = $e->getMessage();
 }
 
 if (!$autoloadFound) {

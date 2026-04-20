@@ -3,14 +3,9 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "builds": [
-    { "src": "api/*.php", "use": "vercel-php", "config": { "includeFiles": "algraphybackend/**" } },
-    { "src": "algraphybackend/public/*.php", "use": "vercel-php", "config": { "includeFiles": "algraphybackend/**" } },
-    { "src": "index.php", "use": "vercel-php", "config": { "includeFiles": "algraphybackend/**" } },
-    { "src": "studio-panel/**", "use": "@vercel/static" },
-    { "src": "css/**", "use": "@vercel/static" },
-    { "src": "js/**", "use": "@vercel/static" },
-    { "src": "Assets/**", "use": "@vercel/static" },
-    { "src": "*.html", "use": "@vercel/static" }
+    { "src": "api/*.php", "use": "vercel-php" },
+    { "src": "algraphybackend/public/*.php", "use": "vercel-php" },
+    { "src": "index.php", "use": "vercel-php" }
   ],
   "redirects": [
     { "source": "/dashboard", "destination": "/studio-panel/", "permanent": true },
@@ -28,12 +23,9 @@
     { "src": "/Assets/(.*)", "dest": "/Assets/$1" },
     { "src": "/css/(.*)", "dest": "/css/$1" },
     { "src": "/js/(.*)", "dest": "/js/$1" },
-    { "src": "/studio-panel/(.*)", "dest": "/studio-panel/$1", "continue": true },
     { "src": "/auth", "dest": "/auth.html" },
+    { "src": "/studio-panel/(.*)", "dest": "/studio-panel/$1" },
     { "src": "/api/(.*)", "dest": "/algraphybackend/public/index.php" },
-    { "src": "/(.*)", "dest": "/index.php" }
-  ],
-  "crons": [
-    { "path": "/api/site/hero", "schedule": "*/10 * * * *" }
+    { "src": "/((?!studio-panel|auth|api|Assets|css|js).*)", "dest": "/index.php" }
   ]
 }

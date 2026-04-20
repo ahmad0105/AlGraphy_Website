@@ -63,10 +63,11 @@ class EmployeeManager extends BaseManager {
         const card = document.createElement('div');
         card.className = 'emp-admin-card';
         
-        const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
-        const picPath = emp.profile_pic 
-            ? `${baseUrl}/algraphybackend/public/${emp.profile_pic}` 
-            : '../Assets/image/default_avatar.png';
+        let picPath = emp.profile_pic || '../Assets/image/default_avatar.png';
+        if (picPath && !picPath.startsWith('http') && !picPath.startsWith('../')) {
+            const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
+            picPath = `${baseUrl}/algraphybackend/public/${picPath}`;
+        }
 
         const hourlyRateStr = emp.hourly_rate ? `$${parseFloat(emp.hourly_rate).toFixed(2)}/hr` : 'N/A';
 

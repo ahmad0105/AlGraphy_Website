@@ -17,16 +17,42 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 if (getenv('VERCEL') === '1') {
-    session_save_path('/tmp');
+    // Database-backed sessions for Vercel persistence
+    session_set_save_handler(
+        function ($savePath, $sessionName) use ($db) { return true; }, // open
+        function () { return true; }, // close
+        function ($id) use ($db) { // read
+            $pdo = $db->connect();
+            $stmt = $pdo->prepare("SELECT data FROM sessions WHERE id = ?");
+            $stmt->execute([$id]);
+            return $stmt->fetchColumn() ?: '';
+        },
+        function ($id, $data) use ($db) { // write
+            $pdo = $db->connect();
+            $stmt = $pdo->prepare("REPLACE INTO sessions (id, data, timestamp) VALUES (?, ?, ?)");
+            return $stmt->execute([$id, $data, time()]);
+        },
+        function ($id) use ($db) { // destroy
+            $pdo = $db->connect();
+            $stmt = $pdo->prepare("DELETE FROM sessions WHERE id = ?");
+            return $stmt->execute([$id]);
+        },
+        function ($maxLifetime) use ($db) { // gc
+            $pdo = $db->connect();
+            $stmt = $pdo->prepare("DELETE FROM sessions WHERE timestamp < ?");
+            return $stmt->execute([time() - $maxLifetime]);
+        }
+    );
+    
     session_set_cookie_params([
-        'lifetime' => 86400, // 24 hours
+        'lifetime' => 86400,
         'path' => '/',
         'secure' => true,
         'httponly' => true,
-        'samesite' => 'None' // Critical for cross-domain or serverless stability
+        'samesite' => 'None'
     ]);
 } else {
-    // Localhost: Set path to /algraphy/ to cover all subfolders
+    // Localhost
     session_set_cookie_params([
         'lifetime' => 3600,
         'path' => '/algraphy/',

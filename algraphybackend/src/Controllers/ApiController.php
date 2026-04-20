@@ -311,7 +311,7 @@ class ApiController extends BaseController
 
             $pdo->commit();
             $this->sendJson(["status" => "success", "message" => "Section and associated services deleted"]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $pdo->rollBack();
             $this->sendJson(["error" => "Delete failed: " . $e->getMessage()], 500);
         }
@@ -608,7 +608,7 @@ class ApiController extends BaseController
             } else {
                 $this->sendJson(["error" => "Insert failed at execution level"], 500);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->sendJson(["error" => "Database error during addition", "details" => $e->getMessage()], 500);
         }
     }
@@ -679,7 +679,7 @@ class ApiController extends BaseController
             } else {
                 $this->sendJson(["error" => "Update failed during execution"], 500);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->sendJson(["error" => "Database error during update", "details" => $e->getMessage()], 500);
         }
     }
@@ -962,7 +962,7 @@ class ApiController extends BaseController
             } else {
                 $this->sendJson(["status" => "error", "message" => "Execution failed without exception."], 500);
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->sendJson(["status" => "error", "message" => "Database error.", "details" => $e->getMessage()], 500);
         }
     }
@@ -1072,7 +1072,7 @@ class ApiController extends BaseController
             }
             $pdo->commit();
             $this->sendJson(["status" => "success", "message" => "Team resources successfully synchronized."]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             if ($pdo->inTransaction()) $pdo->rollBack();
             $this->sendJson(["status" => "error", "message" => $e->getMessage()], 500);
         }

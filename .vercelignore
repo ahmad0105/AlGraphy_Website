@@ -1,18 +1,7 @@
-# Exclude heavy local data and unneeded assets
+algraphybackend/public/uploads/
+algraphybackend/vendor/cloudinary/cloudinary_php/tests/
+algraphybackend/vendor/guzzlehttp/guzzle/docs/
+Assets/video/white-on-black-topographical-map-clean.mp4
+Assets/video/heroVideo.mp4
 .git/
 node_modules/
-algraphybackend/public/uploads/
-
-# Critical: Remove heavy FontAwesome source/metadata files
-# (The website only needs the 'css/' and 'webfonts/' folders to work)
-css/libs/fontawesome/svgs/
-css/libs/fontawesome/svgs-full/
-css/libs/fontawesome/metadata/
-css/libs/fontawesome/js/
-css/libs/fontawesome/sprites/
-css/libs/fontawesome/sprites-full/
-css/libs/fontawesome/less/
-css/libs/fontawesome/scss/
-
-# Videos are 137MB - we keep them as they are essential for the UI
-# But we must ensure the rest of the project is lean.

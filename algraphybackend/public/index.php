@@ -142,8 +142,25 @@ if (strpos($uri, '/test-db') !== false) {
         $user = $stmt->fetch();
         
         if ($user) {
-            $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'];
-            $fullImagePath = $user['profile_pic'] ? $baseUrl . '/algraphy/algraphybackend/public/' . $user['profile_pic'] : $baseUrl . '/algraphy/Assets/image/default_avatar.png';
+            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http");
+            $host = $_SERVER['HTTP_HOST'];
+            $baseUrl = "$protocol://$host";
+            
+            // Clean logic for production
+            $pic = $user['profile_pic'];
+            if ($pic) {
+                if (getenv('VERCEL') === '1') {
+                    $fullImagePath = "$baseUrl/algraphybackend/public/$pic";
+                } else {
+                    $fullImagePath = "$baseUrl/algraphy/algraphybackend/public/$pic";
+                }
+            } else {
+                if (getenv('VERCEL') === '1') {
+                    $fullImagePath = "$baseUrl/Assets/image/default_avatar.png";
+                } else {
+                    $fullImagePath = "$baseUrl/algraphy/Assets/image/default_avatar.png";
+                }
+            }
 
             echo json_encode([
                 "status" => "success",

@@ -126,9 +126,8 @@ class ApiController extends BaseController
         $hero = $stmt->fetch();
 
         if ($hero) {
-            $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/algraphy/';
-            $hero['bg_video'] = $hero['bg_video_url'] ? $baseUrl . $hero['bg_video_url'] : null;
-            $hero['showreel_video'] = $hero['showreel_video_url'] ? $baseUrl . $hero['showreel_video_url'] : null;
+            $hero['bg_video'] = $hero['bg_video_url'];
+            $hero['showreel_video'] = $hero['showreel_video_url'];
             $this->sendJson(["status" => "success", "hero" => $hero]);
         } else {
             $this->sendJson(["status" => "error", "message" => "No hero data found"], 404);

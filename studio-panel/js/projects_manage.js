@@ -62,18 +62,17 @@ function renderProjectsAdmin(projects, container) {
 
         // Clean Cloudinary-friendly logic
         if (imgPath && typeof imgPath === 'string') {
-            let cleanPath = imgPath.startsWith('/') ? imgPath.substring(1) : imgPath;
-
-            if (cleanPath.includes('http')) {
-                imgPath = cleanPath; 
-            } else if (cleanPath.startsWith('Assets') || cleanPath.startsWith('algraphybackend')) {
-                imgPath = '../' + cleanPath;
-            } else if (cleanPath.startsWith('uploads')) {
+            if (imgPath.includes('http')) {
+                // Cloudinary URL - use as is
+            } else if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) {
+                imgPath = '../' + imgPath;
+            } else if (imgPath.startsWith('uploads')) {
                 if (isVercel) {
+                    // Fallback for missing local files on Vercel
                     imgPath = '../Assets/image/Aura.png';
                 } else {
                     const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
-                    imgPath = `${baseUrl}/algraphybackend/public/${cleanPath}`;
+                    imgPath = `${baseUrl}/algraphybackend/public/${imgPath}`;
                 }
             }
         }

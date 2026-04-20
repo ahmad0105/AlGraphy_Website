@@ -65,20 +65,17 @@ function renderServicesAdmin(categories, container) {
             if (imgPath && typeof imgPath === 'string') {
                 const isVercel = window.location.hostname.includes('vercel.app');
                 
-                // Clean leading slash for uniform checking
-                let cleanPath = imgPath.startsWith('/') ? imgPath.substring(1) : imgPath;
-
-                if (cleanPath.includes('http')) {
+                if (imgPath.includes('http')) {
                     // Cloudinary URL - use as is
-                    imgPath = cleanPath; 
-                } else if (cleanPath.startsWith('Assets') || cleanPath.startsWith('algraphybackend')) {
-                    imgPath = '../' + cleanPath;
-                } else if (cleanPath.startsWith('uploads')) {
+                } else if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) {
+                    imgPath = '../' + imgPath;
+                } else if (imgPath.startsWith('uploads')) {
                     if (isVercel) {
+                        // Local upload path on Vercel - Fallback to default GIF because file is missing
                         imgPath = '../Assets/GIF/strategy.gif';
                     } else {
                         const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
-                        imgPath = `${baseUrl}/algraphybackend/public/${cleanPath}`;
+                        imgPath = `${baseUrl}/algraphybackend/public/${imgPath}`;
                     }
                 }
             }

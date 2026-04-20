@@ -21,12 +21,16 @@
     { "source": "/api/debug", "destination": "/api/debug.php" },
     { "source": "/api/diagnose", "destination": "/api/diagnose.php" },
     { "source": "/api/(.*)", "destination": "/algraphybackend/public/index.php" },
-    { "source": "/auth", "destination": "/auth.html" }
+    { "source": "/auth", "destination": "/auth.html" },
+    { "source": "/studio-panel/js/(.*)", "destination": "/studio-panel/js/$1" },
+    { "source": "/studio-panel/css/(.*)", "destination": "/studio-panel/css/$1" }
   ],
   "routes": [
-    { "src": "/studio-panel/js/(.*)", "dest": "/studio-panel/js/$1", "headers": { "cache-control": "no-cache" } },
-    { "src": "/studio-panel/css/(.*)", "dest": "/studio-panel/css/$1", "headers": { "cache-control": "no-cache" } },
+    { "src": "/studio-panel/js/(.*)", "dest": "/studio-panel/js/$1" },
+    { "src": "/studio-panel/css/(.*)", "dest": "/studio-panel/css/$1" },
     { "handle": "filesystem" },
+    { "src": "/api/debug", "dest": "/api/debug.php" },
+    { "src": "/api/diagnose", "dest": "/api/diagnose.php" },
     { "src": "/api/(.*)", "dest": "/algraphybackend/public/index.php" },
     { "src": "/studio-panel/(.*)", "dest": "/studio-panel/$1" },
     { "src": "/(.*)", "dest": "/index.php" }

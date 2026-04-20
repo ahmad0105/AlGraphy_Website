@@ -45,11 +45,13 @@ abstract class BaseController
             // 1. Force HTTPS globally
             $url = str_replace('http://', 'https://', $url);
             
-            // 2. Remove legacy subdirectory for production
-            $url = str_replace('/algraphy/algraphybackend/', '/algraphybackend/', $url);
-            $url = str_replace('.app/algraphy/', '.app/', $url);
+            // 2. Remove ANY occurrence of the local subdirectory
+            $url = str_replace('/algraphy/', '/', $url);
             
-            // 3. Ensure clean root for relative paths
+            // 3. Clean up potential double slashes (except protocol)
+            $url = preg_replace('/(?<!:)\/\//', '/', $url);
+            
+            // 4. Ensure clean root for relative paths
             if (strpos($url, 'http') !== 0) {
                 $url = '/' . ltrim($url, '/');
             }

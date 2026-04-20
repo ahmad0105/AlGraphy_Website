@@ -19,7 +19,12 @@ abstract class BaseController
         // Recursively fix URLs in the data array before sending (only on production)
         if (getenv('VERCEL') === '1') {
             array_walk_recursive($data, function (&$item) {
-                if (is_string($item) && (strpos($item, 'http') === 0 || strpos($item, 'Assets/') === 0 || strpos($item, 'algraphybackend/') === 0)) {
+                if (is_string($item) && (
+                    strpos($item, 'http') === 0 || 
+                    strpos($item, 'Assets/') === 0 || 
+                    strpos($item, 'algraphybackend/') === 0 ||
+                    strpos($item, 'uploads/') === 0
+                )) {
                     $item = $this->fixUrl($item);
                 }
             });
@@ -48,7 +53,12 @@ abstract class BaseController
             // 2. Remove ANY occurrence of the local subdirectory
             $url = str_replace('/algraphy/', '/', $url);
             
-            // 3. Clean up potential double slashes (except protocol)
+            // 3. Handle relative database uploads (e.g. uploads/pic.png -> /algraphybackend/public/uploads/pic.png)
+            if (strpos($url, 'uploads/') === 0) {
+                $url = '/algraphybackend/public/uploads/' . substr($url, 8);
+            }
+            
+            // 4. Clean up potential double slashes (except protocol)
             $url = preg_replace('/(?<!:)\/\//', '/', $url);
             
             // 4. Ensure clean root for relative paths

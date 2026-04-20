@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const path = window.location.pathname;
         let page = path.split("/").filter(Boolean).pop(); // Handle trailing slashes cleanly
         
-        // If we are at /dashboard/ or /dashboard, default to 'index' active state
-        if (!page || page === 'index.html' || page === 'dashboard') page = 'index';
+        // If we are at /studio-panel/ or /studio-panel, default to 'index' active state
+        if (!page || page === 'index.html' || page === 'studio-panel') page = 'index';
         
         const navItems = document.querySelectorAll('.nav-item[data-page]');
         navItems.forEach(item => {

@@ -6,27 +6,31 @@
     { "src": "api/*.php", "use": "vercel-php", "config": { "includeFiles": "algraphybackend/**" } },
     { "src": "algraphybackend/public/*.php", "use": "vercel-php", "config": { "includeFiles": "algraphybackend/**" } },
     { "src": "index.php", "use": "vercel-php", "config": { "includeFiles": "algraphybackend/**" } },
-    { "src": "dashboard/**", "use": "@vercel/static" },
+    { "src": "studio-panel/**", "use": "@vercel/static" },
     { "src": "css/**", "use": "@vercel/static" },
     { "src": "js/**", "use": "@vercel/static" },
     { "src": "Assets/**", "use": "@vercel/static" },
     { "src": "*.html", "use": "@vercel/static" }
   ],
   "redirects": [
-    { "source": "/dashboard", "destination": "/dashboard/", "permanent": true }
+    { "source": "/dashboard", "destination": "/studio-panel/", "permanent": true },
+    { "source": "/dashboard/(.*)", "destination": "/studio-panel/$1", "permanent": true },
+    { "source": "/studio-panel", "destination": "/studio-panel/", "permanent": true }
   ],
   "rewrites": [
     { "source": "/api/debug", "destination": "/api/debug.php" },
     { "source": "/api/(.*)", "destination": "/algraphybackend/public/index.php" },
     { "source": "/auth", "destination": "/auth.html" },
-    { "source": "/dashboard/", "destination": "/dashboard/index.html" },
-    { "source": "/dashboard/(.*)", "destination": "/dashboard/$1" }
+    { "source": "/studio-panel/", "destination": "/studio-panel/index.html" },
+    { "source": "/studio-panel/(.*)", "destination": "/studio-panel/$1" }
   ],
   "routes": [
     { "src": "/Assets/(.*)", "dest": "/Assets/$1" },
     { "src": "/css/(.*)", "dest": "/css/$1" },
     { "src": "/js/(.*)", "dest": "/js/$1" },
-    { "src": "/(dashboard|auth|api)(.*)", "continue": true },
+    { "src": "/studio-panel/(.*)", "dest": "/studio-panel/$1", "continue": true },
+    { "src": "/auth", "dest": "/auth.html" },
+    { "src": "/api/(.*)", "dest": "/algraphybackend/public/index.php" },
     { "src": "/(.*)", "dest": "/index.php" }
   ],
   "crons": [

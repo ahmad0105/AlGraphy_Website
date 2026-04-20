@@ -159,11 +159,12 @@ class DashboardHandler {
                 const latestFive = data.employees.slice(0, 5);
                 
                 latestFive.forEach(emp => {
-                    const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
-                    let avatarPath = emp.profile_pic ? `${baseUrl}/algraphybackend/public/${emp.profile_pic}` : '../Assets/image/default_avatar.png';
+                    // Dynamic path building for assets
+                    const isVercel = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+                    let avatarPath = emp.profile_pic ? `algraphybackend/public/${emp.profile_pic}` : 'Assets/image/default_avatar.png';
                     
-                    // Fallback for paths starting with Assets
-                    if (avatarPath.startsWith('Assets') || avatarPath.startsWith('algraphybackend')) avatarPath = '../'+ avatarPath;
+                    // Always prepend ../ because we are inside studio-panel/
+                    avatarPath = '../' + avatarPath;
                     
                     const itemHtml = `
                         <div class="best-item">

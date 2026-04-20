@@ -141,9 +141,8 @@ function formatHeroTitle($text)
             <!-- Shown for Gest -->
             <a href="auth" class="menu-auth-link" id="menuLoginBtn">Login / Signup</a>
             <!-- Shown for Logged users -->
-            <a href="dashboard" class="menu-auth-link hidden auth-user-only"
-                id="menuDashboardBtn">Dashboard</a>
-            <a href="dashboard/profile" class="menu-auth-link hidden auth-user-only" id="menuProfileBtn">My Profile</a>
+            <a href="studio-panel" class="menu-auth-link hidden auth-user-only" id="menuDashboardBtn">Dashboard</a>
+            <a href="studio-panel/profile" class="menu-auth-link hidden auth-user-only" id="menuProfileBtn">My Profile</a>
         </div>
     </div>
 
@@ -159,10 +158,10 @@ function formatHeroTitle($text)
             <a href="auth#signup" class="nav-auth-btn signup-btn auth-guest-only" id="guestSignupBtn">Sign Up</a>
 
             <!-- Authorized: Dashboard & Profile -->
-            <a href="dashboard" class="nav-auth-btn auth-user-only hidden" id="userDashboardBtn">Dashboard</a>
+            <a href="studio-panel" class="nav-auth-btn auth-user-only hidden" id="userDashboardBtn">Dashboard</a>
 
             <div id="userHeaderProfile" class="header-profile auth-user-only hidden"
-                onclick="window.location.href='dashboard/profile'">
+                onclick="window.location.href='studio-panel/profile'">
                 <span id="userHeaderName">...</span>
                 <img id="userHeaderAvatar" src="Assets/image/default_avatar.png" alt="User Profile">
             </div>

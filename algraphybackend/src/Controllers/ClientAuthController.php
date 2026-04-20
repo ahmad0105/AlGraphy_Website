@@ -234,8 +234,8 @@ class ClientAuthController extends BaseController
             $_SESSION['client_name'] = $fullName;
 
             // Return full absolute URL for the frontend
-            $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'];
-            $fullImagePath = $profilePicPath ? $baseUrl . '/algraphy/algraphybackend/public/' . $profilePicPath : null;
+            // Return relative path for the frontend (clean for both environments)
+            $fullImagePath = $profilePicPath ? 'algraphybackend/public/' . $profilePicPath : null;
 
             $this->sendJson([
                 "status" => "success", 

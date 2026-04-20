@@ -123,7 +123,7 @@ class AuthHandler {
 
         if (data.status === 'success') {
             // Determine dynamic redirection target (Clean URLs enabled)
-            const targetPage = data.isClient ? "dashboard/profile" : "dashboard";
+            const targetPage = data.isClient ? "studio-panel/profile" : "studio-panel";
             setTimeout(() => window.location.href = targetPage, 1000);
         }
 

@@ -91,18 +91,18 @@ class ApiController extends BaseController
                 default => 'png'
             };
 
-            $fileName = uniqid('profile_', true) . '.' . $extension;
-            $uploadDir = __DIR__ . '/../../public/uploads/';
-            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+            
+            // NEW: Upload to Cloudinary direct from tmp_name
+            $cloudUrl = $this->uploadToCloudinary($_FILES['profile_image']['tmp_name'], 'profiles');
+            if ($cloudUrl) {
+                $profilePicPath = $cloudUrl;
+            }
+        }
 
-            $localPath = $uploadDir . $fileName;
-            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $localPath)) {
-                // NEW: Upload to Cloudinary
-                $cloudUrl = $this->uploadToCloudinary($localPath, 'profiles');
-                if ($cloudUrl) {
-                    $profilePicPath = $cloudUrl;
-                    unlink($localPath);
-                }
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+            $cloudUrl = $this->uploadToCloudinary($_FILES['avatar']['tmp_name'], 'team');
+            if ($cloudUrl) {
+                $avatar = $cloudUrl;
             }
         }
 
@@ -149,9 +149,6 @@ class ApiController extends BaseController
         $subtitle = trim($_POST['subtitle'] ?? '');
         $title = trim($_POST['title'] ?? '');
 
-        $uploadDir = __DIR__ . '/../../public/uploads/videos/';
-        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-
         $updates = ["subtitle = ?", "title = ?"];
         $params = [$subtitle, $title];
 
@@ -166,28 +163,13 @@ class ApiController extends BaseController
                 continue;
             }
 
-            // Priority 2: Traditional File Upload (Local/Small files)
+            // Priority 2: Traditional File Upload (Serverless Friendly)
             if (isset($_FILES[$fileKey]) && $_FILES[$fileKey]['error'] === UPLOAD_ERR_OK) {
-                $finfo = new \finfo(FILEINFO_MIME_TYPE);
-                $mimeType = $finfo->file($_FILES[$fileKey]['tmp_name']);
-                
-                $allowed = ['video/mp4', 'video/webm', 'video/quicktime'];
-                if (in_array($mimeType, $allowed)) {
-                    $ext = pathinfo($_FILES[$fileKey]['name'], PATHINFO_EXTENSION);
-                    $name = uniqid($fileKey . '_', true) . '.' . $ext;
-                    $localPath = $uploadDir . $name;
-                    
-                    if (move_uploaded_file($_FILES[$fileKey]['tmp_name'], $localPath)) {
-                        // NEW: Upload to Cloudinary
-                        $cloudUrl = $this->uploadToCloudinary($localPath, 'hero_videos');
-                        
-                        if ($cloudUrl) {
-                            $updates[] = "$dbColumn = ?";
-                            $params[] = $cloudUrl;
-                            // Clean up local temp file
-                            unlink($localPath);
-                        }
-                    }
+                // NEW: Upload DIRECTLY from tmp_name to Cloudinary to bypass Vercel FS issues
+                $cloudUrl = $this->uploadToCloudinary($_FILES[$fileKey]['tmp_name'], 'hero_videos');
+                if ($cloudUrl) {
+                    $updates[] = "$dbColumn = ?";
+                    $params[] = $cloudUrl;
                 }
             }
         }
@@ -354,25 +336,10 @@ class ApiController extends BaseController
         $imageUrl = 'Assets/GIF/strategy.gif'; // Default
         
         if (isset($_FILES['service_image']) && $_FILES['service_image']['error'] === UPLOAD_ERR_OK) {
-            $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            $mimeType = $finfo->file($_FILES['service_image']['tmp_name']);
-            $allowed = ['image/gif', 'image/jpeg', 'image/png', 'image/webp'];
-            
-            if (in_array($mimeType, $allowed)) {
-                $ext = pathinfo($_FILES['service_image']['name'], PATHINFO_EXTENSION);
-                $name = uniqid('svc_new_', true) . '.' . $ext;
-                $uploadDir = __DIR__ . '/../../public/uploads/services/';
-                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-                $localPath = $uploadDir . $name;
-
-                if (move_uploaded_file($_FILES['service_image']['tmp_name'], $localPath)) {
-                    // NEW: Upload to Cloudinary
-                    $cloudUrl = $this->uploadToCloudinary($localPath, 'services');
-                    if ($cloudUrl) {
-                        $imageUrl = $cloudUrl;
-                        unlink($localPath);
-                    }
-                }
+            // NEW: Upload direct to Cloudinary
+            $cloudUrl = $this->uploadToCloudinary($_FILES['service_image']['tmp_name'], 'services');
+            if ($cloudUrl) {
+                $imageUrl = $cloudUrl;
             }
         }
 
@@ -438,28 +405,20 @@ class ApiController extends BaseController
         ];
         $params = [$title, $desc, $price, $duration, $includes, $tech];
 
-        // Handle GIF / Image Upload
+        // Handle Image Upload
         if (isset($_FILES['service_image']) && $_FILES['service_image']['error'] === UPLOAD_ERR_OK) {
-            $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            $mimeType = $finfo->file($_FILES['service_image']['tmp_name']);
-            
-            $allowed = ['image/gif', 'image/jpeg', 'image/png', 'image/webp'];
-            if (in_array($mimeType, $allowed)) {
-                $ext = pathinfo($_FILES['service_image']['name'], PATHINFO_EXTENSION);
-                $name = uniqid('svc_', true) . '.' . $ext;
-                $uploadDir = __DIR__ . '/../../public/uploads/services/';
-                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-                $localPath = $uploadDir . $name;
-                
-                if (move_uploaded_file($_FILES['service_image']['tmp_name'], $localPath)) {
-                    // NEW: Upload to Cloudinary
-                    $cloudUrl = $this->uploadToCloudinary($localPath, 'services');
-                    if ($cloudUrl) {
-                        $updates[] = "image_url = ?";
-                        $params[] = $cloudUrl;
-                        unlink($localPath);
-                    }
-                }
+            $cloudUrl = $this->uploadToCloudinary($_FILES['service_image']['tmp_name'], 'services');
+            if ($cloudUrl) {
+                $updates[] = "image_url = ?";
+                $params[] = $cloudUrl;
+            }
+        }
+
+        // Handle Media Upload (Service Icon)
+        if (isset($_FILES['icon']) && $_FILES['icon']['error'] === UPLOAD_ERR_OK) {
+            $cloudUrl = $this->uploadToCloudinary($_FILES['icon']['tmp_name'], 'services');
+            if ($cloudUrl) {
+                $icon = $cloudUrl;
             }
         }
 
@@ -580,20 +539,9 @@ class ApiController extends BaseController
         
         // Handle Image Upload during addition
         if (isset($_FILES['project_image']) && $_FILES['project_image']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/../../public/uploads/projects/';
-            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-            
-            $ext = pathinfo($_FILES['project_image']['name'], PATHINFO_EXTENSION);
-            $name = uniqid('proj_', true) . '.' . $ext;
-            $localPath = $uploadDir . $name;
-            
-            if (move_uploaded_file($_FILES['project_image']['tmp_name'], $localPath)) {
-                // NEW: Upload to Cloudinary
-                $cloudUrl = $this->uploadToCloudinary($localPath, 'projects');
-                if ($cloudUrl) {
-                    $mainImage = $cloudUrl;
-                    unlink($localPath);
-                }
+            $cloudUrl = $this->uploadToCloudinary($_FILES['project_image']['tmp_name'], 'projects');
+            if ($cloudUrl) {
+                $mainImage = $cloudUrl;
             }
         }
 

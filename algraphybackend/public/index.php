@@ -19,11 +19,11 @@ ini_set('display_errors', '1');
 if (getenv('VERCEL') === '1') {
     session_save_path('/tmp');
     session_set_cookie_params([
-        'lifetime' => 3600,
+        'lifetime' => 86400, // 24 hours
         'path' => '/',
         'secure' => true,
         'httponly' => true,
-        'samesite' => 'Lax'
+        'samesite' => 'None' // Critical for cross-domain or serverless stability
     ]);
 } else {
     // Localhost: Set path to /algraphy/ to cover all subfolders
@@ -160,19 +160,16 @@ if (strpos($uri, '/test-db') !== false) {
             $baseUrl = "$protocol://$host";
             
             // Clean logic for production
+            // Clean Cloudinary-friendly logic
             $pic = $user['profile_pic'];
-            if ($pic) {
-                if (getenv('VERCEL') === '1') {
-                    $fullImagePath = "$baseUrl/algraphybackend/public/$pic";
-                } else {
-                    $fullImagePath = "$baseUrl/algraphy/algraphybackend/public/$pic";
-                }
+            $defaultAvatar = "https://res.cloudinary.com/virgvitp/image/upload/v1776149993/default_avatar.png";
+
+            if ($pic && (strpos($pic, 'http') !== false || strpos($pic, 'res.cloudinary.com') !== false)) {
+                // It's a cloud URL, just ensure it's HTTPS
+                $fullImagePath = str_replace('http://', 'https://', $pic);
             } else {
-                if (getenv('VERCEL') === '1') {
-                    $fullImagePath = "$baseUrl/Assets/image/default_avatar.png";
-                } else {
-                    $fullImagePath = "$baseUrl/algraphy/Assets/image/default_avatar.png";
-                }
+                // It's a legacy local path or empty, use the Cloudinary default
+                $fullImagePath = $defaultAvatar;
             }
 
             echo json_encode([

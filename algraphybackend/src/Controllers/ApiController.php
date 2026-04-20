@@ -361,6 +361,8 @@ class ApiController extends BaseController
             if (in_array($mimeType, $allowed)) {
                 $ext = pathinfo($_FILES['service_image']['name'], PATHINFO_EXTENSION);
                 $name = uniqid('svc_new_', true) . '.' . $ext;
+                $uploadDir = __DIR__ . '/../../public/uploads/services/';
+                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
                 $localPath = $uploadDir . $name;
 
                 if (move_uploaded_file($_FILES['service_image']['tmp_name'], $localPath)) {
@@ -438,7 +440,6 @@ class ApiController extends BaseController
 
         // Handle GIF / Image Upload
         if (isset($_FILES['service_image']) && $_FILES['service_image']['error'] === UPLOAD_ERR_OK) {
-            // Reusing ValidationTrait logic
             $finfo = new \finfo(FILEINFO_MIME_TYPE);
             $mimeType = $finfo->file($_FILES['service_image']['tmp_name']);
             
@@ -446,6 +447,8 @@ class ApiController extends BaseController
             if (in_array($mimeType, $allowed)) {
                 $ext = pathinfo($_FILES['service_image']['name'], PATHINFO_EXTENSION);
                 $name = uniqid('svc_', true) . '.' . $ext;
+                $uploadDir = __DIR__ . '/../../public/uploads/services/';
+                if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
                 $localPath = $uploadDir . $name;
                 
                 if (move_uploaded_file($_FILES['service_image']['tmp_name'], $localPath)) {
@@ -460,16 +463,19 @@ class ApiController extends BaseController
             }
         }
 
-        $params[] = $id; // For WHERE id = ?
-        
-        $pdo = $this->database->connect();
+        $params[] = $id; // Add ID for WHERE clause
         $sql = "UPDATE site_services SET " . implode(", ", $updates) . " WHERE id = ?";
-        $stmt = $pdo->prepare($sql);
         
-        if ($stmt->execute($params)) {
-            $this->sendJson(["status" => "success", "message" => "Service card updated"]);
-        } else {
-            $this->sendJson(["status" => "error", "message" => "Failed to update card"], 500);
+        try {
+            $pdo = $this->database->connect();
+            $stmt = $pdo->prepare($sql);
+            if ($stmt->execute($params)) {
+                $this->sendJson(["status" => "success", "message" => "Service updated successfully"]);
+            } else {
+                $this->sendJson(["error" => "Update failed during execution"], 500);
+            }
+        } catch (\Exception $e) {
+            $this->sendJson(["error" => "Database error: " . $e->getMessage()], 500);
         }
     }
 

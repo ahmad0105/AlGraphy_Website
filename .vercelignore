@@ -1,7 +1,6 @@
-algraphybackend/public/uploads/
-algraphybackend/vendor/cloudinary/cloudinary_php/tests/
-algraphybackend/vendor/guzzlehttp/guzzle/docs/
-Assets/video/white-on-black-topographical-map-clean.mp4
-Assets/video/heroVideo.mp4
-.git/
-node_modules/
+algraphybackend/public/uploads/**
+Assets/video/**
+algraphybackend/vendor/cloudinary/cloudinary_php/tests/**
+algraphybackend/vendor/guzzlehttp/guzzle/docs/**
+.git/**
+node_modules/**

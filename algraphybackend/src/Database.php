@@ -57,9 +57,13 @@ class Database
                 PDO::ATTR_EMULATE_PREPARES => false,                // Use real prepared statements
             ];
 
-            // Enable SSL for Cloud Databases (like Aiven)
+            // Enable SSL for Cloud Databases (like Aiven) - Version-safe check for PHP 8.5+
             if ($this->port !== 3306) {
-                $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+                $sslVerifyConst = defined('Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT') 
+                    ? \Pdo\Mysql::ATTR_SSL_VERIFY_SERVER_CERT 
+                    : (defined('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT') ? PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT : 1014);
+                
+                $options[$sslVerifyConst] = false;
             }
 
             $this->pdo = new PDO($dsn, $this->user, $this->password, $options);

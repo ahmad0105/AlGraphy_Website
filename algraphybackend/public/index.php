@@ -40,10 +40,21 @@ session_start(); // Resume session for administrative authentication
 ob_start(); // Buffer output to prevent header issues
 
 // 1. Initialization & Autoloading
-$autoloadPath = __DIR__ . '/../vendor/autoload.php';
-if (file_exists($autoloadPath)) {
-    require_once $autoloadPath;
-} else {
+$autoloadPaths = [
+    __DIR__ . '/../../vendor/autoload.php',
+    __DIR__ . '/../vendor/autoload.php'
+];
+
+$autoloadFound = false;
+foreach ($autoloadPaths as $path) {
+    if (file_exists($path)) {
+        require_once $path;
+        $autoloadFound = true;
+        break;
+    }
+}
+
+if (!$autoloadFound) {
     // EMERGENCY FALLBACK: Manual loading if vendor is missing on Vercel
     spl_autoload_register(function ($class) {
         $prefix = 'AlGraphy\\';

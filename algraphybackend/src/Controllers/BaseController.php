@@ -47,6 +47,10 @@ abstract class BaseController
         
         // ONLY apply aggressive cleaning if we are on Vercel
         if (getenv('VERCEL') === '1') {
+            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+            $host = $_SERVER['HTTP_HOST'];
+            $baseFull = "$protocol://$host";
+
             // 1. Force HTTPS globally
             $url = str_replace('http://', 'https://', $url);
             
@@ -61,9 +65,9 @@ abstract class BaseController
             // 4. Clean up potential double slashes (except protocol)
             $url = preg_replace('/(?<!:)\/\//', '/', $url);
             
-            // 4. Ensure clean root for relative paths
+            // 5. Ensure it's an ABSOLUTE URL to prevent frontend relative messing
             if (strpos($url, 'http') !== 0) {
-                $url = '/' . ltrim($url, '/');
+                $url = $baseFull . '/' . ltrim($url, '/');
             }
         }
         

@@ -14,23 +14,17 @@
   ],
   "redirects": [
     { "source": "/dashboard", "destination": "/studio-panel/", "permanent": true },
-    { "source": "/dashboard/(.*)", "destination": "/studio-panel/$1", "permanent": true },
-    { "source": "/studio-panel", "destination": "/studio-panel/", "permanent": true }
+    { "source": "/dashboard/(.*)", "destination": "/studio-panel/$1", "permanent": true }
   ],
   "rewrites": [
     { "source": "/api/debug", "destination": "/api/debug.php" },
     { "source": "/api/(.*)", "destination": "/algraphybackend/public/index.php" },
-    { "source": "/auth", "destination": "/auth.html" },
-    { "source": "/studio-panel/", "destination": "/studio-panel/index.html" },
-    { "source": "/studio-panel/(.*)", "destination": "/studio-panel/$1" }
+    { "source": "/auth", "destination": "/auth.html" }
   ],
   "routes": [
-    { "src": "/Assets/(.*)", "dest": "/Assets/$1" },
-    { "src": "/css/(.*)", "dest": "/css/$1" },
-    { "src": "/js/(.*)", "dest": "/js/$1" },
-    { "src": "/studio-panel/(.*)", "dest": "/studio-panel/$1", "continue": true },
-    { "src": "/auth", "dest": "/auth.html" },
+    { "handle": "filesystem" },
     { "src": "/api/(.*)", "dest": "/algraphybackend/public/index.php" },
+    { "src": "/studio-panel/(.*)", "dest": "/studio-panel/$1" },
     { "src": "/(.*)", "dest": "/index.php" }
   ],
   "crons": [

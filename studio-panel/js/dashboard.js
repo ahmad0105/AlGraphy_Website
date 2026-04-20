@@ -160,11 +160,13 @@ class DashboardHandler {
                 
                 latestFive.forEach(emp => {
                     // Dynamic path building for assets
-                    const isVercel = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-                    let avatarPath = emp.profile_pic ? `algraphybackend/public/${emp.profile_pic}` : 'Assets/image/default_avatar.png';
+                    let avatarPath = emp.profile_pic || '../Assets/image/default_avatar.png';
                     
-                    // Always prepend ../ because we are inside studio-panel/
-                    avatarPath = '../' + avatarPath;
+                    // If it's a fixed path from backend (starts with /), use it. 
+                    // Otherwise, it's a relative asset, so prepend ../
+                    if (!avatarPath.startsWith('/') && !avatarPath.startsWith('http')) {
+                        avatarPath = '../' + avatarPath;
+                    }
                     
                     const itemHtml = `
                         <div class="best-item">

@@ -10,7 +10,7 @@ const CONFIG = {
     API: {
         BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? `${window.location.protocol}//${window.location.hostname}/algraphy/algraphybackend/public/api`
-            : `${window.location.protocol}//${window.location.hostname}/api`,
+            : `${window.location.protocol}//${window.location.hostname}/algraphybackend/public/api`,
         ENDPOINTS: {
             LOGIN: '/login',
             LOGOUT: '/logout',

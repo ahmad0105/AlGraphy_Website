@@ -58,8 +58,14 @@ function renderProjectsAdmin(projects, container) {
         card.className = 'proj-admin-card';
 
         let imgPath = proj.Main_Image || '../Assets/image/Aura.png';
-        if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend')) imgPath = '/algraphy/' + imgPath;
-        if (imgPath.startsWith('uploads')) imgPath = baseUrl + '/algraphybackend/public/' + imgPath; if (imgPath.startsWith('uploads')) imgPath = baseUrl + '/algraphybackend/public/' + imgPath;
+        const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+        // Use backend fixed path if it starts with /, otherwise adjust for local/production relative assets
+        if (!imgPath.startsWith('/') && !imgPath.startsWith('http')) {
+            if (imgPath.startsWith('Assets') || imgPath.startsWith('algraphybackend') || imgPath.startsWith('uploads')) {
+                imgPath = (isLocal ? '/algraphy/' : '/') + imgPath;
+            }
+        }
 
         const budgetStr = proj.Budget ? `$${parseFloat(proj.Budget).toLocaleString()}` : '-';
 

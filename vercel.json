@@ -37,5 +37,10 @@
   ],
   "crons": [
     { "path": "/api/site/hero", "schedule": "*/10 * * * *" }
-  ]
+  ],
+  "functions": {
+    "api/*.php": { "excludeFiles": "{algraphybackend/public/uploads,Assets}/**" },
+    "algraphybackend/public/*.php": { "excludeFiles": "{algraphybackend/public/uploads,Assets}/**" },
+    "index.php": { "excludeFiles": "{algraphybackend/public/uploads,Assets}/**" }
+  }
 }

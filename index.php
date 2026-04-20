@@ -383,7 +383,7 @@ function formatHeroTitle($text)
         <video class="footer-bg-video" autoplay loop muted playsinline>
             <?php 
                 $footerVideo = (getenv('VERCEL') === '1') 
-                    ? "https://res.cloudinary.com/virgvitp/video/upload/q_auto/f_auto/v1776697425/golgbvuoaxenfzpggu3k.mp4" 
+                    ? "https://res.cloudinary.com/virgvitp/video/upload/q_auto/f_auto/v1776698698/j2rlhznnegi3jsfuz8hj.mp4" 
                     : "Assets/video/white-on-black-topographical-map-clean.mp4";
             ?>
             <source src="<?php echo $footerVideo; ?>" type="video/mp4">

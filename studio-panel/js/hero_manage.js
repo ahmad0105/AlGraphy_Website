@@ -133,7 +133,8 @@ class HeroHandler {
         try {
             // Helper for Direct Cloudinary Upload
             const uploadToCloudinary = async (file) => {
-                const cloudName = 'Root'; // From your config
+                const cloudName = 'virgvitp';
+ // From your config
                 const unsignedPreset = 'ml_default';
                 const url = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
                 

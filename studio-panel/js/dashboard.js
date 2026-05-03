@@ -159,18 +159,21 @@ class DashboardHandler {
                 const latestFive = data.employees.slice(0, 5);
                 
                 latestFive.forEach(emp => {
-                    // Dynamic path building for assets
-                    let avatarPath = emp.profile_pic || '../Assets/image/default_avatar.png';
+                    const cloudDefault = 'https://res.cloudinary.com/virgvitp/image/upload/v1776688393/izxyozx3bjl3tmeoh4np.jpg';
+                    const localFallback = '../Assets/image/default_avatar.png';
+                    let avatarPath = emp.profile_pic || cloudDefault;
                     
-                    // If it's a fixed path from backend (starts with /), use it. 
-                    // Otherwise, it's a relative asset, so prepend ../
-                    if (!avatarPath.startsWith('/') && !avatarPath.startsWith('http')) {
-                        avatarPath = '../' + avatarPath;
+                    // If it's a local database path, build it fully
+                    if (avatarPath && !avatarPath.startsWith('http') && !avatarPath.startsWith('/')) {
+                        const baseUrl = CONFIG.API.BASE_URL.replace('/algraphybackend/public/api', '');
+                        avatarPath = `${baseUrl}/algraphybackend/public/${avatarPath}`;
                     }
                     
                     const itemHtml = `
                         <div class="best-item">
-                            <img src="${avatarPath}" alt="${emp.Full_name}">
+                            <img src="${avatarPath}" 
+                                 alt="${emp.Full_name}" 
+                                 onerror="this.onerror=null; this.src='${localFallback}';">
                             <div class="talent-info">
                                 <h2>${emp.Full_name}</h2>
                                 <p>${emp.Role}</p>
